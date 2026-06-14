@@ -172,10 +172,12 @@ img,svg,video,canvas{max-width:100%;height:auto}
     <div id="modelArea">
       <div class="setup-label">Model</div>
       <select class="model-select" id="modelSelect">
-        <optgroup label="OpenAI">
+        <optgroup label="OpenAI Resmi">
           <option value="openai:gpt-5.5">GPT-5.5</option>
           <option value="openai:gpt-5.4">GPT-5.4</option>
           <option value="openai:gpt-5.4-mini">GPT-5.4 mini</option>
+          <option value="openai:gpt-4o">GPT-4o</option>
+          <option value="openai:gpt-4o-mini">GPT-4o mini</option>
         </optgroup>
         <optgroup label="Google">
           <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
@@ -231,6 +233,8 @@ img,svg,video,canvas{max-width:100%;height:auto}
             <option value="openai:gpt-5.5">GPT-5.5</option>
             <option value="openai:gpt-5.4">5.4</option>
             <option value="openai:gpt-5.4-mini">5.4 mini</option>
+            <option value="openai:gpt-4o">GPT-4o</option>
+            <option value="openai:gpt-4o-mini">4o mini</option>
             <option value="gemini:gemini-2.5-flash">Gemini</option>
           </select>
           <button class="status-pill" id="autoReadStatus" onclick="toggleAutoRead()" title="Otomatik ses">🔇 Kapalı</button>
@@ -472,7 +476,7 @@ function loadSaved() {
     savedModel = 'gemini:gemini-2.5-flash';
     localStorage.setItem('askviet_model', savedModel);
   }
-  if (savedModel === 'openai:gpt-4o' || savedModel === 'openai:gpt-4o-mini') {
+  if (savedModel === 'codex:gpt-5.5' || savedModel === 'codex:gpt-5.4' || savedModel === 'codex:gpt-5.4-mini') {
     savedModel = 'openai:gpt-5.5';
     localStorage.setItem('askviet_model', savedModel);
   }
@@ -1097,7 +1101,7 @@ async function translateText(text, from) {
     if (!r.ok) throw new Error(data.error?.message || r.statusText);
     return (data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
   } else {
-    const endpoint = 'https://codex.sale/v1/chat/completions';
+    const endpoint = 'https://api.openai.com/v1/chat/completions';
     let r;
     try {
       r = await fetch(endpoint, {
@@ -1112,7 +1116,7 @@ async function translateText(text, from) {
         })
       });
     } catch (e) {
-      throw new Error('Harici API adresine ulasilamadi: ' + endpoint + '. Tarayici CORS/ag engeli olabilir. ' + (e.message || e));
+      throw new Error('OpenAI adresine ulasilamadi. Internet/CORS engeli olabilir. ' + (e.message || e));
     }
     const data = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(data.error?.message || r.statusText || ('HTTP ' + r.status));
@@ -1244,6 +1248,8 @@ const MODEL_NAMES = {
   'openai:gpt-5.5': 'GPT-5.5',
   'openai:gpt-5.4': 'GPT-5.4',
   'openai:gpt-5.4-mini': 'GPT-5.4 mini',
+  'openai:gpt-4o': 'GPT-4o',
+  'openai:gpt-4o-mini': '4o mini',
   'gemini:gemini-2.5-flash': 'Gemini Flash',
   'gemini:gemini-2.5-flash-preview-05-20': 'Gemini Flash'
 };
@@ -1255,7 +1261,7 @@ function modelName(model) {
 function setSelectedModel(model, fromRemote=false) {
   if (!model) return;
   if (model === 'gemini:gemini-2.5-flash-preview-05-20') model = 'gemini:gemini-2.5-flash';
-  if (model === 'openai:gpt-4o' || model === 'openai:gpt-4o-mini') model = 'openai:gpt-5.5';
+  if (model === 'codex:gpt-5.5' || model === 'codex:gpt-5.4' || model === 'codex:gpt-5.4-mini') model = 'openai:gpt-5.5';
   selectedModel = model;
   localStorage.setItem('askviet_model', model);
   const setupSelect = document.getElementById('modelSelect');
