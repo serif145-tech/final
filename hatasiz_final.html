@@ -2,171 +2,2152 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>AskViet</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a0f;
+  --surface:#13131a;
+  --surface2:#1c1c26;
+  --border:#2a2a3a;
+  --tr:#7c3aed;
+  --tr2:#a78bfa;
+  --vi:#b91c6e;
+  --vi2:#f472b6;
+  --text:#f0f0f5;
+  --muted:#666;
+  --radius:18px;
+}
+html{height:100%;width:100%;overflow:hidden;background:var(--bg)}
+body{position:fixed;inset:0;height:100dvh;min-height:100svh;width:100vw;max-width:100vw;min-width:0;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+img,svg,video,canvas{max-width:100%;height:auto}
+
+/* PASSWORD */
+.witch-img{margin-bottom:4px}
+.witch-title{font-size:15px;font-weight:700;color:var(--text);text-align:center;line-height:1.4}
+.witch-sub{font-size:13px;color:var(--vi2);text-align:center;margin-top:4px}
+.hearts{font-size:18px;text-align:center;letter-spacing:4px;margin:4px 0}
+#pwscreen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:auto;width:auto;min-width:0;gap:14px;padding:24px;overflow-y:auto;position:fixed;inset:0}
+.pw-logo{font-size:38px;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--tr2),var(--vi2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pw-box{display:flex;gap:8px;width:100%;max-width:min(320px,calc(100vw - 32px))}
+.pw-input{flex:1;min-width:0;padding:12px 14px;border-radius:12px;background:var(--surface);border:1.5px solid var(--border);color:var(--text);font-size:16px;outline:none;text-align:center;letter-spacing:4px}
+.pw-input:focus{border-color:var(--tr)}
+.pw-btn{flex:0 0 auto;white-space:nowrap;padding:12px 20px;border-radius:12px;background:var(--tr);border:none;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+.pw-err{color:#ef4444;font-size:13px;display:none}
+
+/* SETUP */
+#setup{display:none;flex-direction:column;align-items:center;justify-content:center;height:auto;width:auto;min-width:0;padding:24px;gap:18px;overflow-y:auto;position:fixed;inset:0}
+.logo{font-size:36px;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--tr2),var(--vi2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{color:var(--muted);font-size:13px;margin-top:-14px}
+.setup-card{width:100%;max-width:340px;background:var(--surface);border-radius:16px;padding:16px;border:1px solid var(--border);display:flex;flex-direction:column;gap:12px}
+.setup-label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.setup-input{width:100%;padding:10px 12px;border-radius:10px;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);font-size:14px;outline:none}
+.setup-input:focus{border-color:var(--tr)}
+.paste-row{display:flex;gap:6px}
+.paste-row .setup-input{flex:1}
+.paste-btn{padding:10px 12px;border-radius:10px;background:var(--surface2);border:1.5px solid var(--border);color:var(--muted);font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.paste-btn:active{background:var(--border)}
+.model-select{width:100%;padding:10px 12px;border-radius:10px;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);font-size:14px;outline:none;cursor:pointer}
+.role-cards{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px}
+.role-card{padding:16px;border-radius:var(--radius);cursor:pointer;border:2px solid var(--border);background:var(--surface);transition:all .15s ease;user-select:none}
+.role-card:active{transform:scale(.97)}
+.role-card.tr-card{border-color:var(--tr)}
+.role-card.vi-card{border-color:var(--vi)}
+.role-flag{font-size:28px;margin-bottom:6px}
+.role-name{font-weight:800;font-size:16px;margin-bottom:3px}
+.role-desc{font-size:12px;color:var(--muted)}
+
+/* CHAT */
+#chat{display:none;flex-direction:column;height:auto;width:auto;min-width:0;max-width:100vw;position:fixed;inset:0;overflow:hidden}
+.chat-header{width:100%;min-width:0;padding:env(safe-area-inset-top) 12px 12px 10px;padding-top:max(env(safe-area-inset-top),12px);background:var(--surface);border-bottom:1px solid var(--border);display:flex;flex-direction:column;align-items:stretch;gap:10px;flex-shrink:0}
+.header-main{min-width:0;display:flex;flex-direction:column;gap:3px;padding-right:104px}
+.chat-title{font-weight:900;font-size:17px;line-height:1.15}
+.chat-subtitle{font-size:12px;color:var(--muted);margin-top:0;line-height:1.25}
+.header-models{display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:nowrap}
+.last-seen{font-size:12px;color:#9ca3af;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;font-weight:800;display:flex;align-items:center;gap:7px}
+.last-seen .presence-sep{color:#3f3f46;margin:0 8px}
+.last-seen .presence-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block;box-shadow:0 0 8px rgba(239,68,68,.35)}
+.last-seen.online{color:#22c55e;font-weight:900;text-shadow:0 0 8px rgba(34,197,94,.25)}
+.last-seen.online .presence-dot{background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.45)}
+.header-right{display:flex;align-items:center;justify-content:flex-start;gap:8px;min-width:0;width:100%;padding-top:4px;border-top:1px solid rgba(255,255,255,.06);overflow:hidden}
+.tr-guard{display:none;align-items:center;gap:6px;flex:0 0 auto}
+.vn-voice-toggle{font-size:12px;font-weight:800;border:1px solid #374151;background:#171722;color:#e5e7eb;border-radius:999px;padding:6px 9px;cursor:pointer;white-space:nowrap}
+.vn-voice-toggle.on{border-color:#22c55e;background:#14532d;color:#dcfce7}
+.vn-voice-toggle.off{border-color:#ef4444;background:#3b1118;color:#fecdd3}
+.online-count{width:28px;height:28px;border-radius:50%;border:2px solid #22c55e;background:#06130b;color:#4ade80;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;box-shadow:0 0 8px rgba(34,197,94,.25)}
+.settings-controls{display:none;align-items:center;gap:7px;min-width:0;flex:1 1 auto}
+.settings-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-width:0;flex:1 1 auto;flex-wrap:nowrap}
+.conn-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0}
+.conn-dot.off{background:#ef4444}
+.back-btn{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px}
+.chat-header{position:relative}
+.settings-controls>img{position:absolute!important;top:max(env(safe-area-inset-top),10px);right:54px;width:42px!important;height:42px!important;z-index:3}
+.settings-actions .back-btn{position:absolute;top:max(env(safe-area-inset-top),10px);right:10px;z-index:3}
+
+.messages{width:100%;min-width:0;flex:1;overflow-x:hidden;overflow-y:auto;padding:14px 10px;display:flex;flex-direction:column;gap:8px;-webkit-overflow-scrolling:touch;background:#f0ece8}
+
+.msg{display:flex;flex-direction:column;max-width:min(78%,680px);min-width:0;overflow-wrap:anywhere}
+.msg.mine{align-self:flex-end;align-items:flex-end}
+.msg.theirs{align-self:flex-start;align-items:flex-start}
+.msg-head{display:flex;align-items:flex-end;gap:5px;max-width:100%}
+.msg.mine .msg-head{flex-direction:row}
+.msg.theirs .msg-head{flex-direction:row-reverse}
+.msg-flag{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.12);font-size:11px;line-height:1;flex:0 0 18px}
+
+/* Okunacak dil — büyük ve belirgin */
+.msg-original{max-width:100%;padding:10px 14px;border-radius:var(--radius);font-size:16px;font-weight:600;line-height:1.4;word-break:break-word;overflow-wrap:anywhere}
+.msg.mine .msg-original{background:rgba(124,58,237,0.92);color:#fff;border-bottom-right-radius:4px}
+.msg.theirs .msg-original{background:rgba(185,28,110,0.92);color:#fff;border-bottom-left-radius:4px}
+
+/* Çeviri — küçük ve soluk */
+.msg-translation{font-size:12px;color:#666;padding:3px 14px 0;font-style:italic;line-height:1.4}
+
+.msg-time{font-size:10px;color:#999;padding:2px 14px 4px}
+.msg-read{display:none;font-size:10px;font-weight:800;color:#fff;background:#16a34a;border:1px solid #22c55e;border-radius:999px;padding:3px 8px;margin:0 0 0 2px;box-shadow:0 1px 5px rgba(22,163,74,.35);align-self:center;white-space:nowrap}
+.msg.mine .msg-read{background:#2563eb;border-color:#60a5fa;box-shadow:0 1px 5px rgba(37,99,235,.35)}
+.msg-read.show{display:inline-block}
+.msg-media-img,.msg-media-video{display:block;max-width:min(260px,70vw);max-height:320px;border-radius:14px;object-fit:cover;background:#111;cursor:pointer}
+.msg-media-video{min-width:min(240px,68vw)}
+.media-uploading{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:99999;background:#111827;color:#fff;border:1px solid #7c3aed;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:900;box-shadow:0 8px 26px rgba(0,0,0,.35);white-space:nowrap}
+.msg-react-btn{position:absolute;right:-36px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;border:1px solid #e5e7eb;background:rgba(255,255,255,.9);color:#c02668;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.2);cursor:pointer;z-index:4;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}
+.msg.mine .msg-react-btn{right:auto;left:-36px}
+.msg.theirs .msg-react-btn{right:-36px;left:auto}
+.msg-reactions{display:none;align-items:center;gap:3px;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:2px 6px;margin-top:-3px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.msg-reactions.show{display:flex}
+.reaction-picker{position:fixed;z-index:9999;display:none;gap:7px;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:8px 11px;box-shadow:0 8px 28px rgba(0,0,0,.22)}
+.reaction-picker.show{display:flex}
+.reaction-picker button{border:none;background:transparent;font-size:24px;line-height:1;cursor:pointer;padding:2px}
+.media-lightbox{position:fixed;inset:0;z-index:100000;background:#000;display:none;align-items:center;justify-content:center;padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom)}
+.media-lightbox.show{display:flex}
+.media-lightbox img,.media-lightbox video{max-width:100%;max-height:100%;object-fit:contain}
+.media-lightbox-close{position:fixed;top:max(env(safe-area-inset-top),14px);right:14px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(20,20,20,.75);color:#fff;font-size:24px;font-weight:900;z-index:100001}
+
+.typing-indicator{display:none;align-self:flex-start;background:var(--surface2);padding:10px 14px;border-radius:var(--radius);border-bottom-left-radius:4px}
+.typing-indicator.show{display:flex;gap:4px;align-items:center}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:typingBounce 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+.input-bar{width:100%;min-width:0;padding:10px 10px;padding-bottom:max(env(safe-area-inset-bottom),10px);background:var(--surface);border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.msg-input{min-width:0;flex:1;padding:10px 14px;border-radius:22px;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);font-size:15px;outline:none;resize:none;max-height:120px;line-height:1.4;font-family:inherit}
+.msg-input:focus{border-color:var(--tr)}
+.send-btn{width:44px;height:44px;border-radius:50%;background:var(--tr);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0;transition:transform .1s ease}
+.send-btn:active{transform:scale(.9)}
+.send-btn:disabled{background:var(--border);cursor:not-allowed}
+
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);padding:32px;text-align:center}
+.empty-emoji{font-size:48px}
+.empty-text{font-size:14px;line-height:1.5}
+.mic-recording{background:var(--vi)!important;border-color:var(--vi2)!important;animation:pulse .8s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.model-badge{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+.model-badge.active{border-color:var(--tr);color:var(--tr2)}
+.chat-model-select{max-width:92px;padding:5px 6px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px;outline:none}
+.status-pill{font-size:11px;padding:5px 8px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);white-space:nowrap;cursor:pointer;font-weight:800}
+.status-pill.on{border-color:var(--tr);color:var(--tr2)}
+.notify-toggle{font-size:11px;font-weight:800;padding:5px 7px;border-radius:999px;border:1px solid #22c55e;background:#16a34a;color:#fff;cursor:pointer;white-space:nowrap;box-shadow:0 1px 5px rgba(22,163,74,.3)}
+.notify-toggle.off{border-color:#f87171;background:#dc2626;box-shadow:0 1px 5px rgba(220,38,38,.3)}
+.btn-row button{touch-action:manipulation}
+.speakBtn[data-playing="1"]{background:#7c3aed!important;border-color:#a78bfa!important;color:#fff!important;box-shadow:0 0 0 2px rgba(124,58,237,.22)}
+.input-bar{position:relative;z-index:5}
+@media (max-width: 520px){
+  .settings-controls>img{width:36px!important;height:36px!important}
+  .back-btn{font-size:18px;padding:3px}
+  .model-badge{font-size:10px;padding:2px 6px}
+  .chat-header{gap:8px;padding-left:9px;padding-right:9px}
+  .header-main{min-width:0}
+  .header-right{padding-top:7px;gap:5px}
+  .last-seen{max-width:210px}
+  .vn-voice-toggle{font-size:11px;padding:5px 7px}
+  .online-count{width:25px;height:25px;font-size:12px}
+  .chat-model-select{max-width:78px;font-size:11px;padding:5px 5px}
+  .status-pill,.notify-toggle{font-size:10px;padding:5px 6px}
+  .settings-actions{gap:4px}
+  .settings-controls{gap:5px}
+}
+@media (min-width: 900px){
+  #chat{width:100%;max-width:900px;left:50%;right:auto;transform:translateX(-50%);border-left:1px solid var(--border);border-right:1px solid var(--border);box-shadow:0 0 0 1px rgba(255,255,255,.02)}
+}
+</style>
+<link rel="manifest" id="pwaManifest">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="TR⇌VI Çevirmen">
+<meta name="apple-mobile-web-app-title" content="AskViet">
 <meta name="theme-color" content="#0a0a0f">
-<link rel="manifest" id="pwaManifest">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>TR ⇄ VI Çevirmen</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}html,body{height:100%;background:#070707;color:#f7f7f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}body{display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}button,textarea,input{font:inherit}button{touch-action:manipulation;transition:transform .08s ease,filter .12s ease,box-shadow .12s ease}button:active,button.pressed{transform:scale(.96);filter:brightness(1.35) saturate(1.25);box-shadow:0 0 0 2px #fff8 inset,0 0 12px #ffffff55}button.flash{animation:btnFlash .28s ease}@keyframes btnFlash{0%{transform:scale(1);filter:brightness(1)}45%{transform:scale(.94);filter:brightness(1.45) saturate(1.35)}100%{transform:scale(1);filter:brightness(1)}}textarea,input{width:100%;border:1px solid #2a2a2a;border-radius:10px;background:#141414;color:#fff;outline:none}textarea{resize:none;line-height:1.45;font-size:17px;padding:13px}input{height:42px;padding:0 10px;font-size:13px}textarea:focus,input:focus{border-color:#7c3aed}.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 9px;border-bottom:1px solid #1e1e1e}.brand{font-size:17px;font-weight:900}.right{display:flex;align-items:center;gap:8px}.status{font-size:11px;color:#bbb;border:1px solid #2b2b2b;border-radius:8px;padding:5px 9px}.status.live{color:#4ade80;border-color:#23643a;background:#102316}.iconbtn{width:34px;height:34px;border:1px solid #303030;border-radius:9px;background:#111;color:#fff}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px 14px;border-bottom:1px solid #1e1e1e;color:#777;font-size:11px}.stats strong{color:#fff}.modes{display:grid;grid-template-columns:1.25fr 1.25fr .9fr .9fr;gap:8px;padding:10px 14px;border-bottom:1px solid #1e1e1e}.mode{min-height:42px;border:1px solid #272727;border-radius:9px;background:#111;color:#8f8f8f;font-weight:800;font-size:13px}.mode[data-mode="chat"],.mode[data-mode="ptt"]{min-height:50px;background:linear-gradient(180deg,#201331,#151019);border-color:#6d28d9;color:#fff;font-size:16px;font-weight:950;box-shadow:0 0 0 1px rgba(124,58,237,.18),0 8px 22px rgba(0,0,0,.24)}.mode[data-mode="text"],.mode[data-mode="live"]{opacity:.72;font-size:12px}.mode.active{background:#7c3aed;border-color:#a78bfa;color:#fff;box-shadow:0 0 0 1px rgba(167,139,250,.35),0 10px 26px rgba(124,58,237,.24)}.settings{display:none;padding:12px 14px;border-bottom:1px solid #1e1e1e;background:#0c0c0c;max-height:42vh;overflow:auto}.settings.show{display:block}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field{margin-bottom:10px}label{display:block;color:#999;font-size:11px;font-weight:900;text-transform:uppercase;margin-bottom:5px}.hint{color:#777;font-size:12px;line-height:1.35;margin-top:5px}.checkrow{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:13px;color:#ddd}.checkrow input{width:18px;height:18px}.main{flex:1;min-height:0;display:flex;flex-direction:column}.view{display:none;flex:1;min-height:0;overflow:hidden}.view.active{display:flex;flex-direction:column}.textwrap{flex:1;min-height:0;display:grid;grid-template-rows:1fr 1fr;gap:10px;padding:12px 14px;overflow:auto}.pane{min-height:0;display:flex;flex-direction:column;gap:8px}.pane-title{display:flex;align-items:center;justify-content:space-between;color:#999;font-size:12px;font-weight:850}.result{flex:1;min-height:130px;border:1px solid #2a2a2a;border-radius:10px;background:#111;color:#c084fc;font-size:22px;font-weight:850;line-height:1.42;white-space:pre-wrap;overflow:auto;padding:13px}.upside{transform:rotate(180deg)}.row{display:flex;gap:6px;flex:none;flex-wrap:wrap}.primary{min-height:50px;border:none;border-radius:10px;background:#7c3aed;color:#fff;font-weight:900;font-size:16px;padding:0 14px}.secondary,.mini{border:1px solid #303030;border-radius:9px;background:#151515;color:#fff;font-weight:850}.secondary{min-height:50px;min-width:52px;padding:0 12px}.mini{padding:7px 10px;font-size:12px}.dangerMini,.dangerBtn{background:#dc2626!important;border-color:#ef4444!important;color:#fff!important}.dangerMini{min-width:36px}.armed{background:#16a34a!important;border-color:#22c55e!important;color:#fff!important}.recording{background:#dc2626!important;border-color:#ef4444!important;color:#fff!important;animation:pulse 1.2s infinite}.speakBtn[data-playing="1"]{background:#261c38!important;border-color:#7c3aed!important}.log{flex:1;min-height:0;overflow:auto;padding:12px 14px;-webkit-overflow-scrolling:touch}.empty{color:#707070;text-align:center;padding:36px 18px;line-height:1.45}.turn{padding:11px 0 14px;border-bottom:1px solid #171717}.src{color:#a8a8a8;font-size:15px;line-height:1.4;white-space:pre-wrap}.dst{color:#c084fc;font-size:21px;font-weight:850;line-height:1.42;white-space:pre-wrap;margin-top:7px}.turn-tools{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap}.ptt-actions{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:18px 24px calc(28px + env(safe-area-inset-bottom))}.roundflag{width:132px;height:132px;justify-self:center;border-radius:50%;border:2px solid #2d2d2d;background:linear-gradient(145deg,#171717,#0d0d0d);color:#fff;font-size:50px;box-shadow:0 0 0 10px rgba(124,58,237,.1),0 6px 24px rgba(0,0,0,.45)}.roundflag small{display:block;font-size:12px;margin-top:7px;color:#ccc}.chatwrap{flex:1;min-height:0;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}.chatinput{min-height:150px}.chatcard{border:1px solid #242424;background:#101010;border-radius:10px;padding:11px;margin-bottom:9px}.chathead{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;color:#999;font-size:11px;font-weight:900;margin-bottom:7px;flex-wrap:wrap}.chathead>span{flex:1;min-width:80px}.chattext{font-size:17px;line-height:1.45;white-space:pre-wrap}.chattext.vi{color:#c084fc;font-size:19px;font-weight:850}.comment{display:flex;flex-direction:column;gap:7px;font-size:15px;line-height:1.4}.comment .tr{color:#93c5fd}.comment .vi{color:#c084fc}.live-indicator{padding:10px 14px;border-bottom:1px solid #1b1b1b;color:#888;font-weight:850}.err{margin:10px 14px;padding:10px 12px;border-radius:9px;color:#fecaca;background:#2a1212;border:1px solid #5b2020;font-size:13px}.bar{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));border-top:1px solid #1e1e1e}.wide{flex:1}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.35)}50%{box-shadow:0 0 0 13px rgba(220,38,38,0)}}@media(max-width:430px){.brand{font-size:15px}.modes{grid-template-columns:1.25fr 1.25fr .85fr .85fr;gap:6px;padding-left:8px;padding-right:8px}.mode{font-size:11px}.mode[data-mode="chat"],.mode[data-mode="ptt"]{font-size:14px}.stats{font-size:10px}.row .secondary{min-width:46px;padding:0 8px}.roundflag{width:118px;height:118px}.ptt-actions{gap:12px;padding-left:12px;padding-right:12px}.bar{grid-template-columns:1fr 54px 54px 54px}}
-</style>
 </head>
 <body>
-<div class="topbar"><div class="brand">TR ⇄ VI Çevirmen</div><div class="right"><span class="status" id="status">Hazır</span><button class="iconbtn" id="settingsBtn">⚙</button></div></div>
-<div class="stats"><span>Giriş: <strong id="inStat">0s</strong></span><span>Çıkış: <strong id="outStat">0s</strong></span><span>İstek: <strong id="reqStat">0</strong></span><span>Tahmini: <strong id="costStat">$0.0000</strong></span></div>
-<div class="modes"><button class="mode active" data-mode="chat">Sohbet</button><button class="mode" data-mode="ptt">Bas-Konuş</button><button class="mode" data-mode="text">Yazılı</button><button class="mode" data-mode="live">Live</button></div>
-<div class="settings" id="settings">
-  <div class="grid2"><div class="field"><label>Üslup</label><button class="secondary" id="toneBtn" style="width:100%">Sevgili</button></div><div class="field"><label>Kullanım</label><div class="hint" id="toneHint"></div></div></div>
-  <div class="field"><label>OpenAI API Key</label><div class="row"><input id="apiKey" type="password" placeholder="sk-..." class="wide"><button class="secondary" id="pasteKeyBtn">Yapıştır</button></div><div class="hint">Tek API: gpt-4o + Whisper + gpt-4o-mini-tts. Key sadece bu cihazdaki tarayıcı hafızasına kaydedilir.</div></div>
-  <label class="checkrow"><input type="checkbox" id="autoReadToggle"> Çeviri bitince otomatik seslendir</label>
-  <label class="checkrow"><input type="checkbox" id="saverToggle"> Tasarruf modu: Live sessizlikte kayıt göndermesin</label>
-  <label class="checkrow"><input type="checkbox" id="retryToggle"> Live hatalı çeviride tekrar dene</label>
-  <button class="secondary" id="clearTtsCacheBtn" style="width:100%">Ses cache temizle</button>
-  <button class="secondary" id="openBlockedBtn" style="width:100%">🚫 Kara/Beyaz Liste (<span id="blockedCount">0</span>/<span id="whitelistCount2">0</span>)</button>
+
+<!-- PASSWORD -->
+<div id="pwscreen">
+  <div class="witch-img">
+    <img src="https://raw.githubusercontent.com/serif145-tech/askviet/main/witch.png" alt="cadı" style="width:220px;height:220px;object-fit:cover;border-radius:50%;border:3px solid #a78bfa;box-shadow:0 0 30px #7c3aed88">
+  </div>
+  <div class="witch-sub">Cô gái mũi tẹt dễ thương 🥰😘💜</div>
+  <div class="witch-sub" style="font-size:12px;margin-top:2px">Anh muốn nói chuyện với em thôi~ 🫠💋</div>
+  <div class="hearts">💜 💋 🥰 💋 💜</div>
+  <div class="pw-box">
+    <input class="pw-input" type="password" id="pwInput" placeholder="••••••••" maxlength="20">
+    <button class="pw-btn" onclick="checkPw()">✨ Gir</button>
+  </div>
+  <div class="pw-err" id="pwErr">Hatalı şifre 🙅‍♀️</div>
 </div>
-<div id="blockedModal" style="display:none;position:fixed;inset:0;z-index:999;background:#000c;padding:env(safe-area-inset-top) 0 0">
-  <div style="background:#111;height:100%;display:flex;flex-direction:column">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #222">
-      <div style="display:flex;gap:8px"><button id="tabBlocked" style="background:#7c3aed;border:1px solid #a78bfa;border-radius:7px;color:#fff;font-weight:900;font-size:13px;padding:4px 12px">🚫 Kara</button><button id="tabWhite" style="background:#111;border:1px solid #303030;border-radius:7px;color:#aaa;font-weight:900;font-size:13px;padding:4px 12px">✓ Beyaz (<span id="whitelistCount">0</span>)</button></div>
-      <div style="display:flex;gap:8px">
-        <button class="secondary" id="copyFilterLogBtn" style="font-size:12px;padding:0 10px;height:32px">Log kopyala</button>
-        <button class="secondary dangerMini" id="clearFilterLogBtn" style="height:32px">Temizle</button>
-        <button class="secondary" id="closeBlockedBtn" style="height:32px;width:32px">✕</button>
+
+<!-- SETUP -->
+<div id="setup">
+  <div>
+    <div class="logo">AskViet</div>
+    <div class="logo-sub">TR ⇌ VI çevirmen</div>
+  </div>
+
+  <div class="setup-card">
+    <div id="modelArea">
+      <div class="setup-label">Model</div>
+      <select class="model-select" id="modelSelect">
+        <optgroup label="OpenAI">
+          <option value="openai:gpt-5.5">GPT-5.5</option>
+          <option value="openai:gpt-5.4">GPT-5.4</option>
+          <option value="openai:gpt-5.2">GPT-5.2</option>
+          <option value="openai:gpt-5.4-mini">GPT-5.4-mini</option>
+          <option value="openai:gpt-4o">GPT-4o</option>
+          <option value="openai:gpt-4o-mini">GPT-4o-mini</option>
+        </optgroup>
+        <optgroup label="Google">
+          <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="setup-label">OpenAI API Key</div>
+    <div class="paste-row">
+      <input class="setup-input" type="password" id="apiKeyInput" placeholder="sk-...">
+      <button class="paste-btn" onclick="pasteKey()">📋 Yapıştır</button>
+    </div>
+
+    <div class="setup-label">Gemini API Key</div>
+    <div class="paste-row">
+      <input class="setup-input" type="password" id="geminiKeyInput" placeholder="AIza...">
+      <button class="paste-btn" onclick="pasteGeminiKey()">📋 Yapıştır</button>
+    </div>
+  </div>
+
+    <div class="role-cards">
+    <div class="role-card tr-card" onclick="start('tr')">
+      <div class="role-flag">🇹🇷</div>
+      <div class="role-name">Türkçe taraf</div>
+      <div class="role-desc">Türkçe yaz → karşı taraf Vietnamca görsün</div>
+    </div>
+    <div class="role-card vi-card" onclick="start('vi')">
+      <div class="role-flag">🇻🇳</div>
+      <div class="role-name">Tiếng Việt</div>
+      <div class="role-desc">Viết tiếng Việt → đối phương xem tiếng Thổ</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div id="chat">
+  <div class="chat-header">
+    <div class="header-main">
+      <div class="chat-title" id="chatTitle">🇹🇷 → 🇻🇳</div>
+      <div class="chat-subtitle" id="chatSubtitle">Bağlanıyor...</div>
+      <div class="header-models">
+        <span class="model-badge active" id="myModelBadge">-</span>
+        <span style="color:var(--muted);font-size:10px">vs</span>
+        <span class="model-badge" id="theirModelBadge">?</span>
+      </div>
+      <div class="last-seen" id="lastSeenStatus">-</div>
+    </div>
+    <div class="header-right">
+      <div id="trGuard" class="tr-guard">
+        <div class="online-count" id="onlineCount" title="Online kişi sayısı">1</div>
+        <button class="vn-voice-toggle off" id="vnAutoReadBtn" onclick="toggleVnAutoRead()" title="Vietnam tarafı otomatik ses">🔇 VN</button>
+      </div>
+      <div id="settingsBtnArea" class="settings-controls">
+        <img src="https://raw.githubusercontent.com/serif145-tech/askviet/main/witch.png" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--tr);box-shadow:0 0 10px #7c3aed55" alt="">
+        <div class="settings-actions">
+          <div class="conn-dot off" id="connDot"></div>
+          <select class="chat-model-select" id="chatModelSelect" title="Model seçimi">
+            <option value="openai:gpt-5.5">GPT-5.5</option>
+            <option value="openai:gpt-5.4">GPT-5.4</option>
+            <option value="openai:gpt-5.2">GPT-5.2</option>
+            <option value="openai:gpt-5.4-mini">GPT-5.4-mini</option>
+            <option value="openai:gpt-4o">GPT-4o</option>
+            <option value="openai:gpt-4o-mini">4o-mini</option>
+            <option value="gemini:gemini-2.5-flash">Gemini</option>
+          </select>
+          <button class="status-pill" id="autoReadStatus" onclick="toggleAutoRead()" title="Otomatik ses">🔇 Kapalı</button>
+          <button class="notify-toggle" id="notifySoundBtn" onclick="toggleNotifySound()" title="Bildirim sesi">✓ Bildirim sesi</button>
+          <button class="back-btn" onclick="goBack()">⚙</button>
+        </div>
       </div>
     </div>
-    <div style="padding:8px 12px;color:#666;font-size:11px" id="filterLogHint">Yükleniyor...</div>
-    <div id="blockedList" style="flex:1;overflow:auto;padding:8px 12px"></div><div id="whitelistDiv" style="display:none;flex:1;overflow:auto;padding:8px 12px"></div>
+  </div>
+
+  <div class="messages" id="messages">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-emoji">💬</div>
+      <div class="empty-text" id="emptyText">Henüz mesaj yok.<br>İlk mesajı gönder!</div>
+    </div>
+    <div class="typing-indicator" id="typingIndicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  </div>
+
+  <div class="input-bar">
+    <input type="file" id="galleryInput" accept="image/*,video/*,.webp,.gif,.png,.jpg,.jpeg,.heic,.heif,.mp4,.mov,.m4v,.webm" style="display:none" onchange="handleImageInput(event)">
+    <input type="file" id="cameraInput" accept="image/*,video/*,.webp,.gif,.png,.jpg,.jpeg,.heic,.heif,.mp4,.mov,.m4v,.webm" capture="environment" style="display:none" onchange="handleImageInput(event)">
+    <button class="send-btn" id="galleryBtn" style="background:var(--surface2);border:1.5px solid var(--border)" onclick="openGallery()" title="Fotoğraf / sticker">🖼</button>
+    <button class="send-btn" id="cameraBtn" style="background:var(--surface2);border:1.5px solid var(--border)" onclick="openCamera()" title="Kamera">📷</button>
+    <textarea class="msg-input" id="msgInput" rows="1" placeholder="Mesaj yaz..."></textarea>
+    <button class="send-btn" id="micBtn" style="background:var(--surface2);border:1.5px solid var(--border)" onclick="startVoice()">🎙</button>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
   </div>
 </div>
-<div class="main">
-<section class="view" id="textView">
-  <div class="textwrap">
-    <div class="pane"><div class="pane-title"><span>Metin</span><span>Dil otomatik algılanır</span></div><textarea id="textInput" placeholder="Türkçe veya Vietnamca yaz..."></textarea><div class="row"><button class="primary wide" id="translateBtn">Çevir</button><button class="secondary flagMic" id="textMicTr" title="Türkçe sesle yaz">🇹🇷</button><button class="secondary flagMic" id="textMicVi" title="Vietnamca sesle yaz">🇻🇳</button><button class="secondary" id="pasteTextBtn" title="Yapıştır">📋</button><button class="secondary" id="clearTextBtn" title="Temizle">🧹</button></div></div>
-    <div class="pane"><div class="pane-title"><span id="textOutTitle">Çeviri</span><span id="flipState">Normal ekran</span></div><div class="result" id="textOutput"></div><div class="row"><button class="secondary" id="retryTextBtn">↻ Tekrar</button><button class="secondary" id="misTextBtn" title="Anlamadım">⚠↻</button><button class="secondary" id="copyTextBtn">📋</button><button class="secondary speakBtn" id="speakTextBtn">▶ Ses</button><button class="secondary dangerBtn" id="cancelTextBtn" title="Son çeviriyi kaldır">✕</button><button class="secondary" id="flipBtn">⤾</button><button class="secondary dangerMini" id="blockTextBtn" title="Bu metni engelle">Engelle</button></div></div>
-  </div>
-</section>
-<section class="view active" id="chatView"><div class="chatwrap"><textarea id="chatInput" class="chatinput" placeholder="Türkçe veya Vietnamca mesajı buraya yapıştır..."></textarea><div class="row"><button class="primary wide" id="chatBtn">Sohbet çevir</button><button class="secondary" id="retryChatBtn">↻</button><button class="secondary" id="chatMicTr">🇹🇷</button><button class="secondary" id="chatMicVi">🇻🇳</button><button class="secondary" id="pasteChatBtn">📋</button><button class="secondary" id="clearChatBtn">🧹</button><button class="secondary" id="chatFlipBtn">⤾</button></div><div id="chatResult"></div></div></section>
-<section class="view" id="pttView"><div class="log" id="pttLog"><div class="empty">Bayrağa bas, konuş; susunca otomatik çevirip seslendirir.</div></div><div class="ptt-actions"><button class="roundflag" id="pttTr" data-source="tr">🇹🇷<small>TR → VI</small></button><button class="roundflag" id="pttVi" data-source="vi">🇻🇳<small>VI → TR</small></button></div></section>
-<section class="view" id="liveView"><div class="live-indicator" id="liveIndicator">Dinleniyor değil</div><div class="log" id="liveLog"><div class="empty">Dinle'ye basınca sürekli dinler; sessizlikte çevirip seslendirir.</div></div><div class="bar"><button class="primary" id="liveBtn">▶ Dinle</button><button class="secondary" id="retryLastBtn">↻</button><button class="secondary speakBtn" id="speakLastBtn">▶ Ses</button><button class="secondary" id="clearLiveBtn">🧹</button></div></section>
+
+<div class="media-lightbox" id="mediaLightbox" onclick="closeMediaPreview()">
+  <button class="media-lightbox-close" onclick="event.stopPropagation();closeMediaPreview()">×</button>
+  <div id="mediaLightboxBody" onclick="event.stopPropagation()"></div>
 </div>
+
 <script>
-'use strict';
-const $=id=>document.getElementById(id),STORE='trvi_clean_';
-const langName={tr:'Türkçe',vi:'Vietnamca'},langEn={tr:'Turkish',vi:'Vietnamese'};
-let mode='chat',tone=localStorage.getItem(STORE+'tone')||'romantic',autoRead=localStorage.getItem(STORE+'autoRead')==='1',saver=localStorage.getItem(STORE+'saver')==='1',retryLive=localStorage.getItem(STORE+'retryLive')!=='0';
-let inSec=0,outSec=0,reqCount=0,charCount=0,lastText={input:'',source:'',target:'',translation:''},lastChatInput='',lastTurn=null,flipped=false,wakeLock=null;
-let _audioUnlocked=false,audioPlayer=null,audioUrl=null,ttsAbort=null,ttsToken=0,isSpeaking=false,ttsCache=new Map();
-let rec=null,recStream=null,recNode=null,recChunks=[],recSource='tr',recButton=null,recStarted=0,recHadSpeech=false,recSilentSince=0,recAnalyser=null,recData=null,recTimer=null,recAudioCtx=null;
-let liveOn=false,liveProcessing=false,liveStream=null,liveAnalyser=null,liveData=null,liveTimer=null,liveRecorder=null,liveChunks=[],liveHadSpeech=false,liveSilentSince=0,liveSegmentStart=0,lastLiveNoSpeechAt=0;
-let chatMemory=[],pttMemory=[];
-function setStatus(t,live=false){$('status').textContent=t;$('status').classList.toggle('live',live)}
-function apiKey(){const k=$('apiKey').value.trim();if(!k){$('settings').classList.add('show');showError('OpenAI API key gerekli. Ayarlardan key gir.');return''}localStorage.setItem(STORE+'key',k);return k}
-function saveSettings(){localStorage.setItem(STORE+'key',$('apiKey').value.trim());localStorage.setItem(STORE+'tone',tone);localStorage.setItem(STORE+'autoRead',autoRead?'1':'0');localStorage.setItem(STORE+'saver',saver?'1':'0');localStorage.setItem(STORE+'retryLive',retryLive?'1':'0')}
-function loadSettings(){$('apiKey').value=localStorage.getItem(STORE+'key')||'';$('autoReadToggle').checked=autoRead;$('saverToggle').checked=saver;$('retryToggle').checked=retryLive;chatMemory=loadMemory('chatMemory').slice(-60);pttMemory=loadMemory('pttMemory').slice(-30);updateTone();updateCost();renderBlockedList();renderWhitelist()}
-function updateTone(){const romantic=tone==='romantic';$('toneBtn').textContent=romantic?'Sevgili':'Nötr';$('toneHint').textContent=romantic?'Samimi sevgili dili. Türkçe taraf erkek: anh, Vietnamca taraf kız: em.':'Birebir/nötr çeviri. Aşkım/canım gibi kelime eklemez.'}
-function updateCost(){const textCost=charCount/4000*0.01,audioCost=inSec/60*0.006+outSec/60*0.03,total=textCost+audioCost;$('inStat').textContent=Math.round(inSec)+'s';$('outStat').textContent=Math.round(outSec)+'s';$('reqStat').textContent=reqCount;$('costStat').textContent='$'+total.toFixed(4)}
-function getFilterLogs(){try{return JSON.parse(localStorage.getItem(STORE+'filterLogs')||'[]')}catch{return[]}}
-function saveFilterLogs(items){localStorage.setItem(STORE+'filterLogs',JSON.stringify(items.slice(-200)));refreshFilterHint()}
-function getBlockedTexts(){try{return JSON.parse(localStorage.getItem(STORE+'blockedTexts')||'[]')}catch{return[]}}
-function saveBlockedTexts(items){localStorage.setItem(STORE+'blockedTexts',JSON.stringify(items.slice(-200)));renderBlockedList()}
-function getWhitelistTexts(){try{return JSON.parse(localStorage.getItem(STORE+'whitelist')||'[]')}catch{return[]}}
-function saveWhitelistTexts(items){localStorage.setItem(STORE+'whitelist',JSON.stringify(items.slice(-500)));renderWhitelist()}
-function isWhitelisted(text){const s=normBlockText(text).toLowerCase();if(!s)return false;return getWhitelistTexts().some(x=>{const b=normBlockText(x.text||x).toLowerCase();return s.includes(b)||b.includes(s)})}
-function addWhitelistText(text){text=normBlockText(text);if(!text)return;const items=getWhitelistTexts();if(!items.some(x=>normBlockText(x.text||x).toLowerCase()===text.toLowerCase()))items.push({time:new Date().toLocaleString(),text});saveWhitelistTexts(items);setStatus('Beyaz listeye eklendi')}
-function removeWhitelistText(i){const items=getWhitelistTexts();items.splice(i,1);saveWhitelistTexts(items)}
-function renderWhitelist(){const box=$('whitelistDiv');if(!box)return;const items=getWhitelistTexts();box.innerHTML='';if(!items.length){box.innerHTML='<div style="color:#666;font-size:13px;padding:8px 0">Beyaz liste boş</div>';const cnt=$('whitelistCount');if(cnt)cnt.textContent=0;return}items.forEach((x,i)=>{const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #1a1a1a';const span=document.createElement('span');span.style.cssText='flex:1;font-size:13px;color:#ddd;word-break:break-all';span.textContent=x.text||x;const btn=document.createElement('button');btn.className='dangerMini';btn.style.cssText='flex:none;font-size:12px';btn.textContent='Çıkar';btn.onclick=()=>{flashButton(btn);removeWhitelistText(i)};row.append(span,btn);box.appendChild(row)});const cnt=$('whitelistCount');if(cnt)cnt.textContent=items.length;const cnt2=$('whitelistCount2');if(cnt2)cnt2.textContent=items.length}
-function showFilterError(text){const active=document.querySelector('.view.active');if(!active)return;const b=document.createElement('div');b.style.cssText='margin:6px 14px;padding:10px 12px;border-radius:9px;background:#1a1a2e;border:1px solid #4c4c8a;font-size:13px;color:#c4b5fd';const msg=document.createElement('span');msg.textContent='Filtreye takıldı: '+text+' ';const wBtn=document.createElement('button');wBtn.style.cssText='background:#7c3aed;border:none;border-radius:6px;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;cursor:pointer';wBtn.textContent='✓ Beyaz Liste';wBtn.onclick=()=>{addWhitelistText(text);b.remove()};const bBtn=document.createElement('button');bBtn.style.cssText='background:#dc2626;border:none;border-radius:6px;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;cursor:pointer;margin-left:6px';bBtn.textContent='Engelle';bBtn.onclick=()=>{addBlockedText(text);b.remove()};b.append(msg,wBtn,bBtn);active.prepend(b);setTimeout(()=>{if(b.parentNode)b.remove()},12000)}
-function normBlockText(text){return String(text||'').trim().replace(/\s+/g,' ')}
-function isManuallyBlocked(text){const s=normBlockText(text).toLowerCase();if(!s)return false;return getBlockedTexts().some(x=>{const b=normBlockText(x.text||x).toLowerCase();return s.includes(b)||b.includes(s)})}
-function addFilterLog(type,text,where){text=normBlockText(text);if(!text)return;const items=getFilterLogs();items.push({time:new Date().toLocaleString(),type,text,where:where||mode});saveFilterLogs(items)}
-function addBlockedText(text,where){text=normBlockText(text);if(!text)return;const items=getBlockedTexts();if(!items.some(x=>normBlockText(x.text).toLowerCase()===text.toLowerCase()))items.push({time:new Date().toLocaleString(),text,where:where||mode});saveBlockedTexts(items);addFilterLog('ENGELLE',text,where);setStatus('Engellendi')}
-function removeBlockedText(i){const items=getBlockedTexts();items.splice(i,1);saveBlockedTexts(items);setStatus('Engel kaldirildi')}
-function renderBlockedList(){const box=$('blockedList');if(!box)return;const items=getBlockedTexts();box.innerHTML='';if(!items.length){box.textContent='Engellenen yok';refreshFilterHint();return}items.forEach((x,i)=>{const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #1a1a1a';const span=document.createElement('span');span.style.cssText='flex:1;font-size:13px;color:#ddd;word-break:break-all';span.textContent=x.text;const btn=document.createElement('button');btn.className='dangerMini';btn.style.cssText='flex:none;font-size:12px';btn.textContent='Çıkar';btn.onclick=()=>{flashButton(btn);removeBlockedText(i)};row.append(span,btn);box.appendChild(row)});refreshFilterHint();const cnt=$('blockedCount');if(cnt)cnt.textContent=items.length}
-function refreshFilterHint(){const h=$('filterLogHint');if(h)h.textContent='Filter log: '+getFilterLogs().length+' kayıt / Engellenen: '+getBlockedTexts().length;const cnt=$('blockedCount');if(cnt)cnt.textContent=getBlockedTexts().length}
-async function copyFilterLogs(){const logs=getFilterLogs().map(x=>'['+x.time+'] '+x.type+' / '+(x.where||'-')+': '+x.text);const blocks=getBlockedTexts().map(x=>'[ENGELLENEN] '+(x.where||'-')+': '+x.text);await navigator.clipboard.writeText(logs.concat(blocks).join('\n'));setStatus('Filter log kopyalandi')}
-function clearFilterLogs(){localStorage.removeItem(STORE+'filterLogs');refreshFilterHint();setStatus('Filter log temizlendi')}
-function blockVisibleText(text,where,btn){flashButton(btn);addBlockedText(text,where)}function loadMemory(name){try{return JSON.parse(localStorage.getItem(STORE+name)||'[]').filter(x=>x&&x.input&&x.translation)}catch{return[]}}
-function saveMemory(name,items,max){localStorage.setItem(STORE+name,JSON.stringify(items.slice(-max)))}
-function autoTrimMemory(list,keep=50,drop=10){if(list.length>keep)list.splice(0,Math.min(drop,list.length-keep))}
-function addMemory(name,item,max=50){const list=name==='chatMemory'?chatMemory:pttMemory;list.push(item);autoTrimMemory(list,50,10);saveMemory(name,list,50)}
+const DB_URL = 'https://askviet-9c4ea-default-rtdb.asia-southeast1.firebasedatabase.app';
+const ROOM = 'xK9mP2vL4q';
+const MSGS_PATH = '/rooms/' + ROOM + '/messages';
+const TYPING_PATH = '/rooms/' + ROOM + '/typing';
+const CONFIG_PATH = '/rooms/' + ROOM + '/config';
+const MODEL_PATH = CONFIG_PATH + '/models/tr';
+const AUTO_READ_PATH = CONFIG_PATH + '/autoRead';
+const VN_AUTO_READ_PATH = AUTO_READ_PATH + '/vi';
+const AUDIO_PATH = '/rooms/' + ROOM + '/audioRequests';
+const PRESENCE_PATH = '/rooms/' + ROOM + '/presence';
+const PRESENCE_LAST_PATH = '/rooms/' + ROOM + '/presenceLast';
+const MEDIA_UPLOAD_URL = 'https://wonb.de/upload.php';
+const MEDIA_UPLOAD_TOKEN = localStorage.getItem('askviet_media_upload_token') || 'ask2026';
+const PW = 'ask2026';
 
-function contextBlock(items,count){const rows=items.slice(-count).map(x=>`${langName[x.source]||x.source}: ${x.input}\n${langName[x.target]||x.target} çeviri: ${x.translation}`);return rows.length?rows.join('\n---\n'):'Yok'}
-function memoryHint(items,count){return `\n\nSon konuşma bağlamı (sadece zamir/konu/yer anlamak için kullan; çeviriye yeni bilgi ekleme, kaynak cümlede olmayan şeyi asla ekleme):\n${contextBlock(items,count)}`}
-function track(input='',output=''){reqCount++;charCount+=input.length+output.length;updateCost()}
-function showError(msg,target){const b=document.createElement('div');b.className='err';b.textContent=humanError(msg);(target||document.querySelector('.view.active')).prepend(b);setTimeout(()=>b.remove(),9000)}
-function humanError(e){const m=String(e&&e.message||e||'Bilinmeyen hata');if(/401|invalid api key|incorrect api key/i.test(m))return'API key hatalı veya geçersiz.';if(/429|rate|quota|billing|insufficient/i.test(m))return'API limiti/kredi sorunu var. Biraz bekle veya hesabı kontrol et.';if(/NotAllowedError|autoplay/i.test(m))return'';if(/permission|denied|not allowed|izin/i.test(m))return'Mikrofon izni verilmedi veya tarayıcı engelledi.';if(/network|failed to fetch/i.test(m))return'Bağlantı/API isteği başarısız. İnternet veya tarayıcı iznini kontrol et.';return m}
-function hasForeignScript(text){return /[\u0900-\u097F\u0E00-\u0E7F\u10A0-\u10FF\u1100-\u11FF\u3040-\u30FF\u3130-\u318F\u3400-\u4DBF\u4E00-\u9FFF\uAC00-\uD7AF\u0400-\u04FF\u0600-\u06FF\uD800-\uDBFF]/.test(text||'')}
-function normShortWord(text){return String(text||'').toLowerCase().trim().replace(/[.!?\u2026,:;"'\u201C\u201D\u2018\u2019()[\]{}]/g,'').replace(/\u0131/g,'i').replace(/\u015F/g,'s').replace(/\u011F/g,'g').replace(/\u00FC/g,'u').replace(/\u00F6/g,'o').replace(/\u00E7/g,'c').replace(/\u0130/g,'i')}
-function shortKnownLang(text){const s=normShortWord(text);if(!s||s.includes(' '))return'';if(/[\u0103\u00E2\u00EA\u00F4\u01A1\u01B0\u0111\u00E1\u00E0\u1EA3\u00E3\u1EA1\u1EA5\u1EA7\u1EA9\u1EAB\u1EAD\u1EAF\u1EB1\u1EB3\u1EB5\u1EB7\u00E9\u00E8\u1EBB\u1EBD\u1EB9\u1EBF\u1EC1\u1EC3\u1EC5\u1EC7\u00ED\u00EC\u1EC9\u0129\u1ECB\u00F3\u00F2\u1ECF\u00F5\u1ECD\u1ED1\u1ED3\u1ED5\u1ED7\u1ED9\u1EDB\u1EDD\u1EDF\u1EE1\u1EE3\u00FA\u00F9\u1EE7\u0169\u1EE5\u1EE9\u1EEB\u1EED\u1EEF\u1EF1\u00FD\u1EF3\u1EF7\u1EF9\u1EF5]/i.test(text))return'vi';return'tr'}
-function isObviousEnglish(s){return /\b(thank|thanks|hello|welcome|channel|subscribe|video|girls|see you|bon appetit|music|subtitle|noise|watching|follow|like and subscribe)\b/i.test(s)}
-function detectLang(text){const raw=String(text||'').trim();const s=raw.toLowerCase();if(!s||hasForeignScript(s))return'';if(isObviousEnglish(s))return'';const viAccent=/[\u0103\u00E2\u00EA\u00F4\u01A1\u01B0\u0111\u00E1\u00E0\u1EA3\u00E3\u1EA1\u1EA5\u1EA7\u1EA9\u1EAB\u1EAD\u1EAF\u1EB1\u1EB3\u1EB5\u1EB7\u00E9\u00E8\u1EBB\u1EBD\u1EB9\u1EBF\u1EC1\u1EC3\u1EC5\u1EC7\u00ED\u00EC\u1EC9\u0129\u1ECB\u00F3\u00F2\u1ECF\u00F5\u1ECD\u1ED1\u1ED3\u1ED5\u1ED7\u1ED9\u1EDB\u1EDD\u1EDF\u1EE1\u1EE3\u00FA\u00F9\u1EE7\u0169\u1EE5\u1EE9\u1EEB\u1EED\u1EEF\u1EF1\u00FD\u1EF3\u1EF7\u1EF9\u1EF5]/i;if(viAccent.test(s))return'vi';const viSignals=/\b(khong|duoc|vay|anh|em|yeu|nho|roi|chua|cam on|xin loi|minh|lam|gap|noi|den|biet|hieu|vang|tam biet)\b/i;const trSignals=/[\u00E7\u011F\u0131\u00F6\u015F\u00FC]/i;if(viSignals.test(s)&&!trSignals.test(s))return'vi';if(/^[a-zA-Z\u00E7\u011F\u0131\u00F6\u015F\u00FC\u00C7\u011E\u0130\u00D6\u015E\u00DC\u0103\u00E2\u00EA\u00F4\u01A1\u01B0\u0111\u00E1\u00E0\u1EA3\u00E3\u1EA1\u1EA5\u1EA7\u1EA9\u1EAB\u1EAD\u1EAF\u1EB1\u1EB3\u1EB5\u1EB7\u00E9\u00E8\u1EBB\u1EBD\u1EB9\u1EBF\u1EC1\u1EC3\u1EC5\u1EC7\u00ED\u00EC\u1EC9\u0129\u1ECB\u00F3\u00F2\u1ECF\u00F5\u1ECD\u1ED1\u1ED3\u1ED5\u1ED7\u1ED9\u1EDB\u1EDD\u1EDF\u1EE1\u1EE3\u00FA\u00F9\u1EE7\u0169\u1EE5\u1EE9\u1EEB\u1EED\u1EEF\u1EF1\u00FD\u1EF3\u1EF7\u1EF9\u1EF50-9\s.,!?;:'"\u201C\u201D\u2018\u2019()\-]+$/.test(raw))return'tr';return''}
-const opposite=l=>l==='tr'?'vi':'tr';
-function cleanJson(t){let s=String(t||'').trim().replace(/^```json/i,'').replace(/^```/,'').replace(/```$/,'').trim();const m=s.match(/\{[\s\S]*\}/);return m?m[0]:s}
-function parseJson(t){try{return JSON.parse(cleanJson(t))}catch{return null}}
-function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
-function targetTextOnly(text,target){let s=String(text||'').replace(/\s+/g,' ').trim();if(!s||hasForeignScript(s))return'';if(/^(you|thank you|thanks|thanks for watching|thank you for watching|subtitle|subtitles|music|noise|silence|no matter|hello|hi|ok|okay|see you|bon appetit|welcome to my channel|kanal\u0131ma ho\u015Fgeldiniz|kanalima hosgeldiniz)[.!?]*$/i.test(s))return'';const lang=detectLang(s);if(lang===target||shortKnownLang(s)===target)return s.replace(/^["'\u201C\u201D]+|["'\u201C\u201D]+$/g,'').trim();return''}function cleanTts(s,target){return targetTextOnly(s,target)}
-function validTranscript(text){const s=String(text||'').trim();if(!s)return false;if(isWhitelisted(s))return true;if(isManuallyBlocked(s)||hasForeignScript(s))return false;if(/^(you|thank you|thanks|thanks for watching|thank you for watching|subtitle|subtitles|music|noise|silence|hello|hi|ok|okay|see you|bon appetit|welcome to my channel|kanal\u0131ma ho\u015Fgeldiniz|kanalima hosgeldiniz|izledi\u011Finiz i\u00E7in te\u015Fekk\u00FCrler|izlediginiz icin tesekkurler|altyaz\u0131|altyazi)[.!?]*$/i.test(s))return false;if(/\b(thanks for watching|thank you for watching|welcome to my channel|see you|bon appetit|kanal\u0131ma ho\u015Fgeldiniz|kanalima hosgeldiniz|abone ol|subscribe|like and subscribe|izledi\u011Finiz i\u00E7in|izlediginiz icin|altyaz\u0131|altyazi|sonraki video|g\u00F6r\u00FC\u015Fmek \u00FCzere|gorusmek uzere)\b/i.test(s))return false;return !!detectLang(s)}async function transcribe(blob,source){const key=apiKey();if(!key)return{text:'',source:source||'tr'};const fd=new FormData();fd.append('file',blob,'audio.webm');fd.append('model','whisper-1');fd.append('response_format',source?'json':'verbose_json');if(source)fd.append('language',source);const res=await fetch('https://api.openai.com/v1/audio/transcriptions',{method:'POST',headers:{Authorization:'Bearer '+key},body:fd});const data=await res.json();if(!res.ok)throw new Error(data.error?.message||res.statusText);return{text:(data.text||'').trim(),source:source||detectLang(data.text||'')}}
-function setSpeakBtn(btn,on){if(!btn)return;btn.textContent=on?'⏸ Dur':'▶ Ses';if(on)btn.dataset.playing='1';else delete btn.dataset.playing}
-function stopAudio(){ttsToken++;if(ttsAbort){try{ttsAbort.abort()}catch{}ttsAbort=null}if(audioPlayer){try{audioPlayer.pause();audioPlayer.currentTime=0}catch{}}if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}isSpeaking=false;document.querySelectorAll('.speakBtn').forEach(b=>setSpeakBtn(b,false))}
-function cacheKey(text,target,model,voice,speed,instructions){return [model,voice,speed,target,instructions,text].join('|')}
-async function playBlob(blob,token,btn,text=''){const a=getAudioPlayer();if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}audioUrl=URL.createObjectURL(blob);a.pause();a.src=audioUrl;a.defaultPlaybackRate=1.0;a.playbackRate=1.0;a.volume=1.0;a.muted=false;a.load();isSpeaking=true;setSpeakBtn(btn,true);await new Promise((resolve,reject)=>{const limit=Math.max(45000,(text||'').length*180);const timer=setTimeout(()=>resolve(),limit);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(new Error('Ses çalınamadı'))};a.play().catch(err=>{clearTimeout(timer);reject(err)})});if(token===ttsToken){isSpeaking=false}return true}
-async function speak(text,target,btn,silent=false){await unlockAudio();if(target!=='tr'&&target!=='vi')return false;text=cleanTts(text,target);if(!text)return false;if(isSpeaking){stopAudio();return false}const key=apiKey();if(!key)return false;const model='gpt-4o-mini-tts',voice=target==='vi'?'cedar':'nova',speed=target==='vi'?0.93:1,instructions=target==='vi'?'Speak Vietnamese naturally with a native Southern Vietnam / Saigon accent. Adult male voice. Warm, clear, conversational, not robotic. Do not use Turkish or English pronunciation.':'Speak Turkish naturally with a native Istanbul Turkish accent. Warm, clear, conversational. Do not use Vietnamese or English pronunciation.';const token=++ttsToken,ck=cacheKey(text,target,model,voice,speed,instructions);setSpeakBtn(btn,true);setStatus('Ses hazırlanıyor');try{let blob=ttsCache.get(ck);if(!blob){ttsAbort=new AbortController();const res=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:ttsAbort.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model,input:text,voice,instructions,response_format:'mp3',speed})});if(!res.ok){const d=await res.json().catch(()=>({}));throw new Error(d.error?.message||res.statusText)}blob=await res.blob();if(token!==ttsToken)return false;ttsCache.set(ck,blob);if(ttsCache.size>40)ttsCache.delete(ttsCache.keys().next().value)}await playBlob(blob,token,btn,text);outSec+=Math.max(1,text.length/13);updateCost();return true}catch(e){const em=String(e);if(/abort|iptal/i.test(em))return false;if(silent&&/NotAllowedError|not allowed|autoplay/i.test(em))return false;const msg=humanError(e);if(msg)showError('Seslendirme hatası: '+msg);return false}finally{if(token===ttsToken){isSpeaking=false;setSpeakBtn(btn,false);setStatus(liveOn?'Dinliyor':'Hazır',liveOn)}}}
-function makeTurn(log,src=''){const box=$(log),empty=box.querySelector('.empty');if(empty)empty.remove();const t=document.createElement('div');t.className='turn';const s=document.createElement('div');s.className='src';s.textContent=src;const d=document.createElement('div');d.className='dst';const tools=document.createElement('div');tools.className='turn-tools';const obj={log,el:t,src:s,dst:d,source:'',target:'',translation:''};const retry=document.createElement('button');retry.className='mini';retry.textContent='↻ Tekrar';retry.onclick=()=>retryTurn(obj);const sp=document.createElement('button');sp.className='mini speakBtn';sp.textContent='▶ Ses';sp.onclick=()=>speak(obj.translation||d.textContent,obj.target,sp);const cp=document.createElement('button');cp.className='mini';cp.textContent='📋';cp.title='Kopyala';cp.onclick=()=>copyText(d.textContent,cp);const mis=document.createElement('button');mis.className='mini';mis.textContent='⚠↻';mis.title='Anlamadim';mis.onclick=()=>addMisunderstoodTurn(obj.source||'tr',obj.log);const block=document.createElement('button');block.className='mini dangerMini';block.textContent='Engelle';block.title='Bu metni engelle';block.onclick=(e)=>{e.preventDefault();e.stopPropagation();if(block.dataset.arm==='1'){blockVisibleText((s.textContent||d.textContent),obj.log,block);removeTranslationElement(t)}else{block.dataset.arm='1';block.textContent='✓ Emin?';block.classList.add('armed');setTimeout(()=>{if(block.dataset.arm){block.dataset.arm='';block.textContent='Engelle';block.classList.remove('armed')}},2500)}};const del=document.createElement('button');del.className='mini dangerMini';del.textContent='×';del.title='Son ceviriyi kaldir';del.onclick=()=>removeTranslationElement(t);tools.append(retry,mis,cp,sp,block,del);t.append(s,d,tools);box.appendChild(t);box.scrollTop=box.scrollHeight;lastTurn=obj;return obj}function misunderstandingText(source){const romantic=tone==='romantic';if(source==='vi')return romantic?'Em không hiểu, anh nói lại được không?':'Tôi không hiểu, bạn nói lại giúp tôi được không?';return romantic?'Anlamadım aşkım, tekrar söyler misin?':'Anlamadım, tekrar söyler misiniz lütfen?'}
-function addMisunderstoodTurn(source,log){const lang=source==='vi'?'vi':'tr',msg=misunderstandingText(lang);const turn=makeTurn(log,'');turn.source=lang;turn.target=lang;turn.translation=msg;turn.dst.textContent=msg;lastTurn=turn;speak(msg,lang,null)}
-function addMisunderstoodChat(){const lang=detectLang(lastChatInput)||'tr',msg=misunderstandingText(lang);addChatCard('Anlamadım',msg,lang);speak(msg,lang,null)}
-function addMisunderstoodText(){const lang=lastText.source||detectLang($('textInput').value)||'tr',msg=misunderstandingText(lang);stopAudio();lastText={input:msg,source:lang,target:lang,translation:msg};$('textOutTitle').textContent=langName[lang];$('textOutput').textContent=msg;speak(msg,lang,$('speakTextBtn'))}function removeTranslationElement(el){stopAudio();if(el&&el.remove)el.remove();if(lastTurn&&lastTurn.el===el)lastTurn=null;setStatus('İptal edildi');setTimeout(()=>setStatus(liveOn?'Dinliyor':'Hazır',liveOn),700)}
-function cancelTextTranslation(){stopAudio();$('textOutput').textContent='';$('textOutTitle').textContent='Çeviri';lastText={input:'',source:'',target:'',translation:''};setStatus('İptal edildi');setTimeout(()=>setStatus('Hazır'),700)}async function retryTurn(turn){if(!turn||!turn.src.textContent.trim())return;turn.dst.textContent='Çeviriyor...';try{const r=await translate(turn.src.textContent.trim(),turn.source||undefined);turn.source=r.source;turn.target=r.target;turn.translation=r.translation;turn.dst.textContent=r.translation;if(autoRead)await speak(r.translation,r.target,null,true)}catch(e){turn.dst.textContent='';showError('Tekrar çeviri hatası: '+humanError(e))}}
-async function copyText(text,btn){if(!text)return;await navigator.clipboard.writeText(text);if(btn){const old=btn.textContent;btn.textContent='✅';setTimeout(()=>btn.textContent=old,900)}}
-async function doTextTranslate(forced){const input=$('textInput').value.trim()||lastText.input;if(!input)return;setStatus('Çeviriyor');$('translateBtn').disabled=true;try{const r=await translate(input,forced);lastText={input,source:r.source,target:r.target,translation:r.translation};$('textOutTitle').textContent=langName[r.target]+' çeviri';$('textOutput').textContent=r.translation;if(autoRead)await speak(r.translation,r.target,$('speakTextBtn'),true)}catch(e){showError('Çeviri hatası: '+humanError(e),$('textView'))}finally{$('translateBtn').disabled=false;setStatus('Hazır')}}
-function clearText(){stopAudio();$('textInput').value='';$('textOutput').textContent='';$('textOutTitle').textContent='Çeviri';lastText={input:'',source:'',target:'',translation:''}}
-function addChatCard(title,text,lang,comment=false){const r=$('chatResult'),card=document.createElement('div');card.className='chatcard';const head=document.createElement('div');head.className='chathead';const label=document.createElement('span');label.textContent=title;const actions=document.createElement('div');const copy=document.createElement('button');copy.className='mini';copy.textContent='📋';copy.title='Kopyala';copy.onclick=()=>copyText(text,copy);const sp=document.createElement('button');sp.className='mini speakBtn';sp.textContent='▶ Ses';sp.onclick=()=>speak(text,lang,sp);const mis=document.createElement('button');mis.className='mini';mis.textContent='⚠↻';mis.title='Anlamadim';mis.onclick=()=>addMisunderstoodChat();const block=document.createElement('button');block.className='mini dangerMini';block.textContent='Engelle';block.title='Bu metni engelle';block.onclick=(e)=>{e.preventDefault();e.stopPropagation();if(block.dataset.arm==='1'){blockVisibleText(text,'sohbet-kart',block);removeTranslationElement(card)}else{block.dataset.arm='1';block.textContent='✓ Emin?';block.classList.add('armed');setTimeout(()=>{if(block.dataset.arm){block.dataset.arm='';block.textContent='Engelle';block.classList.remove('armed')}},2500)}};const del=document.createElement('button');del.className='mini dangerMini';del.textContent='×';del.title='Son ceviriyi kaldir';del.onclick=()=>removeTranslationElement(card);if(!comment)actions.append(sp);actions.append(mis,copy,block,del);head.append(label,actions);const body=document.createElement('div');if(comment){body.className='comment';const parts=String(text||'').split('|||');const tr=document.createElement('span');tr.className='tr';tr.textContent='🇹🇷 '+(parts[0]||'');const vi=document.createElement('span');vi.className='vi';vi.textContent='🇻🇳 '+(parts[1]||'');body.append(tr,vi)}else{body.className='chattext '+(lang==='vi'?'vi':'');body.textContent=text||''}card.append(head,body);r.appendChild(card)}async function doChat(forced){const msg=$('chatInput').value.trim();if(!msg)return;const _wl=isWhitelisted(msg);const source=forced||detectLang(msg)||(_wl?'tr':'');if(!_wl&&source!=='tr'&&source!=='vi'){const _msg=msg;const _b=document.createElement('div');_b.style.cssText='margin:6px 14px;padding:10px 12px;border-radius:9px;background:#1a1a2e;border:1px solid #4c4c8a;font-size:13px;color:#c4b5fd';const _s=document.createElement('span');_s.textContent='Dil tanınamadı: '+msg+' ';const _w=document.createElement('button');_w.style.cssText='background:#7c3aed;border:none;border-radius:6px;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;cursor:pointer';_w.textContent='✓ Beyaz Liste';_w.onclick=()=>{addWhitelistText(_msg);_b.remove()};_b.append(_s,_w);$('chatView').prepend(_b);setTimeout(()=>{if(_b.parentNode)_b.remove()},12000);return}$('chatBtn').disabled=true;setStatus('Çeviriyor');try{const ctx=memoryHint(chatMemory,6),raw=await openAIJson(chatPrompt(source,msg,ctx),.2),data=parseJson(raw);if(!data)throw new Error('AI cevabı JSON formatında gelmedi');lastChatInput=msg;$('chatResult').innerHTML='';let exact='';if(source==='tr'){exact=data.exact_vietnamese||'';addChatCard('Birebir Vietnamca Çevirisi',exact,'vi');addChatCard('Daha İyi Cümle Önerisi',data.better_vietnamese||'','vi');addChatCard('Önerinin Türkçesi',data.better_turkish||'','tr');addChatCard('Kısa Yorum',(data.comment_tr||'')+'|||'+(data.comment_vi||''),'tr',true);if(autoRead)await speak(exact,'vi',null,true)}else{exact=data.exact_turkish||'';addChatCard('Birebir Türkçe Çevirisi',exact,'tr');addChatCard('Cevap Önerisi',data.reply_vietnamese||'','vi');addChatCard('Önerinin Türkçesi',data.reply_turkish||'','tr');addChatCard('Kısa Yorum',(data.comment_tr||'')+'|||'+(data.comment_vi||''),'tr',true);if(autoRead)await speak(exact,'tr',null,true)}if(exact)addMemory('chatMemory',{source,target:opposite(source),input:msg,translation:exact},60);track(msg,JSON.stringify(data));setStatus('Hazır')}catch(e){showError('Sohbet çevirisi hatası: '+humanError(e),$('chatView'));setStatus('Hata')}finally{$('chatBtn').disabled=false}}
-async function openAIJson(messages,temperature=0.2){const key=apiKey();if(!key)throw new Error('API key yok');const res=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o',temperature,response_format:{type:'json_object'},messages})});const data=await res.json();if(!res.ok)throw new Error(data.error?.message||res.statusText);return data.choices?.[0]?.message?.content||''}
-async function translate(text,source,context=''){const key=apiKey();if(!key)throw new Error('API key yok');const src=source||detectLang(text)||'tr';const tgt=opposite(src);const romantic=tone==='romantic';const sysPrompt=romantic?`Sen Türkçe-Vietnamca çevirmensin. Türkçe konuşan erkek "anh", Vietnamca konuşan kız "em" zamirleri kullanır. Samimi, sevgi dolu dil kullan. Küfür ve argo dahil her şeyi olduğu gibi çevir, sansürleme.`:`Sen Türkçe-Vietnamca çevirmensin. Birebir, nötr çeviri yap. Fazladan kelime ekleme. Küfür ve argo dahil her şeyi olduğu gibi çevir, sansürleme.`;const userMsg=`${langName[src]} → ${langName[tgt]} çeviri yap. Sadece çeviriyi döndür, başka hiçbir şey yazma.
-${context}
+let myRole = null;
+let isSpeaking=false,ttsToken=0,ttsAbort=null,ttsCache=new Map(),audioUrl=null,audioPlayer=null;
+let autoRead=localStorage.getItem('askviet_autoread')==='1';
+let theirRole = null;
+let apiKey = '';
+let selectedModel = 'openai:gpt-4o';
+let typingTimer = null;
+let isTyping = false;
+let unsubMessages = null;
+let unsubTyping = null;
+let unsubModel = null;
+let unsubAutoRead = null;
+let unsubAudio = null;
+let renderedKeys = new Set();
+let autoReadDone = new Set();
+let handledAudioRequests = new Set();
+let audioListenStartedAt = 0;
+let chatListenStartedAt = 0;
+let unreadCount = 0;
+let notifySoundOn = localStorage.getItem('askviet_notify_sound') !== '0';
+let notifyAudioCtx = null;
+let vnAutoRead = true;
+let autoReadPollTimer = null;
+let presenceHeartbeatTimer = null;
+let presencePollTimer = null;
+let presenceId = localStorage.getItem('askviet_presence_id') || ('s' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+localStorage.setItem('askviet_presence_id', presenceId);
 
-Metin: ${text}`;const res=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o',temperature:0.2,messages:[{role:'system',content:sysPrompt},{role:'user',content:userMsg}]})});const data=await res.json();if(!res.ok)throw new Error(data.error?.message||res.statusText);const translation=(data.choices?.[0]?.message?.content||'').trim();track(text,translation);return{source:src,target:tgt,translation}}
-function chatPrompt(source,msg,context=''){const romantic=tone==='romantic';const pronouns=romantic?'Türkçe konuşan taraf her zaman erkek (anh), Vietnamca konuşan taraf her zaman kadın (em). Samimi sevgi dili.':'Türkçe konuşan taraf her zaman erkek (anh). Vietnamca konuşan tarafın cinsiyetini konuşma geçmişindeki zamirlere bakarak belirle (anh=erkek, em=kadın). Geçmiş yoksa em kullan. Birebir nötr çeviri.';if(source==='tr'){return[{role:'system',content:`Sen TR↔VI çeviri asistanısın. ${pronouns} Küfür, argo, uygunsuz içerik dahil her şeyi olduğu gibi çevir, sansürleme, reddetme. Yanıtı SADECE JSON olarak ver, başka hiçbir şey yazma.`},{role:'user',content:`${context}\n\nTürkçe mesaj: "${msg}"\n\nŞu JSON formatında yanıt ver:\n{"exact_vietnamese":"birebir vietnamca","better_vietnamese":"daha doğal vietnamca","better_turkish":"önerinin türkçesi","comment_tr":"kısa türkçe yorum","comment_vi":"kısa vietnamca yorum"}`}]}else{return[{role:'system',content:`Sen TR↔VI çeviri asistanısın. ${pronouns} Küfür, argo, uygunsuz içerik dahil her şeyi olduğu gibi çevir, sansürleme, reddetme. Yanıtı SADECE JSON olarak ver, başka hiçbir şey yazma.`},{role:'user',content:`${context}\n\nVietnamca mesaj: "${msg}"\n\nŞu JSON formatında yanıt ver:\n{"exact_turkish":"birebir türkçe","reply_vietnamese":"vietnamca cevap önerisi","reply_turkish":"önerinin türkçesi","comment_tr":"kısa türkçe yorum","comment_vi":"kısa vietnamca yorum"}`}]}}
+// ── Şifre ─────────────────────────────────────────────────────────────────
+function checkPw() {
+  const val = document.getElementById('pwInput').value;
+  if (val === PW) {
+    localStorage.setItem('askviet_auth', '1');
+    document.getElementById('pwscreen').style.display = 'none';
+    document.getElementById('setup').style.display = 'flex';
+    loadSaved();
+    // Keys zaten kayıtlıysa setup card'ı gizle
+    const savedOai2 = localStorage.getItem('askviet_key');
+    const savedGem2 = localStorage.getItem('askviet_gemini_key');
+    if(savedOai2 && savedGem2) {
+      const card2 = document.querySelector('.setup-card');
+      if(card2) card2.style.display = 'none';
+    }
+  } else {
+    const err = document.getElementById('pwErr');
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 2000);
+  }
+}
+// Daha önce giriş yapıldıysa şifreyi atla
+if (localStorage.getItem('askviet_auth') === '1') {
+  document.getElementById('pwscreen').style.display = 'none';
+  // Keys kayıtlıysa setup'u da atla — direkt rol seçimine geç
+  const savedOai = localStorage.getItem('askviet_key');
+  const savedGem = localStorage.getItem('askviet_gemini_key');
+  if (savedOai && savedGem) {
+    document.getElementById('setup').style.display = 'flex';
+    // Key alanlarını gizle, sadece rol kartları göster
+    const card = document.querySelector('.setup-card');
+    if(card) card.style.display = 'none';
+    loadSaved();
+  } else {
+    document.getElementById('setup').style.display = 'flex';
+    loadSaved();
+  }
+}
+document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
+
+function tryAutoResumeReloadRole() {
+  const role = localStorage.getItem('askviet_reload_role');
+  if (role !== 'tr' && role !== 'vi') return;
+  const hasAuth = localStorage.getItem('askviet_auth') === '1';
+  const hasOpenai = !!localStorage.getItem('askviet_key');
+  const hasGemini = !!localStorage.getItem('askviet_gemini_key');
+  if (!hasAuth || !hasOpenai || !hasGemini) return;
+  localStorage.removeItem('askviet_reload_role');
+  setTimeout(() => start(role), 180);
+}
+tryAutoResumeReloadRole();
+
+// ── Model değişince label güncelle ────────────────────────────────────────
+// model change - artık ayrı alanlar var, listener gerekmez
+
+// ── Paste ─────────────────────────────────────────────────────────────────
+async function pasteTtsKey() {
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById('ttsKeyInput').value = text.trim();
+  } catch {
+    alert('Yapıştırma izni gerekli. Manuel yapıştır.');
+  }
+}
+async function pasteGeminiKey() {
+  try { const t=await navigator.clipboard.readText(); document.getElementById('geminiKeyInput').value=t.trim(); }
+  catch { alert('Yapıştırma izni gerekli.'); }
+}
+async function pasteKey() {
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById('apiKeyInput').value = text.trim();
+  } catch {
+    alert('Yapıştırma izni gerekli. Manuel yapıştır.');
+  }
+}
+
+function loadSaved() {
+  const savedKey = localStorage.getItem('askviet_key');
+  let savedModel = localStorage.getItem('askviet_model');
+  if (savedModel === 'gemini:gemini-2.5-flash-preview-05-20') {
+    savedModel = 'gemini:gemini-2.5-flash';
+    localStorage.setItem('askviet_model', savedModel);
+  }
+  const savedTtsKey = localStorage.getItem('askviet_tts_key');
+  const savedGeminiKey = localStorage.getItem('askviet_gemini_key');
+  if (savedKey) document.getElementById('apiKeyInput').value = savedKey;
+  if (savedGeminiKey) { const g=document.getElementById('geminiKeyInput'); if(g) g.value=savedGeminiKey; }
+  if (savedModel) {
+    document.getElementById('modelSelect').value = savedModel;
+    const isGemini = savedModel.startsWith('gemini');
+    // apiLabel kaldırıldı — artık ayrı alanlar var
+
+  }
+}
+
+// ── Firebase REST ──────────────────────────────────────────────────────────
+async function fbGet(path) {
+  const r = await fetch(DB_URL + path + '.json');
+  return r.ok ? r.json() : null;
+}
+async function fbPush(path, data) {
+  const r = await fetch(DB_URL + path + '.json', { method: 'POST', body: JSON.stringify(data) });
+  return r.ok ? r.json() : null;
+}
+async function fbSet(path, data) {
+  await fetch(DB_URL + path + '.json', { method: 'PUT', body: JSON.stringify(data) });
+}
+async function fbRemove(path) {
+  await fetch(DB_URL + path + '.json', { method: 'DELETE' });
+}
+function fbListen(path, cb) {
+  const es = new EventSource(DB_URL + path + '.json');
+  es.addEventListener('put', e => { try { cb(JSON.parse(e.data)); } catch {} });
+  es.addEventListener('patch', e => { try { cb(JSON.parse(e.data)); } catch {} });
+  es.onerror = () => setConnected(false);
+  es.onopen = () => setConnected(true);
+  return () => es.close();
+}
+
+// ── Setup ─────────────────────────────────────────────────────────────────
+function start(role) {
+  try { unlockAudio(); } catch(e) {}
+  requestNotifyPermission();
+  if (notifySoundOn) unlockNotifySound(false);
+  const openaiKey = document.getElementById('apiKeyInput')?.value.trim()||localStorage.getItem('askviet_key')||'';
+  const geminiKey = document.getElementById('geminiKeyInput')?.value.trim()||localStorage.getItem('askviet_gemini_key')||'';
+  if(!openaiKey){alert('OpenAI API key gerekli!');const c=document.querySelector('.setup-card');if(c)c.style.display='flex';return;}
+  if(!geminiKey){alert('Gemini API key gerekli!');const c=document.querySelector('.setup-card');if(c)c.style.display='flex';return;}
+  apiKey=openaiKey; // translateText içinde model'e göre seçilecek
+  localStorage.setItem('askviet_key', openaiKey);
+  localStorage.setItem('askviet_gemini_key', geminiKey);
+  selectedModel = document.getElementById('modelSelect')?.value || localStorage.getItem('askviet_model') || 'openai:gpt-4o';
+  localStorage.setItem('askviet_model', selectedModel);
+  myRole = role;
+  localStorage.setItem('askviet_last_role', role);
+  theirRole = role === 'tr' ? 'vi' : 'tr';
+
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('chat').style.display = 'flex';
+
+
+
+  try{
+    const ct=document.getElementById('chatTitle');
+    const cs=document.getElementById('chatSubtitle');
+    const mi=document.getElementById('msgInput');
+    if(role === 'tr'){
+      if(ct) ct.textContent='🇹🇷 → 🇻🇳';
+      if(cs) cs.textContent='Mesajların Vietnamca çevriliyor';
+      if(mi) mi.placeholder='Türkçe yaz...';
+      try{const sa=document.getElementById('settingsBtnArea');if(sa)sa.style.display='flex';}catch(e){}
+    }else{
+      if(ct) ct.textContent='🇻🇳 → 🇹🇷';
+      if(cs) cs.textContent='Tin nhắn được dịch sang tiếng Thổ';
+      if(mi) mi.placeholder='Viết tiếng Việt...';
+      try{const sa=document.getElementById('settingsBtnArea');if(sa)sa.style.display='flex';}catch(e){}
+  // VI: model alanı setup'ta gizli kalsın
+    }
+  }catch(e){console.error('start UI error:',e)}
+  setupChatControls();
+  // boş mesaj metni dile göre
+  setTimeout(()=>{const emptyT = document.getElementById('emptyText');if (emptyT) emptyT.innerHTML = role === 'tr' ? 'Henüz mesaj yok.<br>İlk mesajı gönder!' : 'Chưa có tin nhắn.<br>Gửi tin nhắn đầu tiên!';},100);
+  // model badge
+  try{
+    const myBadge = document.getElementById('myModelBadge');
+    if (myBadge) myBadge.textContent = MODEL_NAMES[selectedModel] || selectedModel.split(':')[1];
+  }catch(e){}
+  if (myRole === 'tr') syncMyModel(selectedModel);
+  setupTrGuard();
+  updateAutoReadUI();
+  listenAutoReadConfig();
+  initPresence();
+  listenModelConfig();
+  initChat();
+}
+
+function goBack() {
+  if (unsubMessages) unsubMessages();
+  if (unsubTyping) unsubTyping();
+  if (unsubModel) unsubModel();
+  if (unsubAutoRead) unsubAutoRead();
+  if (unsubAudio) unsubAudio();
+  stopPresence();
+  stopAutoReadPolling();
+  renderedKeys.clear();
+  autoReadDone.clear();
+  handledAudioRequests.clear();
+  stopAudio();
+  document.getElementById('setup').style.display = 'flex';
+  document.getElementById('chat').style.display = 'none';
+  document.getElementById('messages').innerHTML = '<div class="empty-state" id="emptyState"><div class="empty-emoji">💬</div><div class="empty-text" id="emptyText">Henüz mesaj yok.<br>İlk mesajı gönder!</div></div><div class="typing-indicator" id="typingIndicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+}
+
+// ── Chat ──────────────────────────────────────────────────────────────────
+function initChat() {
+  chatListenStartedAt = Date.now();
+  fbGet(MSGS_PATH).then(data => {
+    if (data && typeof data === 'object') {
+      Object.entries(data).forEach(([k, v]) => { if (v) renderMessage(k, v); });
+      scrollToBottom();
+    }
+  });
+
+  unsubMessages = fbListen(MSGS_PATH, event => {
+    if (!event) return;
+    const path = event.path || '/';
+    if (event.data === null) {
+      if (path === '/') {
+        document.querySelectorAll('.msg').forEach(el => el.remove());
+        renderedKeys.clear();
+        autoReadDone.clear();
+        stopAudio();
+      } else {
+        const parts = path.replace(/^\//, '').split('/');
+        const key = parts[0];
+        if (parts.length === 3 && parts[1] === 'reactions') {
+          const el = document.getElementById('react-' + key);
+          const current = el?.dataset?.reactions ? JSON.parse(el.dataset.reactions) : {};
+          delete current[parts[2]];
+          updateReactions(key, current);
+        } else if (parts.length === 3 && parts[1] === 'read') {
+          const box = document.getElementById('msg-' + key);
+          if (box) {
+            if (parts[2] === 'tr') box.dataset.readTr = '';
+            if (parts[2] === 'vi') box.dataset.readVi = '';
+            updateReadStatus(key);
+          }
+        } else if (parts.length === 1) {
+          removeMessageElement(key);
+        }
+      }
+      return;
+    }
+    if (!event.data) return;
+    if (path === '/') {
+      if (typeof event.data === 'object') {
+        Object.entries(event.data).forEach(([k, v]) => { if (v) updateOrRender(k, v); });
+        scrollToBottom();
+      }
+    } else {
+      const parts = path.replace(/^\//, '').split('/');
+      const key = parts[0];
+      if (parts.length === 1 && typeof event.data === 'object') {
+        updateOrRender(key, event.data);
+        scrollToBottom();
+      } else if (parts.length === 2 && parts[1] === 'translation' && event.data) {
+        const box = document.getElementById('msg-' + key);
+        if (box) box.dataset.translation = event.data;
+        const el = document.getElementById('trans-' + key);
+        if (el) { el.textContent = event.data; el.style.color = ''; el.style.fontStyle = 'italic'; }
+        refreshMessageText(key);
+        maybeAutoReadMessage(key);
+        scrollToBottom();
+      } else if (parts.length === 3 && parts[1] === 'read') {
+        const box = document.getElementById('msg-' + key);
+        if (box) {
+          if (parts[2] === 'tr') box.dataset.readTr = event.data || '';
+          if (parts[2] === 'vi') box.dataset.readVi = event.data || '';
+          updateReadStatus(key);
+        }
+      } else if (parts.length === 3 && parts[1] === 'reactions') {
+        const el = document.getElementById('react-' + key);
+        if (el) {
+          const current = el.dataset.reactions ? JSON.parse(el.dataset.reactions) : {};
+          if (event.data) current[parts[2]] = event.data;
+          else delete current[parts[2]];
+          updateReactions(key, current);
+        }
+      }
+    }
+  });
+
+  unsubTyping = fbListen(TYPING_PATH, event => {
+    if (!event) return;
+    const path = event.path || '/';
+    const ind = document.getElementById('typingIndicator');
+    if (!ind) return;
+    let val = false;
+    if (path === '/') {
+      val = !!(event.data && event.data[theirRole]);
+    } else if (path === '/' + theirRole) {
+      val = !!event.data;
+    } else return;
+    ind.classList.toggle('show', val);
+    if (val) scrollToBottom();
+  });
+
+  listenAudioRequests();
+}
+
+function setConnected(v) {
+  const dot = document.getElementById('connDot');
+  if (dot) dot.classList.toggle('off', !v);
+}
+
+function renderMessage(key, msg) {
+  if (renderedKeys.has(key)) { updateOrRender(key, msg); return; }
+  renderedKeys.add(key);
+  const empty = document.getElementById('emptyState');
+  if (empty) empty.remove();
+  const isMine = msg.role === myRole;
+  const div = document.createElement('div');
+  div.className = 'msg ' + (isMine ? 'mine' : 'theirs');
+  div.id = 'msg-' + key;
+  div.dataset.key = key;
+  div.dataset.role = msg.role || '';
+  div.dataset.text = msg.text || '';
+  div.dataset.translation = msg.translation || '';
+  div.dataset.ts = msg.ts || '';
+  div.dataset.type = msg.type || 'text';
+  div.dataset.mediaUrl = msg.mediaUrl || '';
+  div.dataset.readTr = msg.read?.tr || '';
+  div.dataset.readVi = msg.read?.vi || '';
+
+  const head = document.createElement('div');
+  head.className = 'msg-head';
+
+  const flag = document.createElement('span');
+  flag.className = 'msg-flag';
+  flag.textContent = msg.role === 'tr' ? '🇹🇷' : '🇻🇳';
+
+  const orig = document.createElement('div');
+  orig.className = 'msg-original';
+  orig.id = 'orig-' + key;
+  orig.style.position = 'relative';
+  setMessageContent(orig, msg);
+  addReactionButton(orig, key);
+  head.append(orig, flag);
+  div.appendChild(head);
+
+  const reactions = document.createElement('div');
+  reactions.className = 'msg-reactions';
+  reactions.id = 'react-' + key;
+  div.appendChild(reactions);
+
+  const trans = document.createElement('div');
+  trans.className = 'msg-translation';
+  trans.id = 'trans-' + key;
+  // Her iki taraf için çeviri göster
+  if (msg.type === 'image' || msg.type === 'video') {
+    trans.style.display = 'none';
+  } else if (msg.translation) {
+    trans.textContent = msg.translation;
+  } else {
+    trans.textContent = '⏳ çevriliyor...';
+    trans.style.color = 'var(--tr2)';
+    trans.style.fontStyle = 'normal';
+  }
+  div.appendChild(trans);
+
+  const isMedia = msg.type === 'image' || msg.type === 'video';
+  let btnRow = null;
+  if (!isMedia) {
+    // Butonlar — ▶ Ses, ⚠ Anlamadım, ↻ Yeniden çevir, ⧉ Kopyala, ✕ Sil
+    btnRow = document.createElement('div');
+    btnRow.className = 'btn-row';
+    btnRow.style.cssText = 'display:flex;gap:6px;padding:2px 10px 6px;flex-wrap:wrap';
+
+    const spBtn = document.createElement('button');
+    spBtn.className = 'speakBtn';
+    spBtn.textContent = '▶';
+    spBtn.style.cssText = 'font-size:11px;padding:3px 8px;border-radius:8px;background:#e8e0f8;border:1px solid #c4b5fd;color:#5b21b6;cursor:pointer';
+    spBtn.onclick = () => requestSpeakForMessage(key, spBtn);
+
+    const misBtn = document.createElement('button');
+    misBtn.textContent = '⚠';
+    misBtn.title = 'Anlamadım, tekrar söyler misin?';
+    misBtn.style.cssText = 'font-size:11px;padding:3px 8px;border-radius:8px;background:#e8e0f8;border:1px solid #c4b5fd;color:#5b21b6;cursor:pointer';
+    misBtn.onclick = () => sendQuickMisunderstood();
+
+    const retryBtn = document.createElement('button');
+    retryBtn.textContent = '↻';
+    retryBtn.title = myRole === 'vi' ? 'Dịch lại' : 'Yeniden çevir';
+    retryBtn.style.cssText = 'font-size:11px;padding:3px 8px;border-radius:8px;background:#fff7ed;border:1px solid #fdba74;color:#c2410c;cursor:pointer';
+    retryBtn.onclick = () => retranslateMessage(key, retryBtn);
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '✕';
+    delBtn.style.cssText = 'font-size:11px;padding:3px 8px;border-radius:8px;background:#fce7f3;border:1px solid #f9a8d4;color:#be185d;cursor:pointer';
+    delBtn.onclick = () => deleteMessage(key);
+
+    const copyBtn = document.createElement('button');
+    copyBtn.textContent = '⧉';
+    copyBtn.title = 'Orijinal mesajı kopyala';
+    copyBtn.style.cssText = 'font-size:11px;padding:3px 8px;border-radius:8px;background:#ecfeff;border:1px solid #67e8f9;color:#0e7490;cursor:pointer';
+    copyBtn.onclick = () => copyOriginalMessage(key, copyBtn);
+
+    btnRow.append(spBtn, misBtn, retryBtn, copyBtn, delBtn);
+    div.appendChild(btnRow);
+  }
+
+  const time = document.createElement('div');
+  time.className = 'msg-time';
+  time.textContent = formatTime(msg.ts);
+  div.appendChild(time);
+
+  const read = document.createElement('div');
+  read.className = 'msg-read';
+  read.id = 'read-' + key;
+  if (btnRow) btnRow.appendChild(read);
+
+  const typing = document.getElementById('typingIndicator');
+  document.getElementById('messages').insertBefore(div, typing);
+  refreshMessageText(key);
+  updateReactions(key, msg.reactions);
+  updateReadStatus(key);
+  markMessageRead(key, msg);
+  maybeNotifyIncoming(key, msg);
+}
+
+function updateOrRender(key, msg) {
+  if (!renderedKeys.has(key)) { renderMessage(key, msg); return; }
+  const box = document.getElementById('msg-' + key);
+  if (box) {
+    box.dataset.role = msg.role || box.dataset.role || '';
+    box.dataset.text = msg.text || box.dataset.text || '';
+    if (msg.translation) box.dataset.translation = msg.translation;
+    if (msg.ts) box.dataset.ts = msg.ts;
+    if (msg.type) box.dataset.type = msg.type;
+    if (msg.mediaUrl) box.dataset.mediaUrl = msg.mediaUrl;
+    if (msg.read?.tr) box.dataset.readTr = msg.read.tr;
+    if (msg.read?.vi) box.dataset.readVi = msg.read.vi;
+  }
+  const el = document.getElementById('trans-' + key);
+  if (el && msg.translation) {
+    el.textContent = msg.translation;
+    el.style.color = '';
+    el.style.fontStyle = 'italic';
+  }
+  refreshMessageText(key);
+  updateReactions(key, msg.reactions);
+  updateReadStatus(key);
+  markMessageRead(key, msg);
+  maybeAutoReadMessage(key);
+}
+
+function getMainText(msg) {
+  if (msg.type === 'image' || msg.type === 'video') return '';
+  const isMine = msg.role === myRole;
+  if (isMine) return msg.text || '';
+  return msg.translation || '⏳ çevriliyor...';
+}
+
+function getSubText(msg) {
+  if (msg.type === 'image' || msg.type === 'video') return '';
+  const isMine = msg.role === myRole;
+  if (isMine) return msg.translation || '⏳ çevriliyor...';
+  return msg.text || '';
+}
+
+function setMessageContent(el, msg) {
+  if (!el) return;
+  el.textContent = '';
+  if (msg.type === 'image' && msg.mediaUrl) {
+    const img = document.createElement('img');
+    img.className = 'msg-media-img';
+    img.src = msg.mediaUrl;
+    img.alt = msg.text || 'Fotoğraf';
+    img.onclick = () => openMediaPreview(msg.mediaUrl, 'image');
+    el.appendChild(img);
+    return;
+  }
+  if (msg.type === 'video' && msg.mediaUrl) {
+    const video = document.createElement('video');
+    video.className = 'msg-media-video';
+    video.src = msg.mediaUrl;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+    video.onclick = () => openMediaPreview(msg.mediaUrl, 'video');
+    el.appendChild(video);
+    return;
+  }
+  el.textContent = getMainText(msg);
+}
+
+function reactionEmojis(){return ['👍','❤️','😂','😳','😭','😡']}
+
+function addReactionButton(parent, key) {
+  if (parent.querySelector('.msg-react-btn')) return;
+  const btn = document.createElement('button');
+  btn.className = 'msg-react-btn';
+  btn.id = 'reactBtn-' + key;
+  btn.textContent = '♡';
+  btn.dataset.reaction = '';
+  btn.title = myRole === 'vi' ? 'Thả cảm xúc' : 'Tepki ver';
+  let longPress = false, timer = null;
+  btn.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    longPress = false;
+    timer = setTimeout(() => { longPress = true; showReactionPicker(key, btn); }, 420);
+  });
+  btn.addEventListener('pointerup', e => {
+    e.preventDefault();
+    clearTimeout(timer);
+    if (!longPress) {
+      const current = btn.dataset.reaction || '';
+      setMessageReaction(key, current ? '' : '❤️');
+    }
+  });
+  btn.addEventListener('pointercancel', () => clearTimeout(timer));
+  btn.oncontextmenu = e => e.preventDefault();
+  btn.addEventListener('touchstart', e => e.preventDefault(), { passive:false });
+  btn.addEventListener('selectstart', e => e.preventDefault());
+  btn.onclick = e => e.preventDefault();
+  parent.appendChild(btn);
+}
+
+function showReactionPicker(key, anchor) {
+  let picker = document.getElementById('reactionPicker');
+  if (!picker) {
+    picker = document.createElement('div');
+    picker.id = 'reactionPicker';
+    picker.className = 'reaction-picker';
+    document.body.appendChild(picker);
+  }
+  picker.innerHTML = '';
+  reactionEmojis().forEach(emoji => {
+    const b = document.createElement('button');
+    b.textContent = emoji;
+    b.onclick = () => { setMessageReaction(key, emoji); picker.classList.remove('show'); };
+    picker.appendChild(b);
+  });
+  const r = anchor.getBoundingClientRect();
+  picker.style.left = Math.min(window.innerWidth - 245, Math.max(8, r.left - 190)) + 'px';
+  picker.style.top = Math.max(8, r.top - 54) + 'px';
+  picker.classList.add('show');
+}
+
+document.addEventListener('pointerdown', e => {
+  const picker = document.getElementById('reactionPicker');
+  if (picker && picker.classList.contains('show') && !picker.contains(e.target) && !e.target.closest('.msg-react-btn')) picker.classList.remove('show');
+}, { passive: true });
+
+async function setMessageReaction(key, emoji) {
+  if (!myRole) return;
+  await fbSet(MSGS_PATH + '/' + key + '/reactions/' + myRole, emoji || null);
+}
+
+function updateReactions(key, reactions = {}) {
+  const el = document.getElementById('react-' + key);
+  const btn = document.getElementById('reactBtn-' + key);
+  if (!el && !btn) return;
+  if (el) el.dataset.reactions = JSON.stringify(reactions || {});
+  const values = Object.values(reactions || {}).filter(Boolean);
+  if (!values.length) {
+    if (el) { el.classList.remove('show'); el.textContent = ''; }
+    if (btn) { btn.textContent = '♡'; btn.dataset.reaction = ''; }
+    return;
+  }
+  const counts = {};
+  values.forEach(e => counts[e] = (counts[e] || 0) + 1);
+  const label = Object.entries(counts).map(([e,c]) => c > 1 ? e + ' ' + c : e).join(' ');
+  if (el) { el.classList.remove('show'); el.textContent = ''; }
+  if (btn) {
+    const mine = reactions?.[myRole] || values[values.length - 1] || label || '❤️';
+    btn.textContent = mine;
+    btn.dataset.reaction = mine;
+  }
+}
+
+function openMediaPreview(src, type='image') {
+  const box = document.getElementById('mediaLightbox');
+  const body = document.getElementById('mediaLightboxBody');
+  if (!box || !body || !src) return;
+  body.innerHTML = '';
+  if (type === 'video') {
+    const video = document.createElement('video');
+    video.src = src;
+    video.controls = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    body.appendChild(video);
+  } else {
+    const img = document.createElement('img');
+    img.src = src;
+    body.appendChild(img);
+  }
+  box.classList.add('show');
+}
+
+function closeMediaPreview() {
+  const box = document.getElementById('mediaLightbox');
+  const body = document.getElementById('mediaLightboxBody');
+  if (body) body.innerHTML = '';
+  if (box) box.classList.remove('show');
+}
+
+function refreshMessageText(key) {
+  const box = document.getElementById('msg-' + key);
+  if (!box) return;
+  const msg = {
+    role: box.dataset.role || '',
+    text: box.dataset.text || '',
+    translation: box.dataset.translation || '',
+    type: box.dataset.type || 'text',
+    mediaUrl: box.dataset.mediaUrl || ''
+  };
+  const orig = document.getElementById('orig-' + key);
+  const trans = document.getElementById('trans-' + key);
+  if (orig) {
+    setMessageContent(orig, msg);
+    addReactionButton(orig, key);
+  }
+  if (trans) {
+    if (msg.type === 'image' || msg.type === 'video') { trans.style.display = 'none'; return; }
+    trans.style.display = '';
+    trans.textContent = getSubText(msg);
+    const waiting = !msg.translation;
+    trans.style.color = waiting ? 'var(--tr2)' : '';
+    trans.style.fontStyle = waiting ? 'normal' : 'italic';
+  }
+}
+
+function markMessageRead(key, msg) {
+  if (!myRole || !msg || msg.role === myRole) return;
+  const already = msg.read && msg.read[myRole];
+  if (already) return;
+  fbSet(MSGS_PATH + '/' + key + '/read/' + myRole, Date.now());
+}
+
+function updateReadStatus(key) {
+  const box = document.getElementById('msg-' + key);
+  const read = document.getElementById('read-' + key);
+  if (!box || !read || box.dataset.role !== myRole) return;
+  const targetRole = myRole === 'tr' ? 'vi' : 'tr';
+  const seen = targetRole === 'tr' ? box.dataset.readTr : box.dataset.readVi;
+  read.textContent = seen ? (myRole === 'vi' ? 'Đã đọc' : 'Okundu') : '';
+  read.classList.toggle('show', !!seen);
+}
+
+async function setBadgeCount(count) {
+  try {
+    if ('setAppBadge' in navigator) {
+      if (count > 0) await navigator.setAppBadge(count);
+      else if ('clearAppBadge' in navigator) await navigator.clearAppBadge();
+    }
+  } catch {}
+}
+
+function clearUnreadCount() {
+  unreadCount = 0;
+  setBadgeCount(0);
+  document.title = 'AskViet';
+}
+
+function maybeNotifyIncoming(key, msg) {
+  if (!msg || msg.role === myRole) return;
+  const ts = Number(msg.ts || 0);
+  if (!ts || ts < chatListenStartedAt - 1500) return;
+  playNotifySound();
+  if (document.visibilityState === 'visible') return;
+  unreadCount += 1;
+  setBadgeCount(unreadCount);
+  document.title = `(${unreadCount}) AskViet`;
+  showIncomingNotification(msg);
+}
+
+function playNotifySound() {
+  if (!notifySoundOn) return;
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    const ctx = notifyAudioCtx || (notifyAudioCtx = new Ctx());
+    if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.055, ctx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    setTimeout(() => { try { osc.stop(); osc.disconnect(); gain.disconnect(); } catch {} }, 220);
+  } catch {}
+}
+
+async function unlockNotifySound(test = false) {
+  if (!notifySoundOn) return;
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    const ctx = notifyAudioCtx || (notifyAudioCtx = new Ctx());
+    if (ctx.state === 'suspended') await ctx.resume();
+    if (test) playNotifySound();
+  } catch {}
+}
+
+function showIncomingNotification(msg) {
+  try {
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    const title = msg.role === 'tr' ? '🇹🇷 AskViet' : '🇻🇳 AskViet';
+    const body = msg.translation || msg.text || 'Yeni mesaj';
+    new Notification(title, { body, tag: 'askviet-new-message', silent: false });
+  } catch {}
+}
+
+function requestNotifyPermission() {
+  try {
+    if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
+  } catch {}
+}
+
+function removeMessageElement(key) {
+  const el = document.getElementById('msg-' + key);
+  if (el) el.remove();
+  renderedKeys.delete(key);
+  autoReadDone.delete(key);
+  stopAudio();
+}
+
+async function copyOriginalMessage(key, btn) {
+  const box = document.getElementById('msg-' + key);
+  const text = (box?.dataset?.type === 'image' || box?.dataset?.type === 'video') ? (box?.dataset?.mediaUrl || '') : (box?.dataset?.text || '');
+  if (!text) return;
+  try {
+    if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
+    else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    if (btn) {
+      const old = btn.textContent;
+      btn.textContent = '✓';
+      setTimeout(() => { btn.textContent = old; }, 900);
+    }
+  } catch (e) {
+    console.warn('copy failed', e);
+  }
+}
+
+async function deleteMessage(key) {
+  stopAudio();
+  removeMessageElement(key);
+  await fbRemove(MSGS_PATH + '/' + key);
+}
+
+function getReadableLang(senderRole) {
+  return senderRole === myRole ? theirRole : myRole;
+}
+
+function getReadableText(key) {
+  const box = document.getElementById('msg-' + key);
+  if (!box) return '';
+  if (box.dataset.type === 'image' || box.dataset.type === 'video') return '';
+  return box.dataset.translation || box.dataset.text || '';
+}
+
+function getRecipientRole(senderRole) {
+  return senderRole === 'tr' ? 'vi' : 'tr';
+}
+
+function getRecipientText(key) {
+  const box = document.getElementById('msg-' + key);
+  if (!box) return '';
+  return box.dataset.translation || '';
+}
+
+async function requestSpeakForMessage(key, btn) {
+  const box = document.getElementById('msg-' + key);
+  if (!box) return;
+  const targetRole = getRecipientRole(box.dataset.role);
+  const text = getRecipientText(key);
+  if (!text || text.includes('⏳') || text.includes('⚠')) return;
+  if (targetRole === myRole) {
+    await speak(text, myRole, btn);
+    return;
+  }
+  setSpeakBtn(btn, true);
+  try {
+    const pushed = await fbPush(AUDIO_PATH, {
+      key,
+      from: myRole,
+      target: targetRole,
+      text,
+      lang: targetRole,
+      ts: Date.now()
+    });
+    const reqId = pushed && pushed.name;
+    if (reqId) await waitAudioRequestDone(reqId, 60000);
+    else await sleep(1800);
+  } finally {
+    setSpeakBtn(btn, false);
+  }
+}
+
+async function waitAudioRequestDone(id, timeoutMs) {
+  const started = Date.now();
+  while (Date.now() - started < timeoutMs) {
+    await sleep(650);
+    const req = await fbGet(AUDIO_PATH + '/' + id);
+    if (!req) return true;
+  }
+  return false;
+}
+
+function listenAudioRequests() {
+  if (unsubAudio) unsubAudio();
+  audioListenStartedAt = Date.now();
+  unsubAudio = fbListen(AUDIO_PATH, event => {
+    if (!event || !event.data) return;
+    const path = event.path || '/';
+    if (path === '/' && typeof event.data === 'object') {
+      Object.entries(event.data).forEach(([id, req]) => handleAudioRequest(id, req));
+      return;
+    }
+    const id = path.replace(/^\//, '').split('/')[0];
+    if (id && typeof event.data === 'object') handleAudioRequest(id, event.data);
+  });
+}
+
+async function handleAudioRequest(id, req) {
+  if (!req || handledAudioRequests.has(id)) return;
+  if (!req.ts || req.ts < audioListenStartedAt - 1500) return;
+  if (Date.now() - req.ts > 15000) return;
+  if (req.target !== myRole) return;
+  handledAudioRequests.add(id);
+  try {
+    await speak(req.text, req.lang || myRole, null, true);
+  } finally {
+    await fbRemove(AUDIO_PATH + '/' + id);
+  }
+}
+
+function getMisunderstoodText() {
+  return myRole === 'vi'
+    ? 'Em không hiểu, anh nói lại được không? 🥺'
+    : 'Anlamadım aşkım, tekrar söyler misin? 🥺';
+}
+
+async function sendQuickMisunderstood() {
+  const input = document.getElementById('msgInput');
+  if (!input) return;
+  input.value = getMisunderstoodText();
+  await sendMessage();
+}
+
+function maybeAutoReadMessage(key) {
+  const box = document.getElementById('msg-' + key);
+  if (!box || !autoRead || autoReadDone.has(key)) return;
+  if (box.dataset.type === 'image' || box.dataset.type === 'video') { autoReadDone.add(key); return; }
+  const senderRole = box.dataset.role;
+  if (!senderRole || senderRole === myRole) return;
+  const ts = Number(box.dataset.ts || 0);
+  if (!ts || ts < chatListenStartedAt - 1500) {
+    autoReadDone.add(key);
+    return;
+  }
+  const text = box.dataset.translation || '';
+  if (!text || text.includes('⏳') || text.includes('⚠')) return;
+  autoReadDone.add(key);
+  speak(text, myRole, null, true);
+}
+
+function formatTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
+function initAutoScroll() {
+  const box = document.getElementById('messages');
+  if (!box || box.dataset.autoScrollReady === '1') return;
+  box.dataset.autoScrollReady = '1';
+  const stick = () => { box.scrollTop = box.scrollHeight; };
+  const obs = new MutationObserver(() => requestAnimationFrame(stick));
+  obs.observe(box, { childList:true, subtree:true, characterData:true });
+  window.addEventListener('resize', () => setTimeout(stick, 80));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(stick, 120); });
+  setTimeout(stick, 120);
+}
+function scrollToBottom() {
+  const m = document.getElementById('messages');
+  if (m) setTimeout(() => { m.scrollTop = m.scrollHeight; }, 50);
+}
+
+function openGallery(){document.getElementById('galleryInput')?.click()}
+function openCamera(){document.getElementById('cameraInput')?.click()}
+
+function showMediaStatus(text) {
+  let box = document.getElementById('mediaUploadStatus');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'mediaUploadStatus';
+    box.className = 'media-uploading';
+    document.body.appendChild(box);
+  }
+  box.textContent = text;
+  box.style.display = 'block';
+}
+
+function hideMediaStatus() {
+  const box = document.getElementById('mediaUploadStatus');
+  if (box) box.style.display = 'none';
+}
+
+async function handleImageInput(event) {
+  const input = event.target;
+  const file = input.files && input.files[0];
+  input.value = '';
+  if (!file) return;
+  await sendPickedMedia(file);
+}
+
+async function sendPickedMedia(file) {
+  if (!file || !myRole) return;
+  try {
+    const isVideo = /^video\//i.test(file.type);
+    showMediaStatus(myRole === 'vi' ? (isVideo ? 'Đang gửi video...' : 'Đang gửi ảnh...') : (isVideo ? 'Video gönderiliyor...' : 'Fotoğraf gönderiliyor...'));
+    const media = await prepareImageForUpload(file);
+    const uploaded = await uploadMediaFile(media.blob, media.name);
+    await sendMediaMessage(uploaded.url || uploaded.mediaUrl, file.name, uploaded.mime || file.type);
+  } catch (e) {
+    alert((myRole === 'vi' ? 'Không gửi được media: ' : 'Medya gönderilemedi: ') + (e.message || e));
+  } finally {
+    hideMediaStatus();
+  }
+}
+
+function pickMediaFileFromItems(items) {
+  return Array.from(items || [])
+    .filter(item => item && (item.kind === 'file' || item.getAsFile))
+    .map(item => item.getAsFile ? item.getAsFile() : item)
+    .find(file => file && /^(image|video)\//i.test(file.type || '')) || null;
+}
+
+document.addEventListener('paste', e => {
+  if (!myRole || document.getElementById('chat')?.style.display === 'none') return;
+  const file = pickMediaFileFromItems(e.clipboardData?.items);
+  if (!file) return;
+  e.preventDefault();
+  sendPickedMedia(file);
+});
+
+document.addEventListener('drop', e => {
+  if (!myRole || document.getElementById('chat')?.style.display === 'none') return;
+  const file = pickMediaFileFromItems(e.dataTransfer?.items) || Array.from(e.dataTransfer?.files || []).find(f => /^(image|video)\//i.test(f.type || ''));
+  if (!file) return;
+  e.preventDefault();
+  sendPickedMedia(file);
+});
+
+document.addEventListener('dragover', e => {
+  if (myRole && document.getElementById('chat')?.style.display !== 'none') e.preventDefault();
+});
+
+async function prepareImageForUpload(file) {
+  if (/^video\//i.test(file.type)) return { blob: file, name: safeMediaName(file.name || 'video') };
+  const keepOriginal = /image\/(gif|webp|png)/i.test(file.type) && file.size <= 1800000;
+  if (keepOriginal) return { blob: file, name: safeMediaName(file.name || 'image') };
+  const bmp = await createImageBitmap(file);
+  const maxSide = 1280;
+  const scale = Math.min(1, maxSide / Math.max(bmp.width, bmp.height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(bmp.width * scale));
+  canvas.height = Math.max(1, Math.round(bmp.height * scale));
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.82));
+  return { blob, name: safeMediaName((file.name || 'image').replace(/\.[^.]+$/, '') + '.jpg') };
+}
+
+function safeMediaName(name) {
+  return String(name || 'image').replace(/[^a-zA-Z0-9._-]+/g, '_').slice(0, 80);
+}
+
+async function uploadMediaFile(blob, fileName) {
+  const fd = new FormData();
+  fd.append('token', MEDIA_UPLOAD_TOKEN);
+  fd.append('file', blob, fileName);
+  const res = await fetch(MEDIA_UPLOAD_URL, { method:'POST', body: fd });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || !(data.ok || data.success)) throw new Error(data.error || res.statusText || 'Upload failed');
+  return data;
+}
+
+async function sendMediaMessage(url, name='', mime='') {
+  if (!url) throw new Error('Upload URL yok');
+  const type = /^video\//i.test(mime) || /\.(mp4|webm|mov|m4v)$/i.test(url) ? 'video' : 'image';
+  const label = name || (type === 'video' ? 'Video' : 'Fotoğraf');
+  const msg = { role: myRole, type, text:label, mediaUrl:url, mime:mime || null, ts:Date.now(), translation:null };
+  await fbPush(MSGS_PATH, msg);
+  setMyTyping(false);
+}
+
+async function sendMessage() {
+  const input = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = '';
+  if (sendBtn) sendBtn.disabled = true;
+  setMyTyping(false);
+
+  try {
+    const msg = { role: myRole, text, ts: Date.now(), translation: null };
+    const result = await fbPush(MSGS_PATH, msg);
+    const key = result?.name;
+    if (!key) return;
+    translateAndUpdate(key, text, myRole);
+  } catch (e) {
+    console.error('Mesaj gönderilemedi:', e);
+    input.value = text;
+  } finally {
+    if (sendBtn) sendBtn.disabled = false;
+  }
+}
+
+async function translateAndUpdate(key, text, fromRole) {
+  const maxAttempts = selectedModel.startsWith('gemini:') ? 4 : 1;
+  const targetRole = fromRole === 'tr' ? 'vi' : 'tr';
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const translation = await translateText(text, fromRole);
+      await fbSet(MSGS_PATH + '/' + key + '/translation', translation);
+      return;
+    } catch (e) {
+      const msg = (e && e.message ? e.message : String(e)).slice(0, 120);
+      const retry = selectedModel.startsWith('gemini:') && isRetryableGeminiError(e) && attempt < maxAttempts;
+      if (retry) {
+        const waitMs = attempt * 2500;
+        await fbSet(MSGS_PATH + '/' + key + '/translation', retryText(targetRole, attempt, maxAttempts - 1));
+        await sleep(waitMs);
+        continue;
+      }
+      await fbSet(MSGS_PATH + '/' + key + '/translation', errorText(targetRole, msg));
+      console.error(e);
+      return;
+    }
+  }
+}
+
+async function retranslateMessage(key, btn) {
+  const box = document.getElementById('msg-' + key);
+  if (!box || box.dataset.type === 'image' || box.dataset.type === 'video') return;
+  const text = box.dataset.text || '';
+  const fromRole = box.dataset.role || myRole;
+  if (!text || !fromRole) return;
+  const old = btn?.textContent;
+  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+  const targetRole = fromRole === 'tr' ? 'vi' : 'tr';
+  try {
+    await fbSet(MSGS_PATH + '/' + key + '/translation', targetRole === 'vi' ? '⏳ Đang dịch lại...' : '⏳ Yeniden çevriliyor...');
+    await translateAndUpdate(key, text, fromRole);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = old || '↻'; }
+  }
+}
+
+function retryText(role, attempt, total) {
+  return role === 'vi'
+    ? `⏳ Gemini đang bận, đang thử lại... (${attempt}/${total})`
+    : `⏳ Gemini yoğun, tekrar deneniyor... (${attempt}/${total})`;
+}
+
+function errorText(role, msg) {
+  return role === 'vi'
+    ? '⚠️ Lỗi dịch: ' + msg
+    : '⚠️ Çeviri hatası: ' + msg;
+}
+
+function isRetryableGeminiError(e) {
+  const s = String((e && e.message) || e || '').toLowerCase();
+  return s.includes('busy') || s.includes('overload') || s.includes('unavailable') || s.includes('resource exhausted') || s.includes('rate') || s.includes('429') || s.includes('503');
+}
+
+async function translateText(text, from) {
+  const fromName = from === 'tr' ? 'Türkçe' : 'Vietnamca';
+  const toName = from === 'tr' ? 'Vietnamca' : 'Türkçe';
+  const sysPrompt = `Sen sadece çeviri motorusun. Kaynak dil: ${fromName}. Hedef dil: ${toName}. İki kişi sabittir: Türkçe taraf erkektir/anh, Vietnamca taraf kadındır/em. TR->VI çevirirken Türk erkek Vietnamlı kadına konuşur: kadına her zaman "em" diye hitap et; erkek kendinden söz ederse "anh" kullan. "Aşkım/sevgilim" gibi hitapları kadına söyleniyorsa "em yêu", "em yêu của anh" gibi çevir; "anh yêu" kullanma. VI->TR çevirirken Vietnamlı kadın Türk erkeğe konuşur: erkeğe "anh", kendine "em" kullanıldığını varsay. Metnin tonunu, üslubunu ve duygusunu birebir yansıt — samimi yazılmışsa samimi, kaba yazılmışsa kaba, küfürlü yazılmışsa küfürlü çevir. Hiçbir şeyi sansürleme veya değiştirme. Sadece çeviriyi döndür, başka hiçbir şey yazma.`;
+
+  let [provider, model] = selectedModel.split(':');
+  if (provider === 'gemini' && model === 'gemini-2.5-flash-preview-05-20') {
+    model = 'gemini-2.5-flash';
+    selectedModel = 'gemini:' + model;
+    localStorage.setItem('askviet_model', selectedModel);
+    if (myRole === 'tr') syncMyModel(selectedModel);
+  }
+  const useKey = provider==='gemini' ? (localStorage.getItem('askviet_gemini_key')||'') : (localStorage.getItem('askviet_key')||'');
+
+  if (provider === 'gemini') {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${useKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: sysPrompt }] },
+        contents: [{ parts: [{ text }] }],
+        generationConfig: {
+          temperature: 0.2,
+          thinkingConfig: { thinkingBudget: 0 }
+        }
+      })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error?.message || r.statusText);
+    return (data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
+  } else {
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+      body: JSON.stringify({
+        model,
+        temperature: 0.2,
+        messages: [
+          { role: 'system', content: sysPrompt },
+          { role: 'user', content: text }
+        ]
+      })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error?.message || r.statusText);
+    return (data.choices?.[0]?.message?.content || '').trim();
+  }
+}
+
+// ── Typing ────────────────────────────────────────────────────────────────
+function setMyTyping(val) {
+  if (isTyping === val) return;
+  isTyping = val;
+  fbSet(TYPING_PATH + '/' + myRole, val);
+}
+
+// ── Input ─────────────────────────────────────────────────────────────────
+const msgInputEl = document.getElementById('msgInput');
+if(msgInputEl){
+  msgInputEl.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    setMyTyping(true);
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => setMyTyping(false), 2000);
+  });
+  msgInputEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+}
+
+// ── PWA Manifest ─────────────────────────────────────────────────────────
+function initPWA() {
+  const manifest = {
+    name: 'AskViet',
+    short_name: 'AskViet',
+    start_url: './',
+    display: 'standalone',
+    background_color: '#0a0a0f',
+    theme_color: '#0a0a0f',
+    icons: [{
+      src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%230a0a0f"/><text y=".9em" font-size="80">💬</text></svg>',
+      sizes: '192x192',
+      type: 'image/svg+xml'
+    }]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  document.getElementById('pwaManifest').href = url;
+}
+initPWA();
+
+// ── Ses Fonksiyonları ────────────────────────────────────────────────────
 function getAudioPlayer(){if(!audioPlayer){audioPlayer=new Audio();audioPlayer.preload='none'}return audioPlayer}
-async function unlockAudio(){if(_audioUnlocked)return;try{const C=window.AudioContext||window.webkitAudioContext;if(C){if(!recAudioCtx||recAudioCtx.state==='closed')recAudioCtx=new C();if(recAudioCtx.state==='suspended')await recAudioCtx.resume()}await primeAudioPlayer();_audioUnlocked=false}catch{}}
-function primeAudioPlayer(){try{const a=getAudioPlayer();if(!a.src){a.muted=true;a.src='data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQQAAAAAAA==';a.load();a.play().catch(()=>{});setTimeout(()=>{a.pause();a.currentTime=0;a.muted=false},100)}}catch{}}
-async function ensureAudioCtx(){await unlockAudio();return recAudioCtx}
-function rms(analyser,data){analyser.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const v=(data[i]-128)/128;sum+=v*v}return Math.sqrt(sum/data.length)}
-function stopRecorder(){if(rec&&rec.state==='recording'){try{rec.stop()}catch{}}}
-function cancelRecorderSilent(){if(recTimer){clearInterval(recTimer);recTimer=null}if(rec){try{rec.ondataavailable=null;rec.onstop=null;if(rec.state==='recording')rec.stop()}catch{}rec=null}if(recNode){try{recNode.disconnect()}catch{}recNode=null}recAnalyser=null;recData=null;if(recStream){recStream.getTracks().forEach(t=>t.stop());recStream=null}if(recButton){recButton.classList.remove('recording');recButton=null}recChunks=[];recHadSpeech=false;recSilentSince=0;setStatus('Hazır')}
-async function startRecorder(source,button,onDone,autoSilence=false){await unlockAudio();if(rec){if(recButton===button){stopRecorder();return}else{stopRecorder();await sleep(180)}}stopAudio();recSource=source;recButton=button;recChunks=[];recHadSpeech=false;recSilentSince=0;button.classList.add('recording');setStatus(source==='tr'?'Türkçe dinliyor':'Vietnamca dinliyor');try{const ctx=await ensureAudioCtx();recStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});recNode=ctx.createMediaStreamSource(recStream);recAnalyser=ctx.createAnalyser();recAnalyser.fftSize=1024;recData=new Uint8Array(recAnalyser.fftSize);recNode.connect(recAnalyser);rec=new MediaRecorder(recStream,{mimeType:MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm'});rec.ondataavailable=e=>{if(e.data&&e.data.size)recChunks.push(e.data)};rec.onstop=async()=>{const chunks=recChunks.slice(),had=recHadSpeech,mt=rec.mimeType;clearInterval(recTimer);recTimer=null;if(recNode){try{recNode.disconnect()}catch{}recNode=null}recAnalyser=null;recData=null;if(recStream){recStream.getTracks().forEach(t=>t.stop());recStream=null}button.classList.remove('recording');rec=null;recButton=null;await sleep(260);setStatus('Çeviriyor');await onDone(new Blob(chunks,{type:mt}),had)};rec.start(120);recStarted=Date.now();recTimer=setInterval(()=>{if(!recAnalyser||!recData)return;const v=rms(recAnalyser,recData),now=Date.now();const speech=v>0.012;if(speech){recHadSpeech=true;recSilentSince=0;return}if(!autoSilence)return;if(recHadSpeech){if(!recSilentSince)recSilentSince=now;if(now-recSilentSince>1500)stopRecorder()}else if(now-recStarted>2000)stopRecorder();if(now-recStarted>12000)stopRecorder()},120)}catch(e){if(recNode){try{recNode.disconnect()}catch{}recNode=null}if(recStream){recStream.getTracks().forEach(t=>t.stop());recStream=null}button.classList.remove('recording');showError(humanError(e));setStatus('Hata')}}
-async function micToInput(inputId,source,button,autoRun){await startRecorder(source,button,async(blob,had)=>{try{if(!had){setStatus('Hazır');return}const tr=await transcribe(blob,source);if(!tr.text){showError('Ses algılanmadı.');setStatus('Hazır');return}if(!validTranscript(tr.text)){if(!hasForeignScript(tr.text)){showFilterError(tr.text)}setStatus('Hazır');return}const el=$(inputId);el.value=el.value.trim()?el.value.trim()+'\n'+tr.text:tr.text;if(autoRun==='text')await doTextTranslate(source);if(autoRun==='chat')await doChat(source)}catch(e){showError('Sesle yazma hatası: '+humanError(e))}finally{setStatus('Hazır')}},true)}
-async function ptt(source,button){await startRecorder(source,button,async(blob,had)=>{const turn=makeTurn('pttLog');if(!had){turn.src.textContent=source==='tr'?'Kullanıcı konuşmadı.':'Người dùng không nói gì.';setStatus('Hazır');return}try{const tr=await transcribe(blob,source);if(!tr.text){turn.src.textContent=source==='tr'?'Kullanıcı konuşmadı.':'Người dùng không nói gì.';showError('Ses algılanmadı.');setStatus('Hazır');return}if(!validTranscript(tr.text)){if(!hasForeignScript(tr.text)){turn.src.textContent='(Filtreye takıldı)';showFilterError(tr.text)}setStatus('Hazır');return}turn.src.textContent=tr.text;turn.source=source;turn.target=opposite(source);inSec+=Math.max(1,blob.size/32000);updateCost();const r=await translate(tr.text,source,memoryHint(pttMemory,4));turn.target=r.target;turn.translation=r.translation;turn.dst.textContent=r.translation;lastTurn=turn;if(r.translation){addMemory('pttMemory',{source,target:r.target,input:tr.text,translation:r.translation},30);if(autoRead)await speak(r.translation,r.target,null,true)}setStatus('Hazır')}catch(e){turn.dst.textContent='';showError('Bas-Konuş hatası: '+humanError(e),$('pttView'));setStatus('Hata')}},true)}
-function liveIndicator(source){$('liveIndicator').textContent=source==='tr'?'🇹🇷 Türkçe konuşuyor':source==='vi'?'🇻🇳 Đang nói tiếng Việt':'Dinleniyor...';$('liveIndicator').style.color=source?'#c084fc':'#888'}
-function liveStartSegment(){if(!liveOn||liveProcessing||!liveStream)return;liveChunks=[];liveHadSpeech=false;liveSilentSince=0;liveSegmentStart=Date.now();liveRecorder=new MediaRecorder(liveStream,{mimeType:MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm'});liveRecorder.ondataavailable=e=>{if(e.data&&e.data.size)liveChunks.push(e.data)};liveRecorder.onstop=()=>{const chunks=liveChunks.slice(),had=liveHadSpeech,mt=liveRecorder.mimeType,dur=Date.now()-liveSegmentStart;liveChunks=[];const size=chunks.reduce((n,c)=>n+c.size,0);if(had&&chunks.length&&size>2500&&dur>350)processLiveBlob(new Blob(chunks,{type:mt}),dur);else if(liveOn)setTimeout(liveStartSegment,120)};liveRecorder.start(250)}
-async function processLiveBlob(blob,dur=0){if(liveProcessing)return;if(blob.size<2500||dur<350){if(liveOn)setTimeout(liveStartSegment,120);return}liveProcessing=true;let turn=null;try{const tr=await transcribe(blob);if(!tr.text||!validTranscript(tr.text)){if(tr.text&&!hasForeignScript(tr.text)){const now=Date.now();if(now-lastLiveNoSpeechAt>15000){lastLiveNoSpeechAt=now;showFilterError(tr.text)}}setStatus('Dinliyor',true);liveIndicator('');return}turn=makeTurn('liveLog','...');turn.src.textContent=tr.text;turn.source=tr.source;turn.target=opposite(tr.source);liveIndicator(tr.source);inSec+=Math.max(1,blob.size/32000);updateCost();const r=await translate(tr.text,tr.source);turn.target=r.target;turn.translation=r.translation;turn.dst.textContent=r.translation;if(autoRead&&r.translation)await speak(r.translation,r.target,null,true);setStatus('Dinliyor',true);liveIndicator('')}catch(e){if(turn)turn.dst.textContent='';showError('Live hatası: '+humanError(e),$('liveView'));setStatus('Hata')}finally{liveProcessing=false;if(liveOn)setTimeout(liveStartSegment,250)}}
+async function unlockAudio(){
+  const a=getAudioPlayer();
+  try{
+    if(!a.src){
+      a.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=';
+      a.volume=0;
+      await a.play();
+      a.pause();
+      a.currentTime=0;
+      a.volume=1;
+    }
+  }catch{}
+}
+function setSpeakBtn(btn,on){if(!btn)return;btn.textContent=on?'⏸':'▶';if(on)btn.dataset.playing='1';else delete btn.dataset.playing}
+function stopAudio(){ttsToken++;if(ttsAbort){try{ttsAbort.abort()}catch{}ttsAbort=null}if(audioPlayer){try{audioPlayer.pause();audioPlayer.currentTime=0}catch{}}if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}isSpeaking=false;document.querySelectorAll('.speakBtn').forEach(b=>setSpeakBtn(b,false))}
+function cacheKey(text,target,model,voice,speed){return[model,voice,speed,target,text].join('|')}
+async function playBlob(blob,token,btn,text=''){const a=getAudioPlayer();if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}audioUrl=URL.createObjectURL(blob);a.pause();a.src=audioUrl;a.defaultPlaybackRate=1.0;a.playbackRate=1.0;a.volume=1.0;a.muted=false;a.load();isSpeaking=true;setSpeakBtn(btn,true);await new Promise((resolve,reject)=>{const limit=Math.max(45000,(text||'').length*180);const timer=setTimeout(()=>resolve(),limit);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(new Error('Ses çalınamadı'))};a.play().catch(err=>{clearTimeout(timer);reject(err)})});if(token===ttsToken){isSpeaking=false}return true}
+async function speak(text,target,btn,silent=false){try{await unlockAudio()}catch{}if(!text||!target)return false;if(isSpeaking){stopAudio();return false}const key=localStorage.getItem('askviet_key')||'';if(!key){console.warn('TTS key yok');return false}const [provider]=selectedModel.split(':');const voice=target==='vi'?'cedar':'nova',speed=target==='vi'?0.93:1,instructions=target==='vi'?'Speak Vietnamese naturally with a native Southern Vietnam / Saigon accent. Warm, clear, conversational.':'Speak Turkish naturally with a native Istanbul Turkish accent. Warm, clear, conversational.';const token=++ttsToken,ck=cacheKey(text,target,'gpt-4o-mini-tts',voice,speed);setSpeakBtn(btn,true);try{let blob=ttsCache.get(ck);if(!blob){if(provider==='gemini'){const base64=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.readAsDataURL(new Blob([text]))});const r=await fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key='+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:{text},voice:{languageCode:target==='vi'?'vi-VN':'tr-TR'},audioConfig:{audioEncoding:'MP3'}})});const d=await r.json();if(!r.ok)throw new Error(d.error?.message||r.statusText);blob=await fetch('data:audio/mp3;base64,'+d.audioContent).then(r=>r.blob())}else{ttsAbort=new AbortController();const r=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:ttsAbort.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o-mini-tts',input:text,voice,instructions,response_format:'mp3',speed})});if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error(d.error?.message||r.statusText)}blob=await r.blob()}if(token!==ttsToken)return false;ttsCache.set(ck,blob);if(ttsCache.size>30)ttsCache.delete(ttsCache.keys().next().value)}await playBlob(blob,token,btn,text);return true}catch(e){const em=String(e);if(/abort|iptal/i.test(em))return false;if(silent&&/NotAllowedError|not allowed|autoplay/i.test(em))return false;console.error('TTS hatası:',e);return false}finally{if(token===ttsToken){isSpeaking=false;setSpeakBtn(btn,false)}}}
 
-async function startLive(){if(liveOn)return;const key=apiKey();if(!key)return;stopAudio();try{const ctx=await ensureAudioCtx();liveStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:false,autoGainControl:true,channelCount:1}});const node=ctx.createMediaStreamSource(liveStream);liveAnalyser=ctx.createAnalyser();liveAnalyser.fftSize=2048;liveData=new Uint8Array(liveAnalyser.fftSize);node.connect(liveAnalyser);liveOn=true;$('liveBtn').textContent='■ Durdur';$('liveBtn').classList.add('recording');setStatus('Dinliyor',true);liveIndicator('');await requestWakeLock();liveStartSegment();liveTimer=setInterval(()=>{if(!liveOn||liveProcessing||!liveRecorder||liveRecorder.state!=='recording'||isSpeaking)return;const v=rms(liveAnalyser,liveData),now=Date.now();if(saver&&v<0.0012&&!liveHadSpeech)return;if(v>0.0009){liveHadSpeech=true;liveSilentSince=0}else if(liveHadSpeech){if(!liveSilentSince)liveSilentSince=now;if(now-liveSilentSince>1700){try{liveRecorder.stop()}catch{}}}if(now-liveSegmentStart>10000){try{liveRecorder.stop()}catch{}}},120)}catch(e){showError('Live başlatılamadı: '+humanError(e),$('liveView'));stopLive()}}
-function stopLive(){if(liveTimer){clearInterval(liveTimer);liveTimer=null}if(liveRecorder&&liveRecorder.state==='recording'){try{liveRecorder.stop()}catch{}}if(liveStream){liveStream.getTracks().forEach(t=>t.stop());liveStream=null}liveOn=false;liveProcessing=false;$('liveBtn').textContent='▶ Dinle';$('liveBtn').classList.remove('recording');setStatus('Hazır');liveIndicator(null);releaseWakeLock()}
-async function requestWakeLock(){try{if('wakeLock'in navigator)wakeLock=await navigator.wakeLock.request('screen')}catch{}}
-function releaseWakeLock(){try{if(wakeLock)wakeLock.release()}catch{}wakeLock=null}
-function setMode(n){if(mode===n)return;if(liveOn)stopLive();if(rec)stopRecorder();mode=n;document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===n));document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(n+'View').classList.add('active');setStatus('Hazır')}
-function flashButton(btn){if(!btn)return;btn.classList.remove('flash');void btn.offsetWidth;btn.classList.add('pressed','flash');setTimeout(()=>btn.classList.remove('pressed'),180);setTimeout(()=>btn.classList.remove('flash'),320)}document.addEventListener('pointerdown',e=>{const b=e.target.closest('button');if(b){b.classList.add('pressed');unlockAudio()}},{capture:true,passive:true});document.addEventListener('pointerup',e=>{const b=e.target.closest('button');if(b)b.classList.remove('pressed')},{capture:true,passive:true});document.addEventListener('pointercancel',e=>{const b=e.target.closest('button');if(b)b.classList.remove('pressed')},{capture:true,passive:true});document.addEventListener('click',e=>flashButton(e.target.closest('button')),{capture:true,passive:true});
-function clearChat(){stopAudio();$('chatInput').value='';$('chatResult').innerHTML='';lastChatInput=''}
-function clearChatIfOld(){if(lastChatInput&&$('chatInput').value.trim()===lastChatInput){$('chatInput').value='';$('chatResult').innerHTML='';lastChatInput=''}}
-function bindClick(id,fn){const el=$(id);if(!el)return;el.onclick=async e=>{try{flashButton(e.currentTarget);try{unlockAudio()}catch{}return await fn(e)}catch(err){showError('Buton hatasi: '+humanError(err));setStatus('Hata')}}}
-bindClick('settingsBtn',()=>{$('settings').classList.toggle('show');renderBlockedList()});bindClick('copyFilterLogBtn',copyFilterLogs);bindClick('clearFilterLogBtn',clearFilterLogs);bindClick('openBlockedBtn',()=>{renderBlockedList();$('blockedModal').style.display='block'});bindClick('closeBlockedBtn',()=>{$('blockedModal').style.display='none'});
-bindClick('tabBlocked',()=>{$('blockedList').style.display='block';$('whitelistDiv').style.display='none';$('tabBlocked').style.background='#7c3aed';$('tabBlocked').style.color='#fff';$('tabWhite').style.background='#111';$('tabWhite').style.color='#aaa'});
-bindClick('tabWhite',()=>{$('blockedList').style.display='none';$('whitelistDiv').style.display='block';$('tabWhite').style.background='#7c3aed';$('tabWhite').style.color='#fff';$('tabBlocked').style.background='#111';$('tabBlocked').style.color='#aaa'});bindClick('toneBtn',()=>{tone=tone==='romantic'?'neutral':'romantic';updateTone();saveSettings()});bindClick('pasteKeyBtn',()=>navigator.clipboard.readText().then(t=>{$('apiKey').value=t.trim();saveSettings()}));bindClick('clearTtsCacheBtn',()=>{stopAudio();ttsCache.clear();setStatus('Ses cache temizlendi');setTimeout(()=>setStatus(liveOn?'Dinliyor':'Hazır',liveOn),900)});$('autoReadToggle').onchange=e=>{autoRead=e.target.checked;saveSettings()};$('saverToggle').onchange=e=>{saver=e.target.checked;saveSettings()};$('retryToggle').onchange=e=>{retryLive=e.target.checked;saveSettings()};document.querySelectorAll('.mode').forEach(b=>b.onclick=async()=>{try{flashButton(b);try{unlockAudio()}catch{}setMode(b.dataset.mode)}catch(err){showError('Mod hatasi: '+humanError(err));setStatus('Hata')}});
-bindClick('cancelTextBtn',cancelTextTranslation);bindClick('blockTextBtn',()=>blockVisibleText($('textInput').value||$('textOutput').textContent,'metin-ekrani',$('blockTextBtn')));bindClick('translateBtn',()=>doTextTranslate());bindClick('retryTextBtn',()=>doTextTranslate(lastText.source||undefined));bindClick('misTextBtn',addMisunderstoodText);bindClick('copyTextBtn',()=>copyText($('textOutput').textContent,$('copyTextBtn')));bindClick('speakTextBtn',()=>speak(lastText.translation||$('textOutput').textContent,lastText.target,$('speakTextBtn')));bindClick('clearTextBtn',clearText);bindClick('pasteTextBtn',()=>navigator.clipboard.readText().then(t=>{$('textInput').value=($('textInput').value.trim()?$('textInput').value.trim()+'\n':'')+t.trim()}));bindClick('textMicTr',()=>{clearText();micToInput('textInput','tr',$('textMicTr'),'text')});bindClick('textMicVi',()=>{clearText();micToInput('textInput','vi',$('textMicVi'),'text')});$('textInput').addEventListener('focus',()=>{if(lastText.translation)clearText()});bindClick('flipBtn',()=>{flipped=!flipped;$('textOutput').classList.toggle('upside',flipped);$('flipState').textContent=flipped?'Ters ekran':'Normal ekran'});
-bindClick('chatBtn',()=>doChat());bindClick('retryChatBtn',()=>doChat());bindClick('pasteChatBtn',()=>navigator.clipboard.readText().then(t=>{$('chatInput').value=($('chatInput').value.trim()?$('chatInput').value.trim()+'\n':'')+t.trim()}));bindClick('clearChatBtn',clearChat);bindClick('chatFlipBtn',()=>{flipped=!flipped;$('chatResult').classList.toggle('upside',flipped)});bindClick('chatMicTr',()=>{clearChat();micToInput('chatInput','tr',$('chatMicTr'),'chat')});bindClick('chatMicVi',()=>{clearChat();micToInput('chatInput','vi',$('chatMicVi'),'chat')});$('chatInput').addEventListener('focus',clearChatIfOld);
-bindClick('pttTr',()=>ptt('tr',$('pttTr')));bindClick('pttVi',()=>ptt('vi',$('pttVi')));bindClick('liveBtn',()=>liveOn?stopLive():startLive());bindClick('retryLastBtn',()=>retryTurn(lastTurn));bindClick('speakLastBtn',()=>lastTurn&&speak(lastTurn.translation||lastTurn.dst.textContent,lastTurn.target,$('speakLastBtn')));bindClick('clearLiveBtn',()=>{$('liveLog').innerHTML='<div class="empty">Dinleye basınca sürekli dinler; sessizlikte çevirip seslendirir.</div>';lastTurn=null});
-document.addEventListener('visibilitychange',()=>{if(document.hidden){if(rec)cancelRecorderSilent();if(liveOn)stopLive();stopAudio();_audioUnlocked=false}else{if(recAudioCtx&&recAudioCtx.state==='suspended'){try{recAudioCtx.resume()}catch{}}setStatus('Hazır')}});window.addEventListener('beforeunload',e=>{if(liveOn||rec){e.preventDefault();e.returnValue=''}});loadSettings();
-// PWA Manifest
-(function(){
-  const m={name:'TR⇌VI Çevirmen',short_name:'Çevirmen',start_url:'./',display:'standalone',background_color:'#0a0a0f',theme_color:'#0a0a0f',icons:[{src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%230a0a0f"/><text y=".9em" font-size="70">🗣</text></svg>',sizes:'192x192',type:'image/svg+xml'}]};
-  const b=new Blob([JSON.stringify(m)],{type:'application/json'});
-  document.getElementById('pwaManifest').href=URL.createObjectURL(b);
-})();
+// ── Model Sync ────────────────────────────────────────────────────────────
+async function speakOpenAI(text, target, btn, silent=false) {
+  try { await unlockAudio(); } catch {}
+  if (!text || !target) return false;
+  if (isSpeaking) { stopAudio(); return false; }
+  const key = localStorage.getItem('askviet_key') || '';
+  if (!key) { console.warn('TTS key yok'); return false; }
+  const voice = target === 'vi' ? 'cedar' : 'nova';
+  const speed = target === 'vi' ? 0.93 : 1;
+  const instructions = target === 'vi'
+    ? 'Speak Vietnamese naturally with a native Southern Vietnam / Saigon accent. Warm, clear, conversational.'
+    : 'Speak Turkish naturally with a native Istanbul Turkish accent. Warm, clear, conversational.';
+  const token = ++ttsToken;
+  const ck = cacheKey(text, target, 'gpt-4o-mini-tts', voice, speed);
+  setSpeakBtn(btn, true);
+  try {
+    let blob = ttsCache.get(ck);
+    if (!blob) {
+      ttsAbort = new AbortController();
+      const r = await fetch('https://api.openai.com/v1/audio/speech', {
+        method: 'POST',
+        signal: ttsAbort.signal,
+        headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
+        body: JSON.stringify({model:'gpt-4o-mini-tts',input:text,voice,instructions,response_format:'mp3',speed})
+      });
+      if (!r.ok) {
+        const d = await r.json().catch(()=>({}));
+        throw new Error(d.error?.message || r.statusText);
+      }
+      blob = await r.blob();
+      if (token !== ttsToken) return false;
+      ttsCache.set(ck, blob);
+      if (ttsCache.size > 30) ttsCache.delete(ttsCache.keys().next().value);
+    }
+    await playBlob(blob, token, btn, text);
+    return true;
+  } catch(e) {
+    const em = String(e);
+    if (/abort|iptal/i.test(em)) return false;
+    if (silent && /NotAllowedError|not allowed|autoplay/i.test(em)) return false;
+    console.error('TTS hatası:', e);
+    return false;
+  } finally {
+    if (token === ttsToken) {
+      isSpeaking = false;
+      setSpeakBtn(btn, false);
+    }
+  }
+}
+speak = speakOpenAI;
+
+const MODEL_NAMES = {
+  'openai:gpt-5.5': 'GPT-5.5',
+  'openai:gpt-5.4': 'GPT-5.4',
+  'openai:gpt-5.2': 'GPT-5.2',
+  'openai:gpt-5.4-mini': '5.4-mini',
+  'openai:gpt-4o': 'GPT-4o',
+  'openai:gpt-4o-mini': '4o-mini',
+  'gemini:gemini-2.5-flash': 'Gemini Flash',
+  'gemini:gemini-2.5-flash-preview-05-20': 'Gemini Flash'
+};
+
+function modelName(model) {
+  return MODEL_NAMES[model] || (model || '').split(':')[1] || '-';
+}
+
+function setSelectedModel(model, fromRemote=false) {
+  if (!model) return;
+  if (model === 'gemini:gemini-2.5-flash-preview-05-20') model = 'gemini:gemini-2.5-flash';
+  selectedModel = model;
+  localStorage.setItem('askviet_model', model);
+  const setupSelect = document.getElementById('modelSelect');
+  const chatSelect = document.getElementById('chatModelSelect');
+  if (setupSelect && setupSelect.value !== model) setupSelect.value = model;
+  if (chatSelect && chatSelect.value !== model) chatSelect.value = model;
+  const myBadge = document.getElementById('myModelBadge');
+  const theirBadge = document.getElementById('theirModelBadge');
+  if (myBadge) myBadge.textContent = modelName(model);
+  if (theirBadge) {
+    theirBadge.textContent = modelName(model);
+    theirBadge.classList.add('active');
+  }
+  if (myRole === 'tr' && !fromRemote) syncMyModel(model);
+}
+
+function setupChatControls() {
+  const chatSelect = document.getElementById('chatModelSelect');
+  if (chatSelect) {
+    chatSelect.value = selectedModel;
+    chatSelect.style.display = myRole === 'tr' ? '' : 'none';
+    chatSelect.disabled = myRole !== 'tr';
+    chatSelect.onchange = () => setSelectedModel(chatSelect.value);
+  }
+  setSelectedModel(selectedModel, true);
+  updateAutoReadUI();
+  updateNotifySoundUI();
+}
+
+function toggleNotifySound() {
+  notifySoundOn = !notifySoundOn;
+  localStorage.setItem('askviet_notify_sound', notifySoundOn ? '1' : '0');
+  updateNotifySoundUI();
+  if (notifySoundOn) unlockNotifySound(true);
+}
+
+function updateNotifySoundUI() {
+  const btn = document.getElementById('notifySoundBtn');
+  if (!btn) return;
+  const label = myRole === 'vi' ? 'Âm' : 'Bild.';
+  btn.textContent = (notifySoundOn ? '✓ ' : '✕ ') + label;
+  btn.classList.toggle('off', !notifySoundOn);
+  btn.title = (myRole === 'vi' ? 'Âm báo' : 'Bildirim sesi') + (notifySoundOn ? ' açık' : ' kapalı');
+}
+
+function syncMyModel(model) {
+  if (myRole !== 'tr') return;
+  fbSet(MODEL_PATH, model);
+}
+
+function listenTheirModel() {
+  // VI tarafı: TR'nin seçtiği modeli kullan
+  if(myRole === 'vi') {
+    fbGet(MODEL_PATH + '/tr').then(m => {
+      if(m) { selectedModel=m; localStorage.setItem('askviet_model',m); }
+    });
+  }
+  fbListen(MODEL_PATH, event => {
+    if (!event || !event.data) return;
+    const path = event.path || '/';
+    let theirModel = null;
+    if (path === '/') {
+      theirModel = event.data[theirRole];
+    } else if (path === '/' + theirRole) {
+      theirModel = event.data;
+    }
+    if (theirModel) {
+      const badge = document.getElementById('theirModelBadge');
+      if (badge) {
+        badge.textContent = MODEL_NAMES[theirModel] || theirModel.split(':')[1];
+        badge.classList.add('active');
+      }
+    }
+  });
+}
+
+function listenModelConfig() {
+  if (unsubModel) unsubModel();
+  fbGet(MODEL_PATH).then(m => {
+    if (m) setSelectedModel(m, true);
+    else if (myRole === 'tr') syncMyModel(selectedModel);
+  });
+  unsubModel = fbListen(MODEL_PATH, event => {
+    if (!event || !event.data) return;
+    setSelectedModel(event.data, true);
+  });
+}
+
+function toggleAutoRead() {
+  unlockAudio();
+  autoRead = !autoRead;
+  localStorage.setItem('askviet_autoread', autoRead ? '1' : '0');
+  updateAutoReadUI();
+  if (myRole === 'vi') fbSet(VN_AUTO_READ_PATH, autoRead);
+}
+
+function updateAutoReadUI() {
+  const status = document.getElementById('autoReadStatus');
+  const text = myRole === 'vi'
+    ? (autoRead ? '🔊 Tự đọc' : '🔇 Tắt đọc')
+    : (autoRead ? '🔊 Açık' : '🔇 Kapalı');
+  if (status) {
+    status.textContent = text;
+    status.classList.toggle('on', autoRead);
+    status.title = myRole === 'vi'
+      ? 'Tự động đọc tin nhắn mới'
+      : 'Yeni mesajları otomatik seslendir';
+  }
+}
+
+function listenAutoReadConfig() {
+  stopAutoReadPolling();
+  const poll = async () => {
+    try {
+      const value = await fbGet(VN_AUTO_READ_PATH);
+      const enabled = value !== false;
+      vnAutoRead = enabled;
+      if (myRole === 'vi') {
+        autoRead = enabled;
+        localStorage.setItem('askviet_autoread', autoRead ? '1' : '0');
+        updateAutoReadUI();
+      }
+      updateVnAutoReadUI();
+    } catch (e) {
+      console.warn('auto read status error', e);
+    }
+  };
+  poll();
+  autoReadPollTimer = setInterval(poll, 2500);
+}
+
+function updateAutoReadUI() {
+  const status = document.getElementById('autoReadStatus');
+  const text = myRole === 'vi'
+    ? (autoRead ? '🔊 Tự đọc' : '🔇 Tắt đọc')
+    : (autoRead ? '🔊 Açık' : '🔇 Kapalı');
+  if (status) {
+    status.textContent = text;
+    status.classList.toggle('on', autoRead);
+    status.title = myRole === 'vi'
+      ? (autoRead ? 'Tự động đọc: bật' : 'Tự động đọc: tắt')
+      : 'Yeni mesajları otomatik seslendir';
+  }
+}
+
+function updateNotifySoundUI() {
+  const btn = document.getElementById('notifySoundBtn');
+  if (!btn) return;
+  const label = myRole === 'vi' ? 'Âm' : 'Bild.';
+  btn.textContent = (notifySoundOn ? '✓ ' : '✕ ') + label;
+  btn.classList.toggle('off', !notifySoundOn);
+  btn.title = myRole === 'vi'
+    ? ('Âm báo: ' + (notifySoundOn ? 'bật' : 'tắt'))
+    : ('Bildirim sesi ' + (notifySoundOn ? 'açık' : 'kapalı'));
+}
+
+// ── Sesli Mesaj (PTT mantığı) ─────────────────────────────────────────────
+let rec=null,recChunks=[],recStream=null,recNode=null,recAnalyser=null,recData=null;
+let recTimer=null,recHadSpeech=false,recSilentSince=0,recStarted=0,recButton=null,recAudioCtx=null,recLoudFrames=0;
+let recFrameCount=0,recVoiceFrames=0,recRmsSum=0,recPeak=0;
+let micNoSpeechTimes=[];
+
+function rms(analyser,data){analyser.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const v=(data[i]-128)/128;sum+=v*v}return Math.sqrt(sum/data.length)}
+function resetRecStats(){recFrameCount=0;recVoiceFrames=0;recRmsSum=0;recPeak=0}
+function noteRecFrame(v){recFrameCount++;recRmsSum+=v;recPeak=Math.max(recPeak,v);if(v>0.012)recVoiceFrames++}
+function shouldKeepRecordingForWhisper(had,blob){
+  const duration=(Date.now()-recStarted)/1000;
+  const avg=recFrameCount?recRmsSum/recFrameCount:0;
+  if(!had||!blob||!blob.size)return false;
+  if(duration<0.35)return false;
+  if(recPeak>0.16&&duration<0.75&&recVoiceFrames<2)return false;
+  if(recVoiceFrames<2&&recPeak<0.045)return false;
+  if(avg<0.004&&recPeak<0.035)return false;
+  return true;
+}
+function stopRec(){if(rec&&rec.state==='recording'){try{rec.stop()}catch{}}}
+function stopRecorder(){stopRec()}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+function cancelRecorderSilent(){
+  if(recTimer){clearInterval(recTimer);recTimer=null}
+  if(rec){
+    try{
+      rec.ondataavailable=null;
+      rec.onstop=null;
+      if(rec.state==='recording')rec.stop();
+    }catch{}
+    rec=null;
+  }
+  if(recNode){try{recNode.disconnect()}catch{}recNode=null}
+  recAnalyser=null;recData=null;
+  if(recStream){try{recStream.getTracks().forEach(t=>t.stop())}catch{}recStream=null}
+  if(recButton){recButton.classList.remove('mic-recording');recButton=null}
+  recChunks=[];
+  recHadSpeech=false;
+  recSilentSince=0;
+  recLoudFrames=0;
+  resetRecStats();
+}
+
+function showMicReloadNotice(){
+  const text=myRole==='vi'?'Đang làm mới micro...':'Mikrofon yenileniyor...';
+  let box=document.getElementById('micReloadNotice');
+  if(!box){
+    box=document.createElement('div');
+    box.id='micReloadNotice';
+    box.style.cssText='position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:99999;background:#111827;color:#fff;border:1px solid #22c55e;border-radius:999px;padding:10px 16px;font-size:14px;font-weight:900;box-shadow:0 8px 26px rgba(0,0,0,.35);white-space:nowrap';
+    document.body.appendChild(box);
+  }
+  box.textContent=text;
+}
+
+function handleNoSpeechStop(btn){
+  const now=Date.now();
+  micNoSpeechTimes=micNoSpeechTimes.filter(t=>now-t<30000);
+  micNoSpeechTimes.push(now);
+  if(micNoSpeechTimes.length>=2){
+    showMicReloadNotice();
+    if(myRole) localStorage.setItem('askviet_reload_role', myRole);
+    if(btn)btn.textContent='⏳';
+    setTimeout(()=>location.reload(),800);
+    return true;
+  }
+  return false;
+}
+
+async function resetRecAudioCtx(){
+  if(recAudioCtx){
+    try{await recAudioCtx.close()}catch{}
+    recAudioCtx=null;
+  }
+}
+
+async function ensureAudioCtx(){
+  try{
+    if(!recAudioCtx||recAudioCtx.state==='closed') recAudioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(recAudioCtx.state==='suspended') await recAudioCtx.resume();
+  }catch{}
+  return recAudioCtx;
+}
+
+async function startRecorder(source,button,onDone,autoSilence=false){
+  try{await unlockAudio()}catch{}
+  if(rec){
+    if(recButton===button){stopRecorder();return}
+    stopRecorder();
+    await sleep(180);
+  }
+  stopAudio();
+  recButton=button;
+  recChunks=[];
+  recHadSpeech=false;
+  recSilentSince=0;
+  recLoudFrames=0;
+  resetRecStats();
+  button.classList.add('mic-recording');
+  try{
+    const ctx=await ensureAudioCtx();
+    recStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});
+    if(ctx&&ctx.state==='suspended') await ctx.resume();
+    recNode=ctx.createMediaStreamSource(recStream);
+    recAnalyser=ctx.createAnalyser();
+    recAnalyser.fftSize=1024;
+    recData=new Uint8Array(recAnalyser.fftSize);
+    recNode.connect(recAnalyser);
+    rec=new MediaRecorder(recStream,{mimeType:MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm'});
+    rec.ondataavailable=e=>{if(e.data&&e.data.size)recChunks.push(e.data)};
+    rec.onstop=async()=>{
+      const chunks=recChunks.slice(),had=recHadSpeech,mt=rec?.mimeType||'audio/webm';
+      clearInterval(recTimer);recTimer=null;
+      if(recNode){try{recNode.disconnect()}catch{}recNode=null}
+      recAnalyser=null;recData=null;
+      if(recStream){try{recStream.getTracks().forEach(t=>t.stop())}catch{}recStream=null}
+      button.classList.remove('mic-recording');
+      rec=null;
+      recButton=null;
+      await sleep(260);
+      const blob=new Blob(chunks,{type:mt});
+      await onDone(blob,shouldKeepRecordingForWhisper(had,blob));
+    };
+    rec.start(120);
+    recStarted=Date.now();
+    recTimer=setInterval(()=>{
+      if(!recAnalyser||!recData)return;
+      const v=rms(recAnalyser,recData),now=Date.now();
+      noteRecFrame(v);
+      const speech=v>0.012;
+      if(speech){
+        recHadSpeech=true;
+        recSilentSince=0;
+        return;
+      }
+      if(!autoSilence)return;
+      if(recHadSpeech){
+        if(!recSilentSince)recSilentSince=now;
+        if(now-recSilentSince>1500)stopRecorder();
+      }else if(now-recStarted>2000)stopRecorder();
+      if(now-recStarted>12000)stopRecorder();
+    },120);
+  }catch(e){
+    if(recNode){try{recNode.disconnect()}catch{}recNode=null}
+    recAnalyser=null;recData=null;
+    if(recStream){try{recStream.getTracks().forEach(t=>t.stop())}catch{}recStream=null}
+    button.classList.remove('mic-recording');
+    rec=null;
+    recButton=null;
+    alert('Mikrofon izni gerekli: '+e.message);
+  }
+}
+
+function stopAutoReadPolling() {
+  if (autoReadPollTimer) {
+    clearInterval(autoReadPollTimer);
+    autoReadPollTimer = null;
+  }
+}
+
+function setupTrGuard() {
+  const guard = document.getElementById('trGuard');
+  if (guard) guard.style.display = myRole === 'tr' ? 'flex' : 'none';
+  updateVnAutoReadUI();
+  updateOnlineCount(1);
+}
+
+function updateVnAutoReadUI() {
+  const btn = document.getElementById('vnAutoReadBtn');
+  if (!btn) return;
+  btn.textContent = (vnAutoRead ? '🔊 VN' : '🔇 VN');
+  btn.classList.toggle('on', vnAutoRead);
+  btn.classList.toggle('off', !vnAutoRead);
+  btn.title = vnAutoRead ? 'Vietnam tarafı otomatik ses açık' : 'Vietnam tarafı otomatik ses kapalı';
+}
+
+async function toggleVnAutoRead() {
+  if (myRole !== 'tr') return;
+  try { unlockAudio(); } catch(e) {}
+  vnAutoRead = !vnAutoRead;
+  updateVnAutoReadUI();
+  await fbSet(VN_AUTO_READ_PATH, vnAutoRead);
+}
+
+function updateOnlineCount(count) {
+  const el = document.getElementById('onlineCount');
+  if (!el) return;
+  el.textContent = String(Math.max(1, count || 1));
+}
+
+function lastSeenOnlineText() {
+  return myRole === 'vi' ? 'Đang hoạt động' : 'Şu anda aktif';
+}
+
+function formatLastSeen(ts) {
+  const el = document.getElementById('lastSeenStatus');
+  if (!el) return;
+  el.classList.remove('online');
+  if (!ts) {
+    el.innerHTML = (myRole === 'vi' ? 'Lần hoạt động cuối' : 'Son görülme') + '<span class="presence-sep">|</span>' + (myRole === 'vi' ? 'Chưa có' : 'Yok');
+    return;
+  }
+  const diff = Math.max(0, Date.now() - Number(ts));
+  const min = Math.floor(diff / 60000);
+  if (min < 60) {
+    const n = Math.max(1, min);
+    el.innerHTML = (myRole === 'vi' ? 'Lần hoạt động cuối' : 'Son görülme') + '<span class="presence-sep">|</span>' + (myRole === 'vi' ? `${n} phút trước hoạt động` : `${n} dk önce aktifti`);
+    return;
+  }
+  const d = new Date(Number(ts));
+  const time = d.toLocaleTimeString(myRole === 'vi' ? 'vi-VN' : 'tr-TR', { hour:'2-digit', minute:'2-digit' });
+  el.innerHTML = (myRole === 'vi' ? 'Lần hoạt động cuối ' : 'Son görülme ') + time;
+}
+
+function updateLastSeenStatus(isOnline, lastTs) {
+  const el = document.getElementById('lastSeenStatus');
+  if (!el) return;
+  el.classList.toggle('online', !!isOnline);
+  if (isOnline) el.innerHTML = (myRole === 'vi' ? 'Lần hoạt động cuối' : 'Son görülme') + '<span class="presence-sep">|</span><span class="presence-dot"></span>' + lastSeenOnlineText();
+  else formatLastSeen(lastTs);
+}
+
+function initPresence() {
+  stopPresence(false);
+  const heartbeat = () => {
+    if (!myRole) return;
+    const ts = Date.now();
+    fbSet(PRESENCE_PATH + '/' + presenceId, { role: myRole, ts }).catch(() => {});
+    fbSet(PRESENCE_LAST_PATH + '/' + myRole, ts).catch(() => {});
+  };
+  heartbeat();
+  presenceHeartbeatTimer = setInterval(heartbeat, 20000);
+  const poll = async () => {
+    try {
+      const data = await fbGet(PRESENCE_PATH);
+      const last = await fbGet(PRESENCE_LAST_PATH + '/' + theirRole);
+      const now = Date.now();
+      const active = data && typeof data === 'object' ? Object.values(data).filter(v => v && Number(v.ts) > now - 45000) : [];
+      const count = active.length || 1;
+      const theirOnline = active.some(v => v && v.role === theirRole);
+      if (myRole === 'tr') updateOnlineCount(count);
+      updateLastSeenStatus(theirOnline, last);
+    } catch (e) {
+      if (myRole === 'tr') updateOnlineCount(1);
+      updateLastSeenStatus(false, null);
+    }
+  };
+  poll();
+  presencePollTimer = setInterval(poll, 10000);
+}
+
+function stopPresence(removeOwn = true) {
+  if (presenceHeartbeatTimer) {
+    clearInterval(presenceHeartbeatTimer);
+    presenceHeartbeatTimer = null;
+  }
+  if (presencePollTimer) {
+    clearInterval(presencePollTimer);
+    presencePollTimer = null;
+  }
+  if (removeOwn && myRole) {
+    fbSet(PRESENCE_LAST_PATH + '/' + myRole, Date.now()).catch(() => {});
+    fbRemove(PRESENCE_PATH + '/' + presenceId).catch(() => {});
+  }
+}
+
+async function startVoice() {
+  const btn = document.getElementById('micBtn');
+  return startRecorder(myRole,btn,async(blob,had)=>{
+    if(!had||!blob||!blob.size){
+      if(!handleNoSpeechStop(btn))btn.textContent='🎙';
+      return;
+    }
+    micNoSpeechTimes=[];
+    btn.textContent='⏳';
+    try{
+      const text=await transcribeVoice(blob);
+      if(text){document.getElementById('msgInput').value=text;sendMessage();}
+    }catch(e){console.error('Ses hatası:',e);}
+    btn.textContent='🎙';
+  },true);
+}
+
+async function transcribeVoice(blob) {
+  const [provider] = selectedModel.split(':');
+  if (provider === 'gemini') {
+    // Gemini için base64
+    const base64 = await new Promise(res => {
+      const r = new FileReader();
+      r.onload = () => res(r.result.split(',')[1]);
+      r.readAsDataURL(blob);
+    });
+    const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        contents: [{parts: [
+          {inline_data: {mime_type: 'audio/webm', data: base64}},
+          {text: myRole === 'tr' ? 'Bu Türkçe sesi metne çevir, sadece metni döndür.' : 'Chuyển giọng nói tiếng Việt này thành văn bản, chỉ trả về văn bản.'}
+        ]}],
+        generationConfig: {thinkingConfig: {thinkingBudget: 0}}
+      })
+    });
+    const data = await resp.json();
+    return (data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
+  } else {
+    // OpenAI Whisper
+    const fd = new FormData();
+    fd.append('file', blob, 'audio.webm');
+    fd.append('model', 'whisper-1');
+    fd.append('language', myRole === 'tr' ? 'tr' : 'vi');
+    fd.append('prompt', myRole === 'tr'
+      ? 'Türkçe günlük konuşma. Duyduğun konuşmayı aynen yaz, ekleme yapma.'
+      : 'Tiếng Việt hội thoại hằng ngày. Chỉ chép lại đúng lời nói nghe được, không thêm nội dung.');
+    const resp = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+      method: 'POST',
+      headers: {'Authorization': 'Bearer ' + apiKey},
+      body: fd
+    });
+    const data = await resp.json();
+    return (data.text || '').trim();
+  }
+}
+
+async function transcribeVoiceOpenAI(blob) {
+  const key = localStorage.getItem('askviet_key') || '';
+  if (!key) throw new Error('OpenAI API key gerekli');
+  const fd = new FormData();
+  fd.append('file', blob, 'audio.webm');
+  fd.append('model', 'whisper-1');
+  fd.append('language', myRole === 'tr' ? 'tr' : 'vi');
+  fd.append('prompt', myRole === 'tr'
+    ? 'Türkçe günlük konuşma. Duyduğun konuşmayı aynen yaz, ekleme yapma.'
+    : 'Tiếng Việt hội thoại hằng ngày. Chỉ chép lại đúng lời nói nghe được, không thêm nội dung.');
+  const resp = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+    method: 'POST',
+    headers: {'Authorization': 'Bearer ' + key},
+    body: fd
+  });
+  const data = await resp.json();
+  if (!resp.ok) throw new Error(data.error?.message || resp.statusText);
+  return (data.text || '').trim();
+}
+transcribeVoice = transcribeVoiceOpenAI;
+
+window.addEventListener('beforeunload', () => {
+  if (myRole) fbSet(TYPING_PATH + '/' + myRole, false);
+  stopPresence(true);
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    clearUnreadCount();
+    if (myRole) fbSet(PRESENCE_PATH + '/' + presenceId, { role: myRole, ts: Date.now() }).catch(() => {});
+    if (myRole) fbSet(PRESENCE_LAST_PATH + '/' + myRole, Date.now()).catch(() => {});
+    if (recAudioCtx && recAudioCtx.state === 'suspended') {
+      try { recAudioCtx.resume(); } catch {}
+    }
+  } else {
+    if (rec) cancelRecorderSilent();
+    stopAudio();
+    if (myRole) fbSet(TYPING_PATH + '/' + myRole, false).catch(() => {});
+  }
+});
+window.addEventListener('pagehide', () => {
+  if (rec) cancelRecorderSilent();
+});
+['pointerdown','touchstart','click'].forEach(type => {
+  document.addEventListener(type, () => {
+    if (notifySoundOn) unlockNotifySound(false);
+  }, { passive: true });
+});
 </script>
 </body>
 </html>
+
+
+
