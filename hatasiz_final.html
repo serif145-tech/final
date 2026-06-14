@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+?<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -81,12 +81,12 @@ img,svg,video,canvas{max-width:100%;height:auto}
 .msg.theirs .msg-head{flex-direction:row-reverse}
 .msg-flag{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #ddd;box-shadow:0 1px 4px rgba(0,0,0,.12);font-size:11px;line-height:1;flex:0 0 18px}
 
-/* Okunacak dil â€” bÃ¼yÃ¼k ve belirgin */
+/* Okunacak dil — büyük ve belirgin */
 .msg-original{max-width:100%;padding:10px 14px;border-radius:var(--radius);font-size:16px;font-weight:600;line-height:1.4;word-break:break-word;overflow-wrap:anywhere}
 .msg.mine .msg-original{background:rgba(124,58,237,0.92);color:#fff;border-bottom-right-radius:4px}
 .msg.theirs .msg-original{background:rgba(185,28,110,0.92);color:#fff;border-bottom-left-radius:4px}
 
-/* Ã‡eviri â€” kÃ¼Ã§Ã¼k ve soluk */
+/* Çeviri — küçük ve soluk */
 .msg-translation{font-size:12px;color:#666;padding:3px 14px 0;font-style:italic;line-height:1.4}
 
 .msg-time{font-size:10px;color:#999;padding:2px 14px 4px}
@@ -149,23 +149,23 @@ img,svg,video,canvas{max-width:100%;height:auto}
 <!-- PASSWORD -->
 <div id="pwscreen">
   <div class="witch-img">
-    <img src="https://raw.githubusercontent.com/serif145-tech/askviet/main/witch.png" alt="cadÄ±" style="width:220px;height:220px;object-fit:cover;border-radius:50%;border:3px solid #a78bfa;box-shadow:0 0 30px #7c3aed88">
+    <img src="https://raw.githubusercontent.com/serif145-tech/askviet/main/witch.png" alt="cadı" style="width:220px;height:220px;object-fit:cover;border-radius:50%;border:3px solid #a78bfa;box-shadow:0 0 30px #7c3aed88">
   </div>
-  <div class="witch-sub">CÃ´ gÃ¡i mÅ©i táº¹t dá»… thÆ°Æ¡ng ðŸ¥°ðŸ˜˜ðŸ’œ</div>
-  <div class="witch-sub" style="font-size:12px;margin-top:2px">Anh muá»‘n nÃ³i chuyá»‡n vá»›i em thÃ´i~ ðŸ« ðŸ’‹</div>
-  <div class="hearts">ðŸ’œ ðŸ’‹ ðŸ¥° ðŸ’‹ ðŸ’œ</div>
+  <div class="witch-sub">Cô gái mũi tẹt dễ thương 🥰😘💜</div>
+  <div class="witch-sub" style="font-size:12px;margin-top:2px">Anh muốn nói chuyện với em thôi~ 🫠💋</div>
+  <div class="hearts">💜 💋 🥰 💋 💜</div>
   <div class="pw-box">
-    <input class="pw-input" type="password" id="pwInput" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" maxlength="20">
-    <button class="pw-btn" onclick="checkPw()">âœ¨ Gir</button>
+    <input class="pw-input" type="password" id="pwInput" placeholder="••••••••" maxlength="20">
+    <button class="pw-btn" onclick="checkPw()">✨ Gir</button>
   </div>
-  <div class="pw-err" id="pwErr">HatalÄ± ÅŸifre ðŸ™…â€â™€ï¸</div>
+  <div class="pw-err" id="pwErr">Hatalı şifre 🙅�?♀�?</div>
 </div>
 
 <!-- SETUP -->
 <div id="setup">
   <div>
     <div class="logo">AskViet</div>
-    <div class="logo-sub">TR â‡Œ VI Ã§evirmen</div>
+    <div class="logo-sub">TR ⇌ VI çevirmen</div>
   </div>
 
   <div class="setup-card">
@@ -186,26 +186,26 @@ img,svg,video,canvas{max-width:100%;height:auto}
     <div class="setup-label">OpenAI API Key</div>
     <div class="paste-row">
       <input class="setup-input" type="password" id="apiKeyInput" placeholder="sk-...">
-      <button class="paste-btn" onclick="pasteKey()">ðŸ“‹ YapÄ±ÅŸtÄ±r</button>
+      <button class="paste-btn" onclick="pasteKey()">📋 Yapıştır</button>
     </div>
 
     <div class="setup-label">Gemini API Key</div>
     <div class="paste-row">
       <input class="setup-input" type="password" id="geminiKeyInput" placeholder="AIza...">
-      <button class="paste-btn" onclick="pasteGeminiKey()">ðŸ“‹ YapÄ±ÅŸtÄ±r</button>
+      <button class="paste-btn" onclick="pasteGeminiKey()">📋 Yapıştır</button>
     </div>
   </div>
 
     <div class="role-cards">
     <div class="role-card tr-card" onclick="start('tr')">
-      <div class="role-flag">ðŸ‡¹ðŸ‡·</div>
-      <div class="role-name">TÃ¼rkÃ§e taraf</div>
-      <div class="role-desc">TÃ¼rkÃ§e yaz â†’ karÅŸÄ± taraf Vietnamca gÃ¶rsÃ¼n</div>
+      <div class="role-flag">🇹🇷</div>
+      <div class="role-name">Türkçe taraf</div>
+      <div class="role-desc">Türkçe yaz → karşı taraf Vietnamca görsün</div>
     </div>
     <div class="role-card vi-card" onclick="start('vi')">
-      <div class="role-flag">ðŸ‡»ðŸ‡³</div>
-      <div class="role-name">Tiáº¿ng Viá»‡t</div>
-      <div class="role-desc">Viáº¿t tiáº¿ng Viá»‡t â†’ Ä‘á»‘i phÆ°Æ¡ng xem tiáº¿ng Thá»•</div>
+      <div class="role-flag">🇻🇳</div>
+      <div class="role-name">Tiếng Việt</div>
+      <div class="role-desc">Viết tiếng Việt → đối phương xem tiếng Thổ</div>
     </div>
   </div>
 </div>
@@ -214,8 +214,8 @@ img,svg,video,canvas{max-width:100%;height:auto}
 <div id="chat">
   <div class="chat-header">
     <div class="header-main">
-      <div class="chat-title" id="chatTitle">ðŸ‡¹ðŸ‡· â†’ ðŸ‡»ðŸ‡³</div>
-      <div class="chat-subtitle" id="chatSubtitle">BaÄŸlanÄ±yor...</div>
+      <div class="chat-title" id="chatTitle">🇹🇷 → 🇻🇳</div>
+      <div class="chat-subtitle" id="chatSubtitle">Bağlanıyor...</div>
       <div style="display:flex;gap:6px;margin-top:4px;align-items:center">
         <span class="model-badge active" id="myModelBadge">-</span>
         <span style="color:var(--muted);font-size:10px">vs</span>
@@ -227,14 +227,14 @@ img,svg,video,canvas{max-width:100%;height:auto}
         <img src="https://raw.githubusercontent.com/serif145-tech/askviet/main/witch.png" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--tr);box-shadow:0 0 10px #7c3aed55" alt="">
         <div class="settings-actions">
           <div class="conn-dot off" id="connDot"></div>
-          <select class="chat-model-select" id="chatModelSelect" title="Model seÃ§imi">
+          <select class="chat-model-select" id="chatModelSelect" title="Model seçimi">
             <option value="openai:gpt-5.5">GPT-5.5</option>
             <option value="openai:gpt-5.4">5.4</option>
             <option value="openai:gpt-5.4-mini">5.4 mini</option>
             <option value="gemini:gemini-2.5-flash">Gemini</option>
           </select>
-          <button class="status-pill" id="autoReadStatus" onclick="toggleAutoRead()" title="Otomatik ses">ðŸ”‡ KapalÄ±</button>
-          <button class="notify-toggle" id="notifySoundBtn" onclick="toggleNotifySound()" title="Bildirim sesi">âœ“ Bildirim sesi</button>
+          <button class="status-pill" id="autoReadStatus" onclick="toggleAutoRead()" title="Otomatik ses">🔇 Kapalı</button>
+          <button class="notify-toggle" id="notifySoundBtn" onclick="toggleNotifySound()" title="Bildirim sesi">✓ Bildirim sesi</button>
           <button class="back-btn" onclick="toggleTtsSettings()">&#9881;</button>
         </div>
         <div class="tts-panel" id="ttsPanel">
@@ -291,8 +291,8 @@ img,svg,video,canvas{max-width:100%;height:auto}
 
   <div class="messages" id="messages">
     <div class="empty-state" id="emptyState">
-      <div class="empty-emoji">ðŸ’¬</div>
-      <div class="empty-text" id="emptyText">HenÃ¼z mesaj yok.<br>Ä°lk mesajÄ± gÃ¶nder!</div>
+      <div class="empty-emoji">💬</div>
+      <div class="empty-text" id="emptyText">Henüz mesaj yok.<br>İlk mesajı gönder!</div>
     </div>
     <div class="typing-indicator" id="typingIndicator">
       <div class="typing-dot"></div>
@@ -303,8 +303,8 @@ img,svg,video,canvas{max-width:100%;height:auto}
 
   <div class="input-bar">
     <textarea class="msg-input" id="msgInput" rows="1" placeholder="Mesaj yaz..."></textarea>
-    <button class="send-btn" id="micBtn" style="background:var(--surface2);border:1.5px solid var(--border)" onclick="startVoice()">ðŸŽ™</button>
-    <button class="send-btn" id="sendBtn" onclick="sendMessage()">âž¤</button>
+    <button class="send-btn" id="micBtn" style="background:var(--surface2);border:1.5px solid var(--border)" onclick="startVoice()">🎙</button>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
   </div>
 </div>
 
@@ -348,7 +348,7 @@ const TTS_DEFAULTS = {
   speed: '1'
 };
 
-// â”€â”€ Åžifre â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Şifre ─────────────────────────────────────────────────────────────────
 function checkPw() {
   const val = document.getElementById('pwInput').value;
   if (val === PW) {
@@ -356,7 +356,7 @@ function checkPw() {
     document.getElementById('pwscreen').style.display = 'none';
     document.getElementById('setup').style.display = 'flex';
     loadSaved();
-    // Keys zaten kayÄ±tlÄ±ysa setup card'Ä± gizle
+    // Keys zaten kayıtlıysa setup card'ı gizle
     const savedOai2 = localStorage.getItem('askviet_key');
     const savedGem2 = localStorage.getItem('askviet_gemini_key');
     if(savedOai2 && savedGem2) {
@@ -369,15 +369,15 @@ function checkPw() {
     setTimeout(() => err.style.display = 'none', 2000);
   }
 }
-// Daha Ã¶nce giriÅŸ yapÄ±ldÄ±ysa ÅŸifreyi atla
+// Daha önce giriş yapıldıysa şifreyi atla
 if (localStorage.getItem('askviet_auth') === '1') {
   document.getElementById('pwscreen').style.display = 'none';
-  // Keys kayÄ±tlÄ±ysa setup'u da atla â€” direkt rol seÃ§imine geÃ§
+  // Keys kayıtlıysa setup'u da atla — direkt rol seçimine geç
   const savedOai = localStorage.getItem('askviet_key');
   const savedGem = localStorage.getItem('askviet_gemini_key');
   if (savedOai && savedGem) {
     document.getElementById('setup').style.display = 'flex';
-    // Key alanlarÄ±nÄ± gizle, sadece rol kartlarÄ± gÃ¶ster
+    // Key alanlarını gizle, sadece rol kartları göster
     const card = document.querySelector('.setup-card');
     if(card) card.style.display = 'none';
     loadSaved();
@@ -388,28 +388,28 @@ if (localStorage.getItem('askviet_auth') === '1') {
 }
 document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPw(); });
 
-// â”€â”€ Model deÄŸiÅŸince label gÃ¼ncelle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// model change - artÄ±k ayrÄ± alanlar var, listener gerekmez
+// ── Model değişince label güncelle ────────────────────────────────────────
+// model change - artık ayrı alanlar var, listener gerekmez
 
-// â”€â”€ Paste â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Paste ─────────────────────────────────────────────────────────────────
 async function pasteTtsKey() {
   try {
     const text = await navigator.clipboard.readText();
     document.getElementById('ttsKeyInput').value = text.trim();
   } catch {
-    alert('YapÄ±ÅŸtÄ±rma izni gerekli. Manuel yapÄ±ÅŸtÄ±r.');
+    alert('Yapıştırma izni gerekli. Manuel yapıştır.');
   }
 }
 async function pasteGeminiKey() {
   try { const t=await navigator.clipboard.readText(); document.getElementById('geminiKeyInput').value=t.trim(); }
-  catch { alert('YapÄ±ÅŸtÄ±rma izni gerekli.'); }
+  catch { alert('Yapıştırma izni gerekli.'); }
 }
 async function pasteKey() {
   try {
     const text = await navigator.clipboard.readText();
     document.getElementById('apiKeyInput').value = text.trim();
   } catch {
-    alert('YapÄ±ÅŸtÄ±rma izni gerekli. Manuel yapÄ±ÅŸtÄ±r.');
+    alert('Yapıştırma izni gerekli. Manuel yapıştır.');
   }
 }
 
@@ -484,12 +484,12 @@ function loadSaved() {
   if (savedModel) {
     document.getElementById('modelSelect').value = savedModel;
     const isGemini = savedModel.startsWith('gemini');
-    // apiLabel kaldÄ±rÄ±ldÄ± â€” artÄ±k ayrÄ± alanlar var
+    // apiLabel kaldırıldı — artık ayrı alanlar var
 
   }
 }
 
-// â”€â”€ Firebase REST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Firebase REST ──────────────────────────────────────────────────────────
 async function fbGet(path) {
   const r = await fetch(DB_URL + path + '.json');
   return r.ok ? r.json() : null;
@@ -513,7 +513,7 @@ function fbListen(path, cb) {
   return () => es.close();
 }
 
-// â”€â”€ Setup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Setup ─────────────────────────────────────────────────────────────────
 function start(role) {
   try { unlockAudio(); } catch(e) {}
   requestNotifyPermission();
@@ -521,7 +521,7 @@ function start(role) {
   const geminiKey = document.getElementById('geminiKeyInput')?.value.trim()||localStorage.getItem('askviet_gemini_key')||'';
   if(!openaiKey){alert('OpenAI API key gerekli!');const c=document.querySelector('.setup-card');if(c)c.style.display='flex';return;}
   if(!geminiKey){alert('Gemini API key gerekli!');const c=document.querySelector('.setup-card');if(c)c.style.display='flex';return;}
-  apiKey=openaiKey; // translateText iÃ§inde model'e gÃ¶re seÃ§ilecek
+  apiKey=openaiKey; // translateText içinde model'e göre seçilecek
   localStorage.setItem('askviet_key', openaiKey);
   localStorage.setItem('askviet_gemini_key', geminiKey);
   saveTtsSettings();
@@ -540,21 +540,21 @@ function start(role) {
     const cs=document.getElementById('chatSubtitle');
     const mi=document.getElementById('msgInput');
     if(role === 'tr'){
-      if(ct) ct.textContent='ðŸ‡¹ðŸ‡· â†’ ðŸ‡»ðŸ‡³';
-      if(cs) cs.textContent='MesajlarÄ±n Vietnamca Ã§evriliyor';
-      if(mi) mi.placeholder='TÃ¼rkÃ§e yaz...';
+      if(ct) ct.textContent='🇹🇷 → 🇻🇳';
+      if(cs) cs.textContent='Mesajların Vietnamca çevriliyor';
+      if(mi) mi.placeholder='Türkçe yaz...';
       try{const sa=document.getElementById('settingsBtnArea');if(sa)sa.style.display='flex';}catch(e){}
     }else{
-      if(ct) ct.textContent='ðŸ‡»ðŸ‡³ â†’ ðŸ‡¹ðŸ‡·';
-      if(cs) cs.textContent='Tin nháº¯n Ä‘Æ°á»£c dá»‹ch sang tiáº¿ng Thá»•';
-      if(mi) mi.placeholder='Viáº¿t tiáº¿ng Viá»‡t...';
+      if(ct) ct.textContent='🇻🇳 → 🇹🇷';
+      if(cs) cs.textContent='Tin nhắn được dịch sang tiếng Thổ';
+      if(mi) mi.placeholder='Viết tiếng Việt...';
       try{const sa=document.getElementById('settingsBtnArea');if(sa)sa.style.display='flex';}catch(e){}
-  // VI: model alanÄ± setup'ta gizli kalsÄ±n
+  // VI: model alanı setup'ta gizli kalsın
     }
   }catch(e){console.error('start UI error:',e)}
   setupChatControls();
-  // boÅŸ mesaj metni dile gÃ¶re
-  setTimeout(()=>{const emptyT = document.getElementById('emptyText');if (emptyT) emptyT.innerHTML = role === 'tr' ? 'HenÃ¼z mesaj yok.<br>Ä°lk mesajÄ± gÃ¶nder!' : 'ChÆ°a cÃ³ tin nháº¯n.<br>Gá»­i tin nháº¯n Ä‘áº§u tiÃªn!';},100);
+  // boş mesaj metni dile göre
+  setTimeout(()=>{const emptyT = document.getElementById('emptyText');if (emptyT) emptyT.innerHTML = role === 'tr' ? 'Henüz mesaj yok.<br>İlk mesajı gönder!' : 'Chưa có tin nhắn.<br>Gửi tin nhắn đầu tiên!';},100);
   // model badge
   try{
     const myBadge = document.getElementById('myModelBadge');
@@ -578,10 +578,10 @@ function goBack() {
   stopAudio();
   document.getElementById('setup').style.display = 'flex';
   document.getElementById('chat').style.display = 'none';
-  document.getElementById('messages').innerHTML = '<div class="empty-state" id="emptyState"><div class="empty-emoji">ðŸ’¬</div><div class="empty-text" id="emptyText">HenÃ¼z mesaj yok.<br>Ä°lk mesajÄ± gÃ¶nder!</div></div><div class="typing-indicator" id="typingIndicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  document.getElementById('messages').innerHTML = '<div class="empty-state" id="emptyState"><div class="empty-emoji">💬</div><div class="empty-text" id="emptyText">Henüz mesaj yok.<br>İlk mesajı gönder!</div></div><div class="typing-indicator" id="typingIndicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
 }
 
-// â”€â”€ Chat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Chat ──────────────────────────────────────────────────────────────────
 function initChat() {
   chatListenStartedAt = Date.now();
   fbGet(MSGS_PATH).then(data => {
@@ -682,7 +682,7 @@ function renderMessage(key, msg) {
 
   const flag = document.createElement('span');
   flag.className = 'msg-flag';
-  flag.textContent = msg.role === 'tr' ? 'ðŸ‡¹ðŸ‡·' : 'ðŸ‡»ðŸ‡³';
+  flag.textContent = msg.role === 'tr' ? '🇹🇷' : '🇻🇳';
 
   const orig = document.createElement('div');
   orig.className = 'msg-original';
@@ -694,41 +694,41 @@ function renderMessage(key, msg) {
   const trans = document.createElement('div');
   trans.className = 'msg-translation';
   trans.id = 'trans-' + key;
-  // Her iki taraf iÃ§in Ã§eviri gÃ¶ster
+  // Her iki taraf için çeviri göster
   if (msg.translation) {
     trans.textContent = msg.translation;
   } else {
-    trans.textContent = 'â³ Ã§evriliyor...';
+    trans.textContent = '�?� çevriliyor...';
     trans.style.color = 'var(--tr2)';
     trans.style.fontStyle = 'normal';
   }
   div.appendChild(trans);
 
-  // Butonlar â€” â–¶ Ses, âš â†» AnlamadÄ±m, âœ• Sil
+  // Butonlar — ▶ Ses, ⚠↻ Anlamadım, ✕ Sil
   const btnRow = document.createElement('div');
   btnRow.className = 'btn-row';
   btnRow.style.cssText = 'display:flex;gap:6px;padding:2px 10px 6px;flex-wrap:wrap';
 
   const spBtn = document.createElement('button');
   spBtn.className = 'speakBtn';
-  spBtn.textContent = 'â–¶';
+  spBtn.textContent = '▶';
   spBtn.style.cssText = 'font-size:11px;padding:3px 8px;border-radius:8px;background:#e8e0f8;border:1px solid #c4b5fd;color:#5b21b6;cursor:pointer';
   spBtn.onclick = () => requestSpeakForMessage(key, spBtn);
 
   const misBtn = document.createElement('button');
-  misBtn.textContent = 'âš ';
-  misBtn.title = 'AnlamadÄ±m, tekrar sÃ¶yler misin?';
+  misBtn.textContent = '⚠';
+  misBtn.title = 'Anlamadım, tekrar söyler misin?';
   misBtn.style.cssText = 'font-size:11px;padding:3px 8px;border-radius:8px;background:#e8e0f8;border:1px solid #c4b5fd;color:#5b21b6;cursor:pointer';
   misBtn.onclick = () => {
     const lang = isMine ? myRole : theirRole;
-    const misText = lang === 'vi' ? 'Em khÃ´ng hiá»ƒu, anh nÃ³i láº¡i Ä‘Æ°á»£c khÃ´ng? ðŸ¥º' : 'AnlamadÄ±m aÅŸkÄ±m, tekrar sÃ¶yler misin? ðŸ¥º';
+    const misText = lang === 'vi' ? 'Em không hiểu, anh nói lại được không? 🥺' : 'Anlamadım aşkım, tekrar söyler misin? 🥺';
     document.getElementById('msgInput').value = misText;
   };
 
   misBtn.onclick = () => sendQuickMisunderstood();
 
   const delBtn = document.createElement('button');
-  delBtn.textContent = 'âœ•';
+  delBtn.textContent = '✕';
   delBtn.style.cssText = 'font-size:11px;padding:3px 8px;border-radius:8px;background:#fce7f3;border:1px solid #f9a8d4;color:#be185d;cursor:pointer';
   delBtn.onclick = () => deleteMessage(key);
 
@@ -779,12 +779,12 @@ function updateOrRender(key, msg) {
 function getMainText(msg) {
   const isMine = msg.role === myRole;
   if (isMine) return msg.text || '';
-  return msg.translation || 'â³ Ã§evriliyor...';
+  return msg.translation || '�?� çevriliyor...';
 }
 
 function getSubText(msg) {
   const isMine = msg.role === myRole;
-  if (isMine) return msg.translation || 'â³ Ã§evriliyor...';
+  if (isMine) return msg.translation || '�?� çevriliyor...';
   return msg.text || '';
 }
 
@@ -820,7 +820,7 @@ function updateReadStatus(key) {
   if (!box || !read || box.dataset.role !== myRole) return;
   const targetRole = myRole === 'tr' ? 'vi' : 'tr';
   const seen = targetRole === 'tr' ? box.dataset.readTr : box.dataset.readVi;
-  read.textContent = seen ? (myRole === 'vi' ? 'ÄÃ£ Ä‘á»c' : 'Okundu') : '';
+  read.textContent = seen ? (myRole === 'vi' ? '�?ã đ�?c' : 'Okundu') : '';
   read.classList.toggle('show', !!seen);
 }
 
@@ -872,7 +872,7 @@ function playNotifySound() {
 function showIncomingNotification(msg) {
   try {
     if (!('Notification' in window) || Notification.permission !== 'granted') return;
-    const title = msg.role === 'tr' ? 'ðŸ‡¹ðŸ‡· AskViet' : 'ðŸ‡»ðŸ‡³ AskViet';
+    const title = msg.role === 'tr' ? '🇹🇷 AskViet' : '🇻🇳 AskViet';
     const body = msg.translation || msg.text || 'Yeni mesaj';
     new Notification(title, { body, tag: 'askviet-new-message', silent: true });
   } catch {}
@@ -923,7 +923,7 @@ async function requestSpeakForMessage(key, btn) {
   if (!box) return;
   const targetRole = getRecipientRole(box.dataset.role);
   const text = getRecipientText(key);
-  if (!text || text.includes('â³') || text.includes('âš ')) return;
+  if (!text || text.includes('�?�') || text.includes('⚠')) return;
   if (targetRole === myRole) {
     speak(text, myRole, btn);
     return;
@@ -967,8 +967,8 @@ function handleAudioRequest(id, req) {
 
 function getMisunderstoodText() {
   return myRole === 'vi'
-    ? 'Em khÃ´ng hiá»ƒu, anh nÃ³i láº¡i Ä‘Æ°á»£c khÃ´ng? ðŸ¥º'
-    : 'AnlamadÄ±m aÅŸkÄ±m, tekrar sÃ¶yler misin? ðŸ¥º';
+    ? 'Em không hiểu, anh nói lại được không? 🥺'
+    : 'Anlamadım aşkım, tekrar söyler misin? 🥺';
 }
 
 async function sendQuickMisunderstood() {
@@ -989,7 +989,7 @@ function maybeAutoReadMessage(key) {
     return;
   }
   const text = box.dataset.translation || '';
-  if (!text || text.includes('â³') || text.includes('âš ')) return;
+  if (!text || text.includes('�?�') || text.includes('⚠')) return;
   autoReadDone.add(key);
   speak(text, myRole, null, true);
 }
@@ -1022,7 +1022,7 @@ async function sendMessage() {
     if (!key) return;
     translateAndUpdate(key, text, myRole);
   } catch (e) {
-    console.error('Mesaj gÃ¶nderilemedi:', e);
+    console.error('Mesaj gönderilemedi:', e);
     input.value = text;
   } finally {
     if (sendBtn) sendBtn.disabled = false;
@@ -1055,14 +1055,14 @@ async function translateAndUpdate(key, text, fromRole) {
 
 function retryText(role, attempt, total) {
   return role === 'vi'
-    ? `â³ Gemini Ä‘ang báº­n, Ä‘ang thá»­ láº¡i... (${attempt}/${total})`
-    : `â³ Gemini yoÄŸun, tekrar deneniyor... (${attempt}/${total})`;
+    ? `�?� Gemini đang bận, đang thử lại... (${attempt}/${total})`
+    : `�?� Gemini yoğun, tekrar deneniyor... (${attempt}/${total})`;
 }
 
 function errorText(role, msg) {
   return role === 'vi'
-    ? 'âš ï¸ Lá»—i dá»‹ch: ' + msg
-    : 'âš ï¸ Ã‡eviri hatasÄ±: ' + msg;
+    ? '⚠�? Lỗi dịch: ' + msg
+    : '⚠�? Çeviri hatası: ' + msg;
 }
 
 function isRetryableGeminiError(e) {
@@ -1071,9 +1071,9 @@ function isRetryableGeminiError(e) {
 }
 
 async function translateText(text, from) {
-  const fromName = from === 'tr' ? 'TÃ¼rkÃ§e' : 'Vietnamca';
-  const toName = from === 'tr' ? 'Vietnamca' : 'TÃ¼rkÃ§e';
-  const sysPrompt = `Sen sadece Ã§eviri motorusun. Kaynak dil: ${fromName}. Hedef dil: ${toName}. Ä°ki kiÅŸi sabittir: TÃ¼rkÃ§e taraf erkektir/anh, Vietnamca taraf kadÄ±ndÄ±r/em. TR->VI Ã§evirirken TÃ¼rk erkek VietnamlÄ± kadÄ±na konuÅŸur: kadÄ±na her zaman "em" diye hitap et; erkek kendinden sÃ¶z ederse "anh" kullan. "AÅŸkÄ±m/sevgilim" gibi hitaplarÄ± kadÄ±na sÃ¶yleniyorsa "em yÃªu", "em yÃªu cá»§a anh" gibi Ã§evir; "anh yÃªu" kullanma. VI->TR Ã§evirirken VietnamlÄ± kadÄ±n TÃ¼rk erkeÄŸe konuÅŸur: erkeÄŸe "anh", kendine "em" kullanÄ±ldÄ±ÄŸÄ±nÄ± varsay. Metnin tonunu, Ã¼slubunu ve duygusunu birebir yansÄ±t â€” samimi yazÄ±lmÄ±ÅŸsa samimi, kaba yazÄ±lmÄ±ÅŸsa kaba, kÃ¼fÃ¼rlÃ¼ yazÄ±lmÄ±ÅŸsa kÃ¼fÃ¼rlÃ¼ Ã§evir. HiÃ§bir ÅŸeyi sansÃ¼rleme veya deÄŸiÅŸtirme. Sadece Ã§eviriyi dÃ¶ndÃ¼r, baÅŸka hiÃ§bir ÅŸey yazma.`;
+  const fromName = from === 'tr' ? 'Türkçe' : 'Vietnamca';
+  const toName = from === 'tr' ? 'Vietnamca' : 'Türkçe';
+  const sysPrompt = `Sen sadece çeviri motorusun. Kaynak dil: ${fromName}. Hedef dil: ${toName}. İki kişi sabittir: Türkçe taraf erkektir/anh, Vietnamca taraf kadındır/em. TR->VI çevirirken Türk erkek Vietnamlı kadına konuşur: kadına her zaman "em" diye hitap et; erkek kendinden söz ederse "anh" kullan. "Aşkım/sevgilim" gibi hitapları kadına söyleniyorsa "em yêu", "em yêu của anh" gibi çevir; "anh yêu" kullanma. VI->TR çevirirken Vietnamlı kadın Türk erkeğe konuşur: erkeğe "anh", kendine "em" kullanıldığını varsay. Metnin tonunu, üslubunu ve duygusunu birebir yansıt — samimi yazılmışsa samimi, kaba yazılmışsa kaba, küfürlü yazılmışsa küfürlü çevir. Hiçbir şeyi sansürleme veya değiştirme. Sadece çeviriyi döndür, başka hiçbir şey yazma.`;
 
   let [provider, model] = selectedModel.split(':');
   if (provider === 'gemini' && model === 'gemini-2.5-flash-preview-05-20') {
@@ -1115,14 +1115,14 @@ async function translateText(text, from) {
   }
 }
 
-// â”€â”€ Typing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Typing ────────────────────────────────────────────────────────────────
 function setMyTyping(val) {
   if (isTyping === val) return;
   isTyping = val;
   fbSet(TYPING_PATH + '/' + myRole, val);
 }
 
-// â”€â”€ Input â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Input ─────────────────────────────────────────────────────────────────
 const msgInputEl = document.getElementById('msgInput');
 if(msgInputEl){
   msgInputEl.addEventListener('input', function() {
@@ -1137,7 +1137,7 @@ if(msgInputEl){
   });
 }
 
-// â”€â”€ PWA Manifest â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── PWA Manifest ─────────────────────────────────────────────────────────
 function initPWA() {
   const manifest = {
     name: 'AskViet',
@@ -1147,7 +1147,7 @@ function initPWA() {
     background_color: '#0a0a0f',
     theme_color: '#0a0a0f',
     icons: [{
-      src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%230a0a0f"/><text y=".9em" font-size="80">ðŸ’¬</text></svg>',
+      src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%230a0a0f"/><text y=".9em" font-size="80">💬</text></svg>',
       sizes: '192x192',
       type: 'image/svg+xml'
     }]
@@ -1158,7 +1158,7 @@ function initPWA() {
 }
 initPWA();
 
-// â”€â”€ Ses FonksiyonlarÄ± â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Ses Fonksiyonları ────────────────────────────────────────────────────
 function getAudioPlayer(){if(!audioPlayer){audioPlayer=new Audio();audioPlayer.preload='none'}return audioPlayer}
 async function unlockAudio(){
   const a=getAudioPlayer();
@@ -1173,13 +1173,13 @@ async function unlockAudio(){
     }
   }catch{}
 }
-function setSpeakBtn(btn,on){if(!btn)return;btn.textContent=on?'â¸':'â–¶ Ses';if(on)btn.dataset.playing='1';else delete btn.dataset.playing}
+function setSpeakBtn(btn,on){if(!btn)return;btn.textContent=on?'�?�':'▶ Ses';if(on)btn.dataset.playing='1';else delete btn.dataset.playing}
 function stopAudio(){ttsToken++;if(ttsAbort){try{ttsAbort.abort()}catch{}ttsAbort=null}if(audioPlayer){try{audioPlayer.pause();audioPlayer.currentTime=0}catch{}}if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}isSpeaking=false;document.querySelectorAll('.speakBtn').forEach(b=>setSpeakBtn(b,false))}
 function cacheKey(text,target,model,voice,speed){return[model,voice,speed,target,text].join('|')}
-async function playBlob(blob,token,btn,text=''){const a=getAudioPlayer();if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}audioUrl=URL.createObjectURL(blob);a.pause();a.src=audioUrl;a.defaultPlaybackRate=1.0;a.playbackRate=1.0;a.volume=1.0;a.muted=false;a.load();isSpeaking=true;setSpeakBtn(btn,true);await new Promise((resolve,reject)=>{const limit=Math.max(45000,(text||'').length*180);const timer=setTimeout(()=>resolve(),limit);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(new Error('Ses Ã§alÄ±namadÄ±'))};a.play().catch(err=>{clearTimeout(timer);reject(err)})});if(token===ttsToken){isSpeaking=false}return true}
-async function speak(text,target,btn,silent=false){try{await unlockAudio()}catch{}if(!text||!target)return false;if(isSpeaking){stopAudio();return false}const key=localStorage.getItem('askviet_key')||'';if(!key){console.warn('TTS key yok');return false}const [provider]=selectedModel.split(':');const voice=target==='vi'?'cedar':'nova',speed=target==='vi'?0.93:1,instructions=target==='vi'?'Speak Vietnamese naturally with a native Southern Vietnam / Saigon accent. Warm, clear, conversational.':'Speak Turkish naturally with a native Istanbul Turkish accent. Warm, clear, conversational.';const token=++ttsToken,ck=cacheKey(text,target,'gpt-4o-mini-tts',voice,speed);setSpeakBtn(btn,true);try{let blob=ttsCache.get(ck);if(!blob){if(provider==='gemini'){const base64=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.readAsDataURL(new Blob([text]))});const r=await fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key='+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:{text},voice:{languageCode:target==='vi'?'vi-VN':'tr-TR'},audioConfig:{audioEncoding:'MP3'}})});const d=await r.json();if(!r.ok)throw new Error(d.error?.message||r.statusText);blob=await fetch('data:audio/mp3;base64,'+d.audioContent).then(r=>r.blob())}else{ttsAbort=new AbortController();const r=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:ttsAbort.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o-mini-tts',input:text,voice,instructions,response_format:'mp3',speed})});if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error(d.error?.message||r.statusText)}blob=await r.blob()}if(token!==ttsToken)return false;ttsCache.set(ck,blob);if(ttsCache.size>30)ttsCache.delete(ttsCache.keys().next().value)}await playBlob(blob,token,btn,text);return true}catch(e){const em=String(e);if(/abort|iptal/i.test(em))return false;if(silent&&/NotAllowedError|not allowed|autoplay/i.test(em))return false;console.error('TTS hatasÄ±:',e);return false}finally{if(token===ttsToken){isSpeaking=false;setSpeakBtn(btn,false)}}}
+async function playBlob(blob,token,btn,text=''){const a=getAudioPlayer();if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}audioUrl=URL.createObjectURL(blob);a.pause();a.src=audioUrl;a.defaultPlaybackRate=1.0;a.playbackRate=1.0;a.volume=1.0;a.muted=false;a.load();isSpeaking=true;setSpeakBtn(btn,true);await new Promise((resolve,reject)=>{const limit=Math.max(45000,(text||'').length*180);const timer=setTimeout(()=>resolve(),limit);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(new Error('Ses çalınamadı'))};a.play().catch(err=>{clearTimeout(timer);reject(err)})});if(token===ttsToken){isSpeaking=false}return true}
+async function speak(text,target,btn,silent=false){try{await unlockAudio()}catch{}if(!text||!target)return false;if(isSpeaking){stopAudio();return false}const key=localStorage.getItem('askviet_key')||'';if(!key){console.warn('TTS key yok');return false}const [provider]=selectedModel.split(':');const voice=target==='vi'?'cedar':'nova',speed=target==='vi'?0.93:1,instructions=target==='vi'?'Speak Vietnamese naturally with a native Southern Vietnam / Saigon accent. Warm, clear, conversational.':'Speak Turkish naturally with a native Istanbul Turkish accent. Warm, clear, conversational.';const token=++ttsToken,ck=cacheKey(text,target,'gpt-4o-mini-tts',voice,speed);setSpeakBtn(btn,true);try{let blob=ttsCache.get(ck);if(!blob){if(provider==='gemini'){const base64=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.readAsDataURL(new Blob([text]))});const r=await fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key='+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:{text},voice:{languageCode:target==='vi'?'vi-VN':'tr-TR'},audioConfig:{audioEncoding:'MP3'}})});const d=await r.json();if(!r.ok)throw new Error(d.error?.message||r.statusText);blob=await fetch('data:audio/mp3;base64,'+d.audioContent).then(r=>r.blob())}else{ttsAbort=new AbortController();const r=await fetch('https://api.openai.com/v1/audio/speech',{method:'POST',signal:ttsAbort.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o-mini-tts',input:text,voice,instructions,response_format:'mp3',speed})});if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error(d.error?.message||r.statusText)}blob=await r.blob()}if(token!==ttsToken)return false;ttsCache.set(ck,blob);if(ttsCache.size>30)ttsCache.delete(ttsCache.keys().next().value)}await playBlob(blob,token,btn,text);return true}catch(e){const em=String(e);if(/abort|iptal/i.test(em))return false;if(silent&&/NotAllowedError|not allowed|autoplay/i.test(em))return false;console.error('TTS hatası:',e);return false}finally{if(token===ttsToken){isSpeaking=false;setSpeakBtn(btn,false)}}}
 
-// â”€â”€ Model Sync â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Model Sync ────────────────────────────────────────────────────────────
 async function speakOpenAI(text, target, btn, silent=false) {
   try { await unlockAudio(); } catch {}
   if (!text || !target) return false;
@@ -1224,7 +1224,7 @@ async function speakOpenAI(text, target, btn, silent=false) {
     const em = String(e);
     if (/abort|iptal/i.test(em)) return false;
     if (silent && /NotAllowedError|not allowed|autoplay/i.test(em)) return false;
-    console.error('TTS hatasÄ±:', e);
+    console.error('TTS hatası:', e);
     return false;
   } finally {
     if (token === ttsToken) {
@@ -1289,10 +1289,10 @@ function toggleNotifySound() {
 function updateNotifySoundUI() {
   const btn = document.getElementById('notifySoundBtn');
   if (!btn) return;
-  const label = myRole === 'vi' ? 'Ã‚m' : 'Bild.';
-  btn.textContent = (notifySoundOn ? 'âœ“ ' : 'âœ• ') + label;
+  const label = myRole === 'vi' ? 'Âm' : 'Bild.';
+  btn.textContent = (notifySoundOn ? '✓ ' : '✕ ') + label;
   btn.classList.toggle('off', !notifySoundOn);
-  btn.title = (myRole === 'vi' ? 'Ã‚m bÃ¡o' : 'Bildirim sesi') + (notifySoundOn ? ' aÃ§Ä±k' : ' kapalÄ±');
+  btn.title = (myRole === 'vi' ? 'Âm báo' : 'Bildirim sesi') + (notifySoundOn ? ' açık' : ' kapalı');
 }
 
 function syncMyModel(model) {
@@ -1301,7 +1301,7 @@ function syncMyModel(model) {
 }
 
 function listenTheirModel() {
-  // VI tarafÄ±: TR'nin seÃ§tiÄŸi modeli kullan
+  // VI tarafı: TR'nin seçtiği modeli kullan
   if(myRole === 'vi') {
     fbGet(MODEL_PATH + '/tr').then(m => {
       if(m) { selectedModel=m; localStorage.setItem('askviet_model',m); }
@@ -1348,14 +1348,14 @@ function toggleAutoRead() {
 function updateAutoReadUI() {
   const status = document.getElementById('autoReadStatus');
   const text = myRole === 'vi'
-    ? (autoRead ? 'ðŸ”Š Tá»± Ä‘á»c' : 'ðŸ”‡ Táº¯t Ä‘á»c')
-    : (autoRead ? 'ðŸ”Š AÃ§Ä±k' : 'ðŸ”‡ KapalÄ±');
+    ? (autoRead ? '🔊 Tự đ�?c' : '🔇 Tắt đ�?c')
+    : (autoRead ? '🔊 Açık' : '🔇 Kapalı');
   if (status) {
     status.textContent = text;
     status.classList.toggle('on', autoRead);
     status.title = myRole === 'vi'
-      ? 'Tá»± Ä‘á»™ng Ä‘á»c tin nháº¯n má»›i'
-      : 'Yeni mesajlarÄ± otomatik seslendir';
+      ? 'Tự động đ�?c tin nhắn mới'
+      : 'Yeni mesajları otomatik seslendir';
   }
 }
 
@@ -1366,29 +1366,29 @@ function listenAutoReadConfig() {
 function updateAutoReadUI() {
   const status = document.getElementById('autoReadStatus');
   const text = myRole === 'vi'
-    ? (autoRead ? 'ðŸ”Š Tá»± Ä‘á»c' : 'ðŸ”‡ Táº¯t Ä‘á»c')
-    : (autoRead ? 'ðŸ”Š AÃ§Ä±k' : 'ðŸ”‡ KapalÄ±');
+    ? (autoRead ? '🔊 Tự đ�?c' : '🔇 Tắt đ�?c')
+    : (autoRead ? '🔊 Açık' : '🔇 Kapalı');
   if (status) {
     status.textContent = text;
     status.classList.toggle('on', autoRead);
     status.title = myRole === 'vi'
-      ? (autoRead ? 'Tá»± Ä‘á»™ng Ä‘á»c: báº­t' : 'Tá»± Ä‘á»™ng Ä‘á»c: táº¯t')
-      : 'Yeni mesajlarÄ± otomatik seslendir';
+      ? (autoRead ? 'Tự động đ�?c: bật' : 'Tự động đ�?c: tắt')
+      : 'Yeni mesajları otomatik seslendir';
   }
 }
 
 function updateNotifySoundUI() {
   const btn = document.getElementById('notifySoundBtn');
   if (!btn) return;
-  const label = myRole === 'vi' ? 'Ã‚m' : 'Bild.';
-  btn.textContent = (notifySoundOn ? 'âœ“ ' : 'âœ• ') + label;
+  const label = myRole === 'vi' ? 'Âm' : 'Bild.';
+  btn.textContent = (notifySoundOn ? '✓ ' : '✕ ') + label;
   btn.classList.toggle('off', !notifySoundOn);
   btn.title = myRole === 'vi'
-    ? ('Ã‚m bÃ¡o: ' + (notifySoundOn ? 'báº­t' : 'táº¯t'))
-    : ('Bildirim sesi ' + (notifySoundOn ? 'aÃ§Ä±k' : 'kapalÄ±'));
+    ? ('Âm báo: ' + (notifySoundOn ? 'bật' : 'tắt'))
+    : ('Bildirim sesi ' + (notifySoundOn ? 'açık' : 'kapalı'));
 }
 
-// â”€â”€ Sesli Mesaj (PTT mantÄ±ÄŸÄ±) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Sesli Mesaj (PTT mantığı) ─────────────────────────────────────────────
 let rec=null,recChunks=[],recStream=null,recNode=null,recAnalyser=null,recData=null;
 let recTimer=null,recHadSpeech=false,recSilentSince=0,recStarted=0,recButton=null,recAudioCtx=null;
 
@@ -1406,7 +1406,7 @@ async function ensureAudioCtx(){
 
 async function startVoice() {
   const btn = document.getElementById('micBtn');
-  // Zaten kayÄ±t varsa durdur
+  // Zaten kayıt varsa durdur
   if(rec){stopRec();return;}
   recChunks=[];recHadSpeech=false;recSilentSince=0;
   btn.classList.add('mic-recording');
@@ -1426,14 +1426,14 @@ async function startVoice() {
       if(recStream){recStream.getTracks().forEach(t=>t.stop());recStream=null}
       btn.classList.remove('mic-recording');
       rec=null;
-      if(!recHadSpeech||chunks.length===0){btn.textContent='ðŸŽ™';return;}
-      btn.textContent='â³';
+      if(!recHadSpeech||chunks.length===0){btn.textContent='🎙';return;}
+      btn.textContent='�?�';
       try{
         const blob=new Blob(chunks,{type:mt});
         const text=await transcribeVoice(blob);
         if(text){document.getElementById('msgInput').value=text;sendMessage();}
-      }catch(e){console.error('Ses hatasÄ±:',e);}
-      btn.textContent='ðŸŽ™';
+      }catch(e){console.error('Ses hatası:',e);}
+      btn.textContent='🎙';
     };
     rec.start(120);
     recStarted=Date.now();
@@ -1458,7 +1458,7 @@ async function startVoice() {
 async function transcribeVoice(blob) {
   const [provider] = selectedModel.split(':');
   if (provider === 'gemini') {
-    // Gemini iÃ§in base64
+    // Gemini için base64
     const base64 = await new Promise(res => {
       const r = new FileReader();
       r.onload = () => res(r.result.split(',')[1]);
@@ -1470,7 +1470,7 @@ async function transcribeVoice(blob) {
       body: JSON.stringify({
         contents: [{parts: [
           {inline_data: {mime_type: 'audio/webm', data: base64}},
-          {text: myRole === 'tr' ? 'Bu TÃ¼rkÃ§e sesi metne Ã§evir, sadece metni dÃ¶ndÃ¼r.' : 'Chuyá»ƒn giá»ng nÃ³i tiáº¿ng Viá»‡t nÃ y thÃ nh vÄƒn báº£n, chá»‰ tráº£ vá» vÄƒn báº£n.'}
+          {text: myRole === 'tr' ? 'Bu Türkçe sesi metne çevir, sadece metni döndür.' : 'Chuyển gi�?ng nói tiếng Việt này thành văn bản, chỉ trả v�? văn bản.'}
         ]}],
         generationConfig: {thinkingConfig: {thinkingBudget: 0}}
       })
