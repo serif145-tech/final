@@ -158,7 +158,7 @@ img,svg,video,canvas{max-width:100%;height:auto}
     <input class="pw-input" type="password" id="pwInput" placeholder="••••••••" maxlength="20">
     <button class="pw-btn" onclick="checkPw()">✨ Gir</button>
   </div>
-  <div class="pw-err" id="pwErr">Hatalı şifre 🙅�?♀�?</div>
+  <div class="pw-err" id="pwErr">Hatali sifre</div>
 </div>
 
 <!-- SETUP -->
@@ -235,7 +235,8 @@ img,svg,video,canvas{max-width:100%;height:auto}
           </select>
           <button class="status-pill" id="autoReadStatus" onclick="toggleAutoRead()" title="Otomatik ses">🔇 Kapalı</button>
           <button class="notify-toggle" id="notifySoundBtn" onclick="toggleNotifySound()" title="Bildirim sesi">✓ Bildirim sesi</button>
-          <button class="back-btn" onclick="toggleTtsSettings()">&#9881;</button>
+          <button class="back-btn" onclick="toggleTtsSettings()" title="Ses ayarlari">&#9881;</button>
+          <button class="back-btn" onclick="goBack()" title="API ve taraf secimine don">&#8617;</button>
         </div>
         <div class="tts-panel" id="ttsPanel">
           <label>Ses saglayici</label>
@@ -698,7 +699,7 @@ function renderMessage(key, msg) {
   if (msg.translation) {
     trans.textContent = msg.translation;
   } else {
-    trans.textContent = '�?� çevriliyor...';
+  trans.textContent = 'Ceviriliyor...';
     trans.style.color = 'var(--tr2)';
     trans.style.fontStyle = 'normal';
   }
@@ -779,12 +780,12 @@ function updateOrRender(key, msg) {
 function getMainText(msg) {
   const isMine = msg.role === myRole;
   if (isMine) return msg.text || '';
-  return msg.translation || '�?� çevriliyor...';
+  return msg.translation || 'Ceviriliyor...';
 }
 
 function getSubText(msg) {
   const isMine = msg.role === myRole;
-  if (isMine) return msg.translation || '�?� çevriliyor...';
+  if (isMine) return msg.translation || 'Ceviriliyor...';
   return msg.text || '';
 }
 
@@ -820,7 +821,7 @@ function updateReadStatus(key) {
   if (!box || !read || box.dataset.role !== myRole) return;
   const targetRole = myRole === 'tr' ? 'vi' : 'tr';
   const seen = targetRole === 'tr' ? box.dataset.readTr : box.dataset.readVi;
-  read.textContent = seen ? (myRole === 'vi' ? '�?ã đ�?c' : 'Okundu') : '';
+  read.textContent = seen ? 'Okundu' : '';
   read.classList.toggle('show', !!seen);
 }
 
@@ -923,7 +924,7 @@ async function requestSpeakForMessage(key, btn) {
   if (!box) return;
   const targetRole = getRecipientRole(box.dataset.role);
   const text = getRecipientText(key);
-  if (!text || text.includes('�?�') || text.includes('⚠')) return;
+  if (!text || text.includes('Ceviriliyor') || text.includes('Ceviri hatasi')) return;
   if (targetRole === myRole) {
     speak(text, myRole, btn);
     return;
@@ -989,7 +990,7 @@ function maybeAutoReadMessage(key) {
     return;
   }
   const text = box.dataset.translation || '';
-  if (!text || text.includes('�?�') || text.includes('⚠')) return;
+  if (!text || text.includes('Ceviriliyor') || text.includes('Ceviri hatasi')) return;
   autoReadDone.add(key);
   speak(text, myRole, null, true);
 }
@@ -1054,15 +1055,13 @@ async function translateAndUpdate(key, text, fromRole) {
 }
 
 function retryText(role, attempt, total) {
-  return role === 'vi'
-    ? `�?� Gemini đang bận, đang thử lại... (${attempt}/${total})`
-    : `�?� Gemini yoğun, tekrar deneniyor... (${attempt}/${total})`;
+  return 'Gemini yogun, tekrar deneniyor... (' + attempt + '/' + total + ')';
 }
 
 function errorText(role, msg) {
   return role === 'vi'
-    ? '⚠�? Lỗi dịch: ' + msg
-    : '⚠�? Çeviri hatası: ' + msg;
+    ? 'Ceviri hatasi: ' + msg
+    : 'Ceviri hatasi: ' + msg;
 }
 
 function isRetryableGeminiError(e) {
@@ -1098,19 +1097,25 @@ async function translateText(text, from) {
     if (!r.ok) throw new Error(data.error?.message || r.statusText);
     return (data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
   } else {
-    const r = await fetch('https://codex.sale/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: sysPrompt },
-          { role: 'user', content: text }
-        ]
-      })
-    });
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.error?.message || r.statusText);
+    const endpoint = 'https://codex.sale/v1/chat/completions';
+    let r;
+    try {
+      r = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: sysPrompt },
+            { role: 'user', content: text }
+          ]
+        })
+      });
+    } catch (e) {
+      throw new Error('Harici API adresine ulasilamadi: ' + endpoint + '. Tarayici CORS/ag engeli olabilir. ' + (e.message || e));
+    }
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error?.message || r.statusText || ('HTTP ' + r.status));
     return (data.choices?.[0]?.message?.content || '').trim();
   }
 }
@@ -1173,7 +1178,7 @@ async function unlockAudio(){
     }
   }catch{}
 }
-function setSpeakBtn(btn,on){if(!btn)return;btn.textContent=on?'�?�':'▶ Ses';if(on)btn.dataset.playing='1';else delete btn.dataset.playing}
+function setSpeakBtn(btn,on){if(!btn)return;btn.textContent=on?'Durdur':'? Ses';if(on)btn.dataset.playing='1';else delete btn.dataset.playing}
 function stopAudio(){ttsToken++;if(ttsAbort){try{ttsAbort.abort()}catch{}ttsAbort=null}if(audioPlayer){try{audioPlayer.pause();audioPlayer.currentTime=0}catch{}}if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}isSpeaking=false;document.querySelectorAll('.speakBtn').forEach(b=>setSpeakBtn(b,false))}
 function cacheKey(text,target,model,voice,speed){return[model,voice,speed,target,text].join('|')}
 async function playBlob(blob,token,btn,text=''){const a=getAudioPlayer();if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null}audioUrl=URL.createObjectURL(blob);a.pause();a.src=audioUrl;a.defaultPlaybackRate=1.0;a.playbackRate=1.0;a.volume=1.0;a.muted=false;a.load();isSpeaking=true;setSpeakBtn(btn,true);await new Promise((resolve,reject)=>{const limit=Math.max(45000,(text||'').length*180);const timer=setTimeout(()=>resolve(),limit);a.onended=()=>{clearTimeout(timer);resolve()};a.onerror=()=>{clearTimeout(timer);reject(new Error('Ses çalınamadı'))};a.play().catch(err=>{clearTimeout(timer);reject(err)})});if(token===ttsToken){isSpeaking=false}return true}
@@ -1348,13 +1353,13 @@ function toggleAutoRead() {
 function updateAutoReadUI() {
   const status = document.getElementById('autoReadStatus');
   const text = myRole === 'vi'
-    ? (autoRead ? '🔊 Tự đ�?c' : '🔇 Tắt đ�?c')
+    ? (autoRead ? 'Tu doc acik' : 'Tu doc kapali')
     : (autoRead ? '🔊 Açık' : '🔇 Kapalı');
   if (status) {
     status.textContent = text;
     status.classList.toggle('on', autoRead);
     status.title = myRole === 'vi'
-      ? 'Tự động đ�?c tin nhắn mới'
+      ? 'Tu dong doc tin nhan moi'
       : 'Yeni mesajları otomatik seslendir';
   }
 }
@@ -1366,13 +1371,13 @@ function listenAutoReadConfig() {
 function updateAutoReadUI() {
   const status = document.getElementById('autoReadStatus');
   const text = myRole === 'vi'
-    ? (autoRead ? '🔊 Tự đ�?c' : '🔇 Tắt đ�?c')
+    ? (autoRead ? 'Tu doc acik' : 'Tu doc kapali')
     : (autoRead ? '🔊 Açık' : '🔇 Kapalı');
   if (status) {
     status.textContent = text;
     status.classList.toggle('on', autoRead);
     status.title = myRole === 'vi'
-      ? (autoRead ? 'Tự động đ�?c: bật' : 'Tự động đ�?c: tắt')
+      ? (autoRead ? 'Tu dong doc: bat' : 'Tu dong doc: tat')
       : 'Yeni mesajları otomatik seslendir';
   }
 }
@@ -1427,7 +1432,7 @@ async function startVoice() {
       btn.classList.remove('mic-recording');
       rec=null;
       if(!recHadSpeech||chunks.length===0){btn.textContent='🎙';return;}
-      btn.textContent='�?�';
+    btn.textContent='Bekle';
       try{
         const blob=new Blob(chunks,{type:mt});
         const text=await transcribeVoice(blob);
@@ -1470,7 +1475,7 @@ async function transcribeVoice(blob) {
       body: JSON.stringify({
         contents: [{parts: [
           {inline_data: {mime_type: 'audio/webm', data: base64}},
-          {text: myRole === 'tr' ? 'Bu Türkçe sesi metne çevir, sadece metni döndür.' : 'Chuyển gi�?ng nói tiếng Việt này thành văn bản, chỉ trả v�? văn bản.'}
+          {text: myRole === 'tr' ? 'Bu Turkce sesi metne cevir, sadece metni dondur.' : 'Chuyen giong noi tieng Viet nay thanh van ban, chi tra ve van ban.'}
         ]}],
         generationConfig: {thinkingConfig: {thinkingBudget: 0}}
       })
